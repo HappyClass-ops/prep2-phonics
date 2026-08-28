@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="app-version" content="2026.08.28.1">
+  <meta name="app-version" content="2026.08.28.2">
   <title>Prep 2 Little Wandle Phonics &amp; Visual Dictionary</title>
   
   <!-- Typography: Inter + Nunito Display + JetBrains Mono -->
@@ -3817,14 +3817,21 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
     let searchDebounceTimer = null;
 
     const ONLINE_APP_BASE = 'https://happyclass-ops.github.io/prep2-phonics/';
+    const STATIC_ASSET_VERSION = '2026.08.28.2';
+
+    function versionedAssetUrl(relativePath, baseUrl) {
+      const url = new URL(relativePath, baseUrl);
+      url.searchParams.set('v', STATIC_ASSET_VERSION);
+      return url.href;
+    }
 
     async function loadDictionaryLetter(letter) {
       if (!/^[a-z]$/.test(letter)) return {};
       if (DICT_CACHE.has(letter)) return DICT_CACHE.get(letter);
 
       const urls = Array.from(new Set([
-        new URL('dict/' + letter + '.json', document.baseURI).href,
-        new URL('dict/' + letter + '.json', ONLINE_APP_BASE).href
+        versionedAssetUrl('dict/' + letter + '.json', document.baseURI),
+        versionedAssetUrl('dict/' + letter + '.json', ONLINE_APP_BASE)
       ]));
 
       for (const url of urls) {
