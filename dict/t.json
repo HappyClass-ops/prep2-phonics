@@ -1,0 +1,2961 @@
+{
+  "table": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A piece of furniture with a flat top and legs for eating or writing on.",
+    "ipa": "/ˈteɪ.bəl/",
+    "exampleEasy": "The book is on the table.",
+    "example": "The teacher placed the reading books neatly on the classroom table.",
+    "phrase": "Context: \"The teacher placed the reading books neatly on the classroom table.\"",
+    "imgQuery": "a tidy wooden school desk table in a bright classroom",
+    "puzzle": {
+      "easy": [
+        "The",
+        "book",
+        "is",
+        "on",
+        "the",
+        "table",
+        "."
+      ],
+      "hard": [
+        "The",
+        "teacher",
+        "placed",
+        "the",
+        "reading",
+        "books",
+        "neatly",
+        "on",
+        "the",
+        "classroom",
+        "table",
+        "."
+      ]
+    }
+  },
+  "talked": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "To say words aloud in order to speak with someone.",
+    "ipa": "/tɔːkt/",
+    "exampleEasy": "We talked to our teacher.",
+    "example": "The happy children talked together on their way to school.",
+    "phrase": "Context: \"The happy children talked together on their way to school.\"",
+    "imgQuery": "children talking together happily in school classroom",
+    "puzzle": {
+      "easy": [
+        "We",
+        "talked",
+        "to",
+        "our",
+        "teacher",
+        "."
+      ],
+      "hard": [
+        "The",
+        "happy",
+        "children",
+        "talked",
+        "together",
+        "on",
+        "their",
+        "way",
+        "to",
+        "school",
+        "."
+      ]
+    }
+  },
+  "taught": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "Past tense of teach: to give lessons and help someone learn new knowledge.",
+    "ipa": "/tɔːt/",
+    "exampleEasy": "Our kind teacher taught us a fun song.",
+    "example": "Our kind teacher taught the children how to read and write exciting stories.",
+    "phrase": "Context: \"Our kind teacher taught the children how to read and write exciting stories.\"",
+    "imgQuery": "a kind teacher helping happy children learn in classroom",
+    "puzzle": {
+      "easy": [
+        "Our",
+        "kind",
+        "teacher",
+        "taught",
+        "us",
+        "a",
+        "fun",
+        "song",
+        "."
+      ],
+      "hard": [
+        "Our",
+        "kind",
+        "teacher",
+        "taught",
+        "the",
+        "children",
+        "how",
+        "to",
+        "read",
+        "and",
+        "write",
+        "exciting",
+        "stories",
+        "."
+      ]
+    }
+  },
+  "thought": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "Past tense of think: an idea or picture formed in the mind.",
+    "ipa": "/θɔːt/",
+    "exampleEasy": "She thought of a good idea.",
+    "example": "The little girl thought carefully before answering the question.",
+    "phrase": "Context: \"The little girl thought carefully before answering the question.\"",
+    "imgQuery": "a child thinking with a lightbulb idea cartoon",
+    "puzzle": {
+      "easy": [
+        "She",
+        "thought",
+        "of",
+        "a",
+        "good",
+        "idea",
+        "."
+      ],
+      "hard": [
+        "The",
+        "little",
+        "girl",
+        "thought",
+        "carefully",
+        "before",
+        "answering",
+        "the",
+        "question",
+        "."
+      ]
+    }
+  },
+  "tiger": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A large wild cat with golden-orange fur and bold black stripes.",
+    "ipa": "/ˈtaɪ.ɡər/",
+    "exampleEasy": "The tiger has black stripes.",
+    "example": "The magnificent orange tiger walked quietly through the tall jungle grasses.",
+    "phrase": "Context: \"The magnificent orange tiger walked quietly through the tall jungle grasses.\"",
+    "imgQuery": "a majestic orange tiger with black stripes walking in nature",
+    "puzzle": {
+      "easy": [
+        "The",
+        "tiger",
+        "has",
+        "black",
+        "stripes",
+        "."
+      ],
+      "hard": [
+        "The",
+        "magnificent",
+        "orange",
+        "tiger",
+        "walked",
+        "quietly",
+        "through",
+        "the",
+        "tall",
+        "jungle",
+        "grasses",
+        "."
+      ]
+    }
+  },
+  "treasure": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A collection of precious things, like gold, jewels, or special keepsakes.",
+    "ipa": "/ˈtreʒ.ər/",
+    "exampleEasy": "They found pirate treasure.",
+    "example": "The adventurous children found an old wooden chest filled with shiny golden treasure.",
+    "phrase": "Context: \"The adventurous children found an old wooden chest filled with shiny golden treasure.\"",
+    "imgQuery": "a wooden treasure chest overflowing with shiny gold coins and jewels",
+    "puzzle": {
+      "easy": [
+        "They",
+        "found",
+        "pirate",
+        "treasure",
+        "."
+      ],
+      "hard": [
+        "The",
+        "adventurous",
+        "children",
+        "found",
+        "an",
+        "old",
+        "wooden",
+        "chest",
+        "filled",
+        "with",
+        "shiny",
+        "golden",
+        "treasure",
+        "."
+      ]
+    }
+  },
+  "trip": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A journey or excursion to an exciting place.",
+    "ipa": "/trɪp/",
+    "exampleEasy": "We went on a school trip.",
+    "example": "Our school class went on an exciting trip to the wildlife zoo.",
+    "phrase": "Context: \"Our school class went on an exciting trip to the wildlife zoo.\"",
+    "imgQuery": "a family on a road trip vacation",
+    "puzzle": {
+      "easy": [
+        "We",
+        "went",
+        "on",
+        "a",
+        "school",
+        "trip",
+        "."
+      ],
+      "hard": [
+        "Our",
+        "school",
+        "class",
+        "went",
+        "on",
+        "an",
+        "exciting",
+        "trip",
+        "to",
+        "the",
+        "wildlife",
+        "zoo",
+        "."
+      ]
+    }
+  },
+  "talk": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/talk/",
+    "exampleEasy": "We can talk to each other.",
+    "example": "The friendly children love to talk together at lunch.",
+    "phrase": "Context: \"The friendly children love to talk together at lunch.\"",
+    "imgQuery": "two happy children talking together in class",
+    "puzzle": {
+      "easy": [
+        "We",
+        "can",
+        "talk",
+        "to",
+        "each",
+        "other",
+        "."
+      ],
+      "hard": [
+        "The",
+        "friendly",
+        "children",
+        "love",
+        "to",
+        "talk",
+        "together",
+        "at",
+        "lunch",
+        "."
+      ]
+    }
+  },
+  "teacher": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/teacher/",
+    "exampleEasy": "I can see a teacher.",
+    "example": "I can see a wonderful teacher right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful teacher right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a teacher",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "teacher",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "teacher",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "team": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/team/",
+    "exampleEasy": "I can see a team.",
+    "example": "I can see a wonderful team right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful team right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a team",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "team",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "team",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tell": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tell/",
+    "exampleEasy": "I can see a tell.",
+    "example": "I can see a wonderful tell right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tell right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tell",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tell",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tell",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "ten": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/ten/",
+    "exampleEasy": "I can see a ten.",
+    "example": "I can see a wonderful ten right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful ten right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a ten",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "ten",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "ten",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tent": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tent/",
+    "exampleEasy": "I can see a tent.",
+    "example": "I can see a wonderful tent right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tent right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tent",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tent",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tent",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "test": {
+    "pos": "adjective",
+    "title": "Adjective",
+    "def": "Describes what a person, animal, or thing is like.",
+    "ipa": "/test/",
+    "exampleEasy": "This is the test tree.",
+    "example": "This is the test tower in the whole school playground.",
+    "phrase": "Context: \"This is the test tower in the whole school playground.\"",
+    "imgQuery": "the test wild animal in nature",
+    "puzzle": {
+      "easy": [
+        "This",
+        "is",
+        "the",
+        "test",
+        "tree",
+        "."
+      ],
+      "hard": [
+        "This",
+        "is",
+        "the",
+        "test",
+        "tower",
+        "in",
+        "the",
+        "whole",
+        "school",
+        "playground",
+        "."
+      ]
+    }
+  },
+  "than": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/than/",
+    "exampleEasy": "I can see a than.",
+    "example": "I can see a wonderful than right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful than right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a than",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "than",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "than",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "thank": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/thank/",
+    "exampleEasy": "I can see a thank.",
+    "example": "I can see a wonderful thank right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful thank right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a thank",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "thank",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "thank",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "that": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/that/",
+    "exampleEasy": "I can see a that.",
+    "example": "I can see a wonderful that right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful that right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a that",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "that",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "that",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "the": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/the/",
+    "exampleEasy": "I can see a the.",
+    "example": "I can see a wonderful the right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful the right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a the",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "the",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "the",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "their": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/their/",
+    "exampleEasy": "I can see a their.",
+    "example": "I can see a wonderful their right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful their right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a their",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "their",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "their",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "them": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/them/",
+    "exampleEasy": "I can see a them.",
+    "example": "I can see a wonderful them right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful them right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a them",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "them",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "them",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "then": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/then/",
+    "exampleEasy": "I can see a then.",
+    "example": "I can see a wonderful then right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful then right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a then",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "then",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "then",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "there": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/there/",
+    "exampleEasy": "I can see a there.",
+    "example": "I can see a wonderful there right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful there right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a there",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "there",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "there",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "these": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/these/",
+    "exampleEasy": "I can see a these.",
+    "example": "I can see a wonderful these right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful these right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a these",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "these",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "these",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "they": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/they/",
+    "exampleEasy": "I can see a they.",
+    "example": "I can see a wonderful they right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful they right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a they",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "they",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "they",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "thick": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/thick/",
+    "exampleEasy": "I can see a thick.",
+    "example": "I can see a wonderful thick right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful thick right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a thick",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "thick",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "thick",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "thin": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/thin/",
+    "exampleEasy": "I can see a thin.",
+    "example": "I can see a wonderful thin right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful thin right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a thin",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "thin",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "thin",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "thing": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "An action happening right now.",
+    "ipa": "/thing/",
+    "exampleEasy": "The little duck was thing.",
+    "example": "We saw a playful squirrel thing happily in the garden.",
+    "phrase": "Context: \"We saw a playful squirrel thing happily in the garden.\"",
+    "imgQuery": "a happy child thing in the garden",
+    "puzzle": {
+      "easy": [
+        "The",
+        "little",
+        "duck",
+        "was",
+        "thing",
+        "."
+      ],
+      "hard": [
+        "We",
+        "saw",
+        "a",
+        "playful",
+        "squirrel",
+        "thing",
+        "happily",
+        "in",
+        "the",
+        "garden",
+        "."
+      ]
+    }
+  },
+  "think": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/think/",
+    "exampleEasy": "I can see a think.",
+    "example": "I can see a wonderful think right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful think right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a think",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "think",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "think",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "third": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/third/",
+    "exampleEasy": "I can see a third.",
+    "example": "I can see a wonderful third right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful third right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a third",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "third",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "third",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "thirsty": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/thirsty/",
+    "exampleEasy": "I can see a thirsty.",
+    "example": "I can see a wonderful thirsty right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful thirsty right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a thirsty",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "thirsty",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "thirsty",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "this": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/this/",
+    "exampleEasy": "We can see the this.",
+    "example": "We placed the colourful this carefully on the classroom table.",
+    "phrase": "Context: \"We placed the colourful this carefully on the classroom table.\"",
+    "imgQuery": "a high quality photo of a this",
+    "puzzle": {
+      "easy": [
+        "We",
+        "can",
+        "see",
+        "the",
+        "this",
+        "."
+      ],
+      "hard": [
+        "We",
+        "placed",
+        "the",
+        "colourful",
+        "this",
+        "carefully",
+        "on",
+        "the",
+        "classroom",
+        "table",
+        "."
+      ]
+    }
+  },
+  "those": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/those/",
+    "exampleEasy": "I can see a those.",
+    "example": "I can see a wonderful those right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful those right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a those",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "those",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "those",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "three": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/three/",
+    "exampleEasy": "I can see a three.",
+    "example": "I can see a wonderful three right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful three right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a three",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "three",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "three",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "threw": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/threw/",
+    "exampleEasy": "I can see a threw.",
+    "example": "I can see a wonderful threw right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful threw right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a threw",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "threw",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "threw",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "through": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/through/",
+    "exampleEasy": "I can see a through.",
+    "example": "I can see a wonderful through right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful through right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a through",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "through",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "through",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "throw": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/throw/",
+    "exampleEasy": "I can see a throw.",
+    "example": "I can see a wonderful throw right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful throw right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a throw",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "throw",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "throw",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "thumb": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/thumb/",
+    "exampleEasy": "I can see a thumb.",
+    "example": "I can see a wonderful thumb right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful thumb right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a thumb",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "thumb",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "thumb",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "thunder": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/thunder/",
+    "exampleEasy": "I can see a thunder.",
+    "example": "I can see a wonderful thunder right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful thunder right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a thunder",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "thunder",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "thunder",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "ticket": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/ticket/",
+    "exampleEasy": "I can see a ticket.",
+    "example": "I can see a wonderful ticket right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful ticket right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a ticket",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "ticket",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "ticket",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tight": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tight/",
+    "exampleEasy": "I can see a tight.",
+    "example": "I can see a wonderful tight right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tight right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tight",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tight",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tight",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "time": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/time/",
+    "exampleEasy": "I can see a time.",
+    "example": "I can see a wonderful time right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful time right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a time",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "time",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "time",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tiny": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tiny/",
+    "exampleEasy": "I can see a tiny.",
+    "example": "I can see a wonderful tiny right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tiny right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tiny",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tiny",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tiny",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tip": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tip/",
+    "exampleEasy": "I can see a tip.",
+    "example": "I can see a wonderful tip right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tip right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tip",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tip",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tip",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tired": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "An action that happened in the past.",
+    "ipa": "/tired/",
+    "exampleEasy": "The happy child tired today.",
+    "example": "The happy children tired together on their way home.",
+    "phrase": "Context: \"The happy children tired together on their way home.\"",
+    "imgQuery": "happy children tired together in the park",
+    "puzzle": {
+      "easy": [
+        "The",
+        "happy",
+        "child",
+        "tired",
+        "today",
+        "."
+      ],
+      "hard": [
+        "The",
+        "happy",
+        "children",
+        "tired",
+        "together",
+        "on",
+        "their",
+        "way",
+        "home",
+        "."
+      ]
+    }
+  },
+  "to": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/to/",
+    "exampleEasy": "I can see a to.",
+    "example": "I can see a wonderful to right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful to right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a to",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "to",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "to",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "today": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/today/",
+    "exampleEasy": "I can see a today.",
+    "example": "I can see a wonderful today right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful today right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a today",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "today",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "today",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "toe": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/toe/",
+    "exampleEasy": "I can see a toe.",
+    "example": "I can see a wonderful toe right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful toe right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a toe",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "toe",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "toe",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "together": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/together/",
+    "exampleEasy": "I can see a together.",
+    "example": "I can see a wonderful together right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful together right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a together",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "together",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "together",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "told": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/told/",
+    "exampleEasy": "I can see a told.",
+    "example": "I can see a wonderful told right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful told right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a told",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "told",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "told",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tomato": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tomato/",
+    "exampleEasy": "I can see a tomato.",
+    "example": "I can see a wonderful tomato right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tomato right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tomato",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tomato",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tomato",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tomorrow": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tomorrow/",
+    "exampleEasy": "I can see a tomorrow.",
+    "example": "I can see a wonderful tomorrow right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tomorrow right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tomorrow",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tomorrow",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tomorrow",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tonight": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tonight/",
+    "exampleEasy": "I can see a tonight.",
+    "example": "I can see a wonderful tonight right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tonight right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tonight",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tonight",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tonight",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "too": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/too/",
+    "exampleEasy": "I can see a too.",
+    "example": "I can see a wonderful too right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful too right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a too",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "too",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "too",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "took": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/took/",
+    "exampleEasy": "I can see a took.",
+    "example": "I can see a wonderful took right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful took right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a took",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "took",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "took",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tooth": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tooth/",
+    "exampleEasy": "I can see a tooth.",
+    "example": "I can see a wonderful tooth right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tooth right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tooth",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tooth",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tooth",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "top": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/top/",
+    "exampleEasy": "I can see a top.",
+    "example": "I can see a wonderful top right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful top right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a top",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "top",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "top",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "torch": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/torch/",
+    "exampleEasy": "I can see a torch.",
+    "example": "I can see a wonderful torch right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful torch right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a torch",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "torch",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "torch",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "touch": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/touch/",
+    "exampleEasy": "I can see a touch.",
+    "example": "I can see a wonderful touch right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful touch right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a touch",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "touch",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "touch",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "towel": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/towel/",
+    "exampleEasy": "I can see a towel.",
+    "example": "I can see a wonderful towel right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful towel right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a towel",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "towel",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "towel",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tower": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tower/",
+    "exampleEasy": "I can see a tower.",
+    "example": "I can see a wonderful tower right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tower right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tower",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tower",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tower",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "town": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/town/",
+    "exampleEasy": "I can see a town.",
+    "example": "I can see a wonderful town right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful town right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a town",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "town",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "town",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "toy": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/toy/",
+    "exampleEasy": "I can see a toy.",
+    "example": "I can see a wonderful toy right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful toy right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a toy",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "toy",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "toy",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "track": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/track/",
+    "exampleEasy": "I can see a track.",
+    "example": "I can see a wonderful track right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful track right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a track",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "track",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "track",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tractor": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tractor/",
+    "exampleEasy": "I can see a tractor.",
+    "example": "I can see a wonderful tractor right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tractor right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tractor",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tractor",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tractor",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "traffic": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/traffic/",
+    "exampleEasy": "I can see a traffic.",
+    "example": "I can see a wonderful traffic right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful traffic right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a traffic",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "traffic",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "traffic",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "train": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/train/",
+    "exampleEasy": "I can see a train.",
+    "example": "I can see a wonderful train right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful train right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a train",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "train",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "train",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "trap": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/trap/",
+    "exampleEasy": "I can see a trap.",
+    "example": "I can see a wonderful trap right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful trap right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a trap",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "trap",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "trap",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "travel": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/travel/",
+    "exampleEasy": "I can see a travel.",
+    "example": "I can see a wonderful travel right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful travel right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a travel",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "travel",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "travel",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tray": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tray/",
+    "exampleEasy": "I can see a tray.",
+    "example": "I can see a wonderful tray right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tray right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tray",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tray",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tray",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tree": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tree/",
+    "exampleEasy": "I can see a tree.",
+    "example": "I can see a wonderful tree right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tree right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tree",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tree",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tree",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "triangle": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/triangle/",
+    "exampleEasy": "I can see a triangle.",
+    "example": "I can see a wonderful triangle right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful triangle right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a triangle",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "triangle",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "triangle",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "trick": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/trick/",
+    "exampleEasy": "I can see a trick.",
+    "example": "I can see a wonderful trick right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful trick right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a trick",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "trick",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "trick",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "trouble": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/trouble/",
+    "exampleEasy": "I can see a trouble.",
+    "example": "I can see a wonderful trouble right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful trouble right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a trouble",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "trouble",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "trouble",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "truck": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/truck/",
+    "exampleEasy": "I can see a truck.",
+    "example": "I can see a wonderful truck right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful truck right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a truck",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "truck",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "truck",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "true": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/true/",
+    "exampleEasy": "I can see a true.",
+    "example": "I can see a wonderful true right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful true right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a true",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "true",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "true",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "trunk": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/trunk/",
+    "exampleEasy": "I can see a trunk.",
+    "example": "I can see a wonderful trunk right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful trunk right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a trunk",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "trunk",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "trunk",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "trust": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/trust/",
+    "exampleEasy": "I can see a trust.",
+    "example": "I can see a wonderful trust right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful trust right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a trust",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "trust",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "trust",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "try": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/try/",
+    "exampleEasy": "I can see a try.",
+    "example": "I can see a wonderful try right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful try right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a try",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "try",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "try",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tube": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tube/",
+    "exampleEasy": "I can see a tube.",
+    "example": "I can see a wonderful tube right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tube right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tube",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tube",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tube",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "tummy": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/tummy/",
+    "exampleEasy": "I can see a tummy.",
+    "example": "I can see a wonderful tummy right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful tummy right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a tummy",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "tummy",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "tummy",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "turn": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/turn/",
+    "exampleEasy": "I can see a turn.",
+    "example": "I can see a wonderful turn right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful turn right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a turn",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "turn",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "turn",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "turtle": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/turtle/",
+    "exampleEasy": "I can see a turtle.",
+    "example": "I can see a wonderful turtle right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful turtle right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a turtle",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "turtle",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "turtle",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "twelve": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/twelve/",
+    "exampleEasy": "I can see a twelve.",
+    "example": "I can see a wonderful twelve right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful twelve right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a twelve",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "twelve",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "twelve",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "twenty": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/twenty/",
+    "exampleEasy": "I can see a twenty.",
+    "example": "I can see a wonderful twenty right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful twenty right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a twenty",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "twenty",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "twenty",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "twice": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/twice/",
+    "exampleEasy": "I can see a twice.",
+    "example": "I can see a wonderful twice right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful twice right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a twice",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "twice",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "twice",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "twin": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/twin/",
+    "exampleEasy": "I can see a twin.",
+    "example": "I can see a wonderful twin right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful twin right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a twin",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "twin",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "twin",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "two": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/two/",
+    "exampleEasy": "I can see a two.",
+    "example": "I can see a wonderful two right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful two right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a two",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "two",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "two",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  }
+}

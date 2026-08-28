@@ -1,0 +1,170 @@
+{
+  "queen": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/queen/",
+    "exampleEasy": "I can see a queen.",
+    "example": "I can see a wonderful queen right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful queen right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a queen",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "queen",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "queen",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "quick": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/quick/",
+    "exampleEasy": "I can see a quick.",
+    "example": "I can see a wonderful quick right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful quick right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a quick",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "quick",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "quick",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "quickly": {
+    "pos": "adverb",
+    "title": "Adverb",
+    "def": "Describes how, when, or in what way an action is done.",
+    "ipa": "/quickly/",
+    "exampleEasy": "The children walked quickly today.",
+    "example": "The happy children walked quickly together along the forest path.",
+    "phrase": "Context: \"The happy children walked quickly together along the forest path.\"",
+    "imgQuery": "a cheetah sprinting quickly across the savanna",
+    "puzzle": {
+      "easy": [
+        "The",
+        "children",
+        "walked",
+        "quickly",
+        "today",
+        "."
+      ],
+      "hard": [
+        "The",
+        "happy",
+        "children",
+        "walked",
+        "quickly",
+        "together",
+        "along",
+        "the",
+        "forest",
+        "path",
+        "."
+      ]
+    }
+  },
+  "quiet": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/quiet/",
+    "exampleEasy": "I can see a quiet.",
+    "example": "I can see a wonderful quiet right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful quiet right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a quiet",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "quiet",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "quiet",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "quietly": {
+    "pos": "adverb",
+    "title": "Adverb",
+    "def": "Describes how, when, or in what way an action is done.",
+    "ipa": "/quietly/",
+    "exampleEasy": "The children walked quietly today.",
+    "example": "The happy children walked quietly together along the forest path.",
+    "phrase": "Context: \"The happy children walked quietly together along the forest path.\"",
+    "imgQuery": "a cute puppy sitting quietly in the grass",
+    "puzzle": {
+      "easy": [
+        "The",
+        "children",
+        "walked",
+        "quietly",
+        "today",
+        "."
+      ],
+      "hard": [
+        "The",
+        "happy",
+        "children",
+        "walked",
+        "quietly",
+        "together",
+        "along",
+        "the",
+        "forest",
+        "path",
+        "."
+      ]
+    }
+  }
+}

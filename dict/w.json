@@ -1,0 +1,40 @@
+{
+  "wonderful": {
+    "pos": "adjective",
+    "title": "Adjective",
+    "def": "Extremely good, pleasant, or inspiring delight; fantastic.",
+    "ipa": "/ˈwʌn.də.fəl/",
+    "exampleEasy": "We had a wonderful day.",
+    "example": "The whole family had a wonderful time celebrating the birthday party with games and cake.",
+    "phrase": "Context: \"The whole family had a wonderful time celebrating the birthday party with games and cake.\"",
+    "imgQuery": "cheerful happy family enjoying a wonderful sunny day outdoors",
+    "puzzle": {
+      "easy": [
+        "We",
+        "had",
+        "a",
+        "wonderful",
+        "day",
+        "."
+      ],
+      "hard": [
+        "The",
+        "whole",
+        "family",
+        "had",
+        "a",
+        "wonderful",
+        "time",
+        "celebrating",
+        "the",
+        "birthday",
+        "party",
+        "with",
+        "games",
+        "and",
+        "cake",
+        "."
+      ]
+    }
+  }
+}

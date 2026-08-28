@@ -1,0 +1,77 @@
+{
+  "umbrella": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A portable folding canopy used to keep you dry from the rain.",
+    "ipa": "/ʌmˈbrel.ə/",
+    "exampleEasy": "Open the big umbrella.",
+    "example": "The cheerful yellow umbrella kept the brother and sister completely dry in the rain.",
+    "phrase": "Context: \"The cheerful yellow umbrella kept the brother and sister completely dry in the rain.\"",
+    "imgQuery": "a bright yellow umbrella opened against gentle raindrops",
+    "puzzle": {
+      "easy": [
+        "Open",
+        "the",
+        "big",
+        "umbrella",
+        "."
+      ],
+      "hard": [
+        "The",
+        "cheerful",
+        "yellow",
+        "umbrella",
+        "kept",
+        "the",
+        "brother",
+        "and",
+        "sister",
+        "completely",
+        "dry",
+        "in",
+        "the",
+        "rain",
+        "."
+      ]
+    }
+  },
+  "unlock": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "To open a lock on a door or box using a key.",
+    "ipa": "/ʌnˈlɒk/",
+    "exampleEasy": "Use the key to unlock the door.",
+    "example": "The teacher used a shiny silver key to unlock the classroom door each morning.",
+    "phrase": "Context: \"The teacher used a shiny silver key to unlock the classroom door each morning.\"",
+    "imgQuery": "a key unlocking a golden padlock on a wooden door",
+    "puzzle": {
+      "easy": [
+        "Use",
+        "the",
+        "key",
+        "to",
+        "unlock",
+        "the",
+        "door",
+        "."
+      ],
+      "hard": [
+        "The",
+        "teacher",
+        "used",
+        "a",
+        "shiny",
+        "silver",
+        "key",
+        "to",
+        "unlock",
+        "the",
+        "classroom",
+        "door",
+        "each",
+        "morning",
+        "."
+      ]
+    }
+  }
+}

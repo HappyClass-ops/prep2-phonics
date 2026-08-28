@@ -1,0 +1,611 @@
+{
+  "kindness": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "The quality of being friendly, generous, and considerate towards others.",
+    "ipa": "/ˈkaɪnd.nəs/",
+    "exampleEasy": "Kindness makes people smile.",
+    "example": "Showing kindness to your classmates makes the classroom a warm and happy place.",
+    "phrase": "Context: \"Showing kindness to your classmates makes the classroom a warm and happy place.\"",
+    "imgQuery": "children showing kindness by helping a friend up in the playground",
+    "puzzle": {
+      "easy": [
+        "Kindness",
+        "makes",
+        "people",
+        "smile",
+        "."
+      ],
+      "hard": [
+        "Showing",
+        "kindness",
+        "to",
+        "your",
+        "classmates",
+        "makes",
+        "the",
+        "classroom",
+        "a",
+        "warm",
+        "and",
+        "happy",
+        "place",
+        "."
+      ]
+    }
+  },
+  "knight": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A brave historic warrior in metal armour who rode a horse and served a king.",
+    "ipa": "/naɪt/",
+    "exampleEasy": "The knight rode a horse.",
+    "example": "The brave knight in shining silver armour protected the kingdom with courage.",
+    "phrase": "Context: \"The brave knight in shining silver armour protected the kingdom with courage.\"",
+    "imgQuery": "a brave medieval knight in shiny silver armour holding a shield",
+    "puzzle": {
+      "easy": [
+        "The",
+        "knight",
+        "rode",
+        "a",
+        "horse",
+        "."
+      ],
+      "hard": [
+        "The",
+        "brave",
+        "knight",
+        "in",
+        "shining",
+        "silver",
+        "armour",
+        "protected",
+        "the",
+        "kingdom",
+        "with",
+        "courage",
+        "."
+      ]
+    }
+  },
+  "keep": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/keep/",
+    "exampleEasy": "I can see a keep.",
+    "example": "I can see a wonderful keep right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful keep right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a keep",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "keep",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "keep",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "key": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/key/",
+    "exampleEasy": "I can see a key.",
+    "example": "I can see a wonderful key right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful key right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a key",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "key",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "key",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "kick": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/kick/",
+    "exampleEasy": "I can see a kick.",
+    "example": "I can see a wonderful kick right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful kick right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a kick",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "kick",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "kick",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "kicked": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "An action that happened in the past.",
+    "ipa": "/kicked/",
+    "exampleEasy": "The happy child kicked today.",
+    "example": "The happy children kicked together on their way home.",
+    "phrase": "Context: \"The happy children kicked together on their way home.\"",
+    "imgQuery": "happy children kicked together in the park",
+    "puzzle": {
+      "easy": [
+        "The",
+        "happy",
+        "child",
+        "kicked",
+        "today",
+        "."
+      ],
+      "hard": [
+        "The",
+        "happy",
+        "children",
+        "kicked",
+        "together",
+        "on",
+        "their",
+        "way",
+        "home",
+        "."
+      ]
+    }
+  },
+  "kicking": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "An action happening right now.",
+    "ipa": "/kicking/",
+    "exampleEasy": "The little duck was kicking.",
+    "example": "We saw a playful squirrel kicking happily in the garden.",
+    "phrase": "Context: \"We saw a playful squirrel kicking happily in the garden.\"",
+    "imgQuery": "a happy child kicking in the garden",
+    "puzzle": {
+      "easy": [
+        "The",
+        "little",
+        "duck",
+        "was",
+        "kicking",
+        "."
+      ],
+      "hard": [
+        "We",
+        "saw",
+        "a",
+        "playful",
+        "squirrel",
+        "kicking",
+        "happily",
+        "in",
+        "the",
+        "garden",
+        "."
+      ]
+    }
+  },
+  "kid": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/kid/",
+    "exampleEasy": "I can see a kid.",
+    "example": "I can see a wonderful kid right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful kid right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a kid",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "kid",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "kid",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "kind": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/kind/",
+    "exampleEasy": "I can see a kind.",
+    "example": "I can see a wonderful kind right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful kind right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a kind",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "kind",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "kind",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "king": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "An action happening right now.",
+    "ipa": "/king/",
+    "exampleEasy": "The little duck was king.",
+    "example": "We saw a playful squirrel king happily in the garden.",
+    "phrase": "Context: \"We saw a playful squirrel king happily in the garden.\"",
+    "imgQuery": "a happy child king in the garden",
+    "puzzle": {
+      "easy": [
+        "The",
+        "little",
+        "duck",
+        "was",
+        "king",
+        "."
+      ],
+      "hard": [
+        "We",
+        "saw",
+        "a",
+        "playful",
+        "squirrel",
+        "king",
+        "happily",
+        "in",
+        "the",
+        "garden",
+        "."
+      ]
+    }
+  },
+  "kiss": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/kiss/",
+    "exampleEasy": "We can see the kiss.",
+    "example": "We placed the colourful kiss carefully on the classroom table.",
+    "phrase": "Context: \"We placed the colourful kiss carefully on the classroom table.\"",
+    "imgQuery": "a high quality photo of a kiss",
+    "puzzle": {
+      "easy": [
+        "We",
+        "can",
+        "see",
+        "the",
+        "kiss",
+        "."
+      ],
+      "hard": [
+        "We",
+        "placed",
+        "the",
+        "colourful",
+        "kiss",
+        "carefully",
+        "on",
+        "the",
+        "classroom",
+        "table",
+        "."
+      ]
+    }
+  },
+  "kitchen": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/kitchen/",
+    "exampleEasy": "I can see a kitchen.",
+    "example": "I can see a wonderful kitchen right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful kitchen right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a kitchen",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "kitchen",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "kitchen",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "kite": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/kite/",
+    "exampleEasy": "I can see a kite.",
+    "example": "I can see a wonderful kite right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful kite right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a kite",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "kite",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "kite",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "kitten": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/kitten/",
+    "exampleEasy": "I can see a kitten.",
+    "example": "I can see a wonderful kitten right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful kitten right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a kitten",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "kitten",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "kitten",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "knee": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/knee/",
+    "exampleEasy": "I can see a knee.",
+    "example": "I can see a wonderful knee right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful knee right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a knee",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "knee",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "knee",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "knife": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/knife/",
+    "exampleEasy": "I can see a knife.",
+    "example": "I can see a wonderful knife right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful knife right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a knife",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "knife",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "knife",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "knock": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/knock/",
+    "exampleEasy": "I can see a knock.",
+    "example": "I can see a wonderful knock right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful knock right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a knock",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "knock",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "knock",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "know": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/know/",
+    "exampleEasy": "I can see a know.",
+    "example": "I can see a wonderful know right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful know right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a know",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "know",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "know",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  }
+}

@@ -3,5 +3,5 @@
 Interactive phonics dictionary and pupil learning app with authentic teacher voice recordings.
 
 ## 🚀 Live Links
-- **Pupil App**: [Open Student App](https://your-username.github.io/your-repo-name/)
-- **Teacher Studio (PIN Locked)**: [Open Teacher Studio](https://your-username.github.io/your-repo-name/studio/)
+- **Pupil App**: [Open Student App](https://happyclass-ops.github.io/prep2-phonics/)
+- **Teacher Studio (PIN Locked)**: [Open Teacher Studio](https://happyclass-ops.github.io/prep2-phonics/studio/)

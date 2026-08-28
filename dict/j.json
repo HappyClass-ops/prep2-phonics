@@ -1,0 +1,549 @@
+{
+  "jungle": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A thick, tropical forest with many tall trees, vines, and wild animals.",
+    "ipa": "/ˈdʒʌŋ.ɡəl/",
+    "exampleEasy": "Monkeys live in the jungle.",
+    "example": "Colourful parrots and playful monkeys swung through the lush green trees of the jungle.",
+    "phrase": "Context: \"Colourful parrots and playful monkeys swung through the lush green trees of the jungle.\"",
+    "imgQuery": "a lush green tropical jungle forest with sunlight through trees",
+    "puzzle": {
+      "easy": [
+        "Monkeys",
+        "live",
+        "in",
+        "the",
+        "jungle",
+        "."
+      ],
+      "hard": [
+        "Colourful",
+        "parrots",
+        "and",
+        "playful",
+        "monkeys",
+        "swung",
+        "through",
+        "the",
+        "lush",
+        "green",
+        "trees",
+        "of",
+        "the",
+        "jungle",
+        "."
+      ]
+    }
+  },
+  "journey": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "An act of travelling from one place to another.",
+    "ipa": "/ˈdʒɜː.ni/",
+    "exampleEasy": "We went on a long journey.",
+    "example": "The exciting train journey took the happy family through rolling green mountains.",
+    "phrase": "Context: \"The exciting train journey took the happy family through rolling green mountains.\"",
+    "imgQuery": "a passenger train travelling through scenic green mountains",
+    "puzzle": {
+      "easy": [
+        "We",
+        "went",
+        "on",
+        "a",
+        "long",
+        "journey",
+        "."
+      ],
+      "hard": [
+        "The",
+        "exciting",
+        "train",
+        "journey",
+        "took",
+        "the",
+        "happy",
+        "family",
+        "through",
+        "rolling",
+        "green",
+        "mountains",
+        "."
+      ]
+    }
+  },
+  "jacket": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/jacket/",
+    "exampleEasy": "I can see a jacket.",
+    "example": "I can see a wonderful jacket right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful jacket right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a jacket",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "jacket",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "jacket",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "jam": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/jam/",
+    "exampleEasy": "I can see a jam.",
+    "example": "I can see a wonderful jam right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful jam right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a jam",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "jam",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "jam",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "jar": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/jar/",
+    "exampleEasy": "I can see a jar.",
+    "example": "I can see a wonderful jar right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful jar right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a jar",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "jar",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "jar",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "jeans": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/jeans/",
+    "exampleEasy": "We can see the jeans.",
+    "example": "We placed the colourful jeans carefully on the classroom table.",
+    "phrase": "Context: \"We placed the colourful jeans carefully on the classroom table.\"",
+    "imgQuery": "a high quality photo of a jeans",
+    "puzzle": {
+      "easy": [
+        "We",
+        "can",
+        "see",
+        "the",
+        "jeans",
+        "."
+      ],
+      "hard": [
+        "We",
+        "placed",
+        "the",
+        "colourful",
+        "jeans",
+        "carefully",
+        "on",
+        "the",
+        "classroom",
+        "table",
+        "."
+      ]
+    }
+  },
+  "jelly": {
+    "pos": "adverb",
+    "title": "Adverb",
+    "def": "Describes how, when, or in what way an action is done.",
+    "ipa": "/jelly/",
+    "exampleEasy": "The children walked jelly today.",
+    "example": "The happy children walked jelly together along the forest path.",
+    "phrase": "Context: \"The happy children walked jelly together along the forest path.\"",
+    "imgQuery": "a cute puppy sitting jelly in the grass",
+    "puzzle": {
+      "easy": [
+        "The",
+        "children",
+        "walked",
+        "jelly",
+        "today",
+        "."
+      ],
+      "hard": [
+        "The",
+        "happy",
+        "children",
+        "walked",
+        "jelly",
+        "together",
+        "along",
+        "the",
+        "forest",
+        "path",
+        "."
+      ]
+    }
+  },
+  "job": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/job/",
+    "exampleEasy": "I can see a job.",
+    "example": "I can see a wonderful job right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful job right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a job",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "job",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "job",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "join": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/join/",
+    "exampleEasy": "I can see a join.",
+    "example": "I can see a wonderful join right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful join right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a join",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "join",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "join",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "joke": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/joke/",
+    "exampleEasy": "I can see a joke.",
+    "example": "I can see a wonderful joke right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful joke right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a joke",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "joke",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "joke",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "joy": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/joy/",
+    "exampleEasy": "I can see a joy.",
+    "example": "I can see a wonderful joy right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful joy right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a joy",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "joy",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "joy",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "juice": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/juice/",
+    "exampleEasy": "I can see a juice.",
+    "example": "I can see a wonderful juice right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful juice right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a juice",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "juice",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "juice",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "jump": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/jump/",
+    "exampleEasy": "I can see a jump.",
+    "example": "I can see a wonderful jump right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful jump right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a jump",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "jump",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "jump",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  },
+  "jumped": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "An action that happened in the past.",
+    "ipa": "/jumped/",
+    "exampleEasy": "The frog jumped into the pond.",
+    "example": "The happy child jumped over the puddle on the way home.",
+    "phrase": "Context: \"The happy child jumped over the puddle on the way home.\"",
+    "imgQuery": "happy children jumped together in the park",
+    "puzzle": {
+      "easy": [
+        "The",
+        "frog",
+        "jumped",
+        "into",
+        "the",
+        "pond",
+        "."
+      ],
+      "hard": [
+        "The",
+        "happy",
+        "child",
+        "jumped",
+        "over",
+        "the",
+        "puddle",
+        "on",
+        "the",
+        "way",
+        "home",
+        "."
+      ]
+    }
+  },
+  "jumping": {
+    "pos": "verb",
+    "title": "Verb",
+    "def": "An action happening right now.",
+    "ipa": "/jumping/",
+    "exampleEasy": "The little duck was jumping.",
+    "example": "We saw a playful squirrel jumping happily in the garden.",
+    "phrase": "Context: \"We saw a playful squirrel jumping happily in the garden.\"",
+    "imgQuery": "a happy child jumping in the garden",
+    "puzzle": {
+      "easy": [
+        "The",
+        "little",
+        "duck",
+        "was",
+        "jumping",
+        "."
+      ],
+      "hard": [
+        "We",
+        "saw",
+        "a",
+        "playful",
+        "squirrel",
+        "jumping",
+        "happily",
+        "in",
+        "the",
+        "garden",
+        "."
+      ]
+    }
+  },
+  "just": {
+    "pos": "noun",
+    "title": "Noun",
+    "def": "A person, animal, place, or thing.",
+    "ipa": "/just/",
+    "exampleEasy": "I can see a just.",
+    "example": "I can see a wonderful just right there in the classroom.",
+    "phrase": "Context: \"I can see a wonderful just right there in the classroom.\"",
+    "imgQuery": "a high quality photo of a just",
+    "puzzle": {
+      "easy": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "just",
+        "."
+      ],
+      "hard": [
+        "I",
+        "can",
+        "see",
+        "a",
+        "wonderful",
+        "just",
+        "right",
+        "there",
+        "in",
+        "the",
+        "classroom",
+        "."
+      ]
+    }
+  }
+}
