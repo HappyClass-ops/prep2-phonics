@@ -2301,12 +2301,142 @@
         ];
       }
 
-      // 8. General Noun
-      return [
-        `a high quality photo of a ${w}`,
-        `a ${w} in real life`,
-        `a colourful ${w} for children`
-      ];
+    // ================= 3B. UNIVERSAL CLIENT-SIDE MORPHOLOGY & DEFINITION SYNTHESIZER =================
+    function cleanKidDefinition(rawDef) {
+      if (!rawDef) return "A word used in English reading and writing.";
+      let def = rawDef.replace(/([^)]*)/g, '').trim();
+      def = def.replace(/^(especially|specifically|chiefly|often|rarely|usually)s+/i, '');
+      def = def.replace(/(pertaining to|relating to|of or concerning|characteristic of|in a manner of)/gi, 'about');
+      def = def.replace(/(to impart knowledge|cause to learn)/gi, 'to teach lessons and help someone learn');
+      def = def.replace(/(causing wonder and amazement|astonishing|astound)/gi, 'very wonderful, surprising, and exciting');
+      def = def.replace(/(to pass gas from the anus)/gi, 'to pass tummy gas with a funny popping sound');
+      if (!def.endsWith('.')) def += '.';
+      return def.charAt(0).toUpperCase() + def.slice(1);
+    }
+
+    function lemmatizeWord(word) {
+      const w = (word || '').toLowerCase().trim();
+      const IRREGULAR_VERBS = {
+        'taught': 'teach', 'caught': 'catch', 'thought': 'think', 'bought': 'buy', 'brought': 'bring',
+        'fought': 'fight', 'sought': 'seek', 'went': 'go', 'came': 'come', 'ran': 'run',
+        'ate': 'eat', 'saw': 'see', 'took': 'take', 'made': 'make', 'gave': 'give',
+        'found': 'find', 'told': 'tell', 'spoke': 'speak', 'wrote': 'write', 'heard': 'hear',
+        'sung': 'sing', 'sang': 'sing', 'swam': 'swim', 'swung': 'swing', 'flew': 'fly',
+        'drew': 'draw', 'grew': 'grow', 'threw': 'throw', 'knew': 'know', 'blew': 'blow',
+        'built': 'build', 'slept': 'sleep', 'kept': 'keep', 'swept': 'sweep', 'felt': 'feel',
+        'fell': 'fall', 'left': 'leave', 'met': 'meet', 'read': 'read', 'led': 'lead'
+      };
+
+      if (IRREGULAR_VERBS[w]) {
+        return { lemma: IRREGULAR_VERBS[w], suffix: 'ed', isPast: true, pos: 'verb' };
+      }
+
+      if (w.endsWith('ing') && w.length > 4) {
+        let base = w.slice(0, -3);
+        if (base.endsWith('mm') || base.endsWith('nn') || base.endsWith('pp') || base.endsWith('tt') || base.endsWith('gg')) {
+          base = base.slice(0, -1);
+        } else if (!['a','e','i','o','u'].includes(base[base.length-1])) {
+          // might be dropped e (amaze, make, bake, smile, shine, ride, hope)
+          base = base + 'e';
+        }
+        return { lemma: base, suffix: 'ing', isContinuous: true, pos: 'verb' };
+      }
+
+      if (w.endsWith('ed') && w.length > 3) {
+        let base = w.slice(0, -2);
+        if (base.endsWith('mm') || base.endsWith('nn') || base.endsWith('pp') || base.endsWith('tt') || base.endsWith('gg') || base.endsWith('dd')) {
+          base = base.slice(0, -1);
+        }
+        return { lemma: base, suffix: 'ed', isPast: true, pos: 'verb' };
+      }
+
+      if (w.endsWith('ly') && w.length > 3) {
+        return { lemma: w.slice(0, -2), suffix: 'ly', pos: 'adverb' };
+      }
+
+      if (w.endsWith('est') && w.length > 4) {
+        return { lemma: w.slice(0, -3), suffix: 'est', pos: 'adjective' };
+      }
+
+      if (w.endsWith('er') && w.length > 3) {
+        return { lemma: w.slice(0, -2), suffix: 'er', pos: 'adjective' };
+      }
+
+      return { lemma: w, suffix: '', pos: 'noun' };
+    }
+
+    function synthesizeSentencePair(word, lemma, pos, def) {
+      const w = word.toLowerCase().trim();
+      const p = (pos || 'noun').toLowerCase();
+
+      if (w === 'amazing') {
+        return {
+          easy: "The magic show was truly amazing.",
+          hard: "The magician did an amazing trick that delighted the children in the hall."
+        };
+      }
+      if (w === 'taught') {
+        return {
+          easy: "Our kind teacher taught us a fun song today.",
+          hard: "Our kind teacher taught the children how to read and write exciting stories."
+        };
+      }
+      if (w === 'gently') {
+        return {
+          easy: "The child stroked the fluffy kitten gently.",
+          hard: "The happy children walked gently along the garden path so they did not wake the baby."
+        };
+      }
+      if (w === 'quickly') {
+        return {
+          easy: "The little rabbit ran quickly across the grass.",
+          hard: "The playful puppy ran quickly through the park to catch the bright red ball."
+        };
+      }
+
+      if (p.includes('verb') || w.endsWith('ed') || w.endsWith('ing')) {
+        if (w.endsWith('ing')) {
+          return {
+            easy: `The happy children were ${w} in the park.`,
+            hard: `We saw the happy children ${w} together near the sunny playground today.`
+          };
+        }
+        if (w.endsWith('ed') || w === 'taught' || w === 'caught') {
+          return {
+            easy: `The happy child ${w} at school today.`,
+            hard: `The happy children ${w} together during their fun morning lessons.`
+          };
+        }
+        return {
+          easy: `Children love to ${w} together.`,
+          hard: `The happy children love to ${w} together with their friends at school.`
+        };
+      }
+
+      if (p.includes('adv') || w.endsWith('ly')) {
+        return {
+          easy: `The children walked ${w} down the hall.`,
+          hard: `The happy children moved ${w} through the classroom to finish their work.`
+        };
+      }
+
+      if (p.includes('adj') || w.endsWith('est') || w.endsWith('er')) {
+        return {
+          easy: `I can see an ${w} picture.`,
+          hard: `The teacher showed the children an ${w} picture during their exciting lesson.`
+        };
+      }
+
+      return {
+        easy: `I can see a ${w} in the room.`,
+        hard: `The children discovered a wonderful ${w} right there on the classroom table.`
+      };
+    }
+
+    function sentenceToPuzzleTokens(sentence) {
+      const clean = (sentence || '').replace(/[.!?]/g, '').trim();
+      const words = clean.split(/s+/).filter(Boolean);
+      return words.concat(['.']);
     }
 
     // ================= 4. EMBEDDED HIGH-FREQUENCY CORE LEXICON =================
@@ -2453,6 +2583,7 @@
       const polysyllabicLe = ['apple', 'little', 'middle', 'bottle', 'candle', 'castle', 'simple', 'puddle', 'bubble', 'jungle', 'single', 'gentle', 'table', 'stable', 'cradle'];
       const isPolysyllabicLe = polysyllabicLe.includes(word);
 
+      // 1. Check direct split-digraph at end of word (cake, smile, home, amaze)
       let splitInfo = null;
       if (len >= 3 && word[len - 1] === 'e' && !isTrickySplit && !isPolysyllabicLe && word[len - 2] !== 'e') {
         const midCons = word[len - 2];
@@ -2484,41 +2615,108 @@
         }
       }
 
+      // 2. Check dropped 'e' before suffixes (-ing, -ed, -er, -est, -y, -able)
+      // e.g. 'amazing' (amaze -> a-m-a(long)-z-ing), 'making' (make -> m-a(long)-k-ing)
+      const vowelSuffixes = ['ing', 'ed', 'er', 'est', 'y', 'able'];
+      let droppedESplit = null;
+
+      for (const suf of vowelSuffixes) {
+        if (word.endsWith(suf) && word.length > suf.length + 2) {
+          const stemLen = word.length - suf.length;
+          const midCons = word[stemLen - 1];
+          const prevVow = word[stemLen - 2];
+          const prevPrev = stemLen >= 3 ? word[stemLen - 3] : null;
+
+          if (vowels.includes(prevVow) && !vowels.includes(midCons) && (prevPrev === null || prevPrev !== midCons)) {
+            const shortStemExceptions = ['runn', 'swimm', 'gett', 'sitt', 'plann', 'stopp', 'shopp', 'hitt', 'cutt'];
+            if (!shortStemExceptions.some(s => word.startsWith(s))) {
+              droppedESplit = {
+                vowIdx: stemLen - 2,
+                vowChar: prevVow,
+                soundId: prevVow === 'a' ? 'split-a-e' :
+                         prevVow === 'e' ? 'split-e-e' :
+                         prevVow === 'i' ? 'split-i-e' :
+                         prevVow === 'o' ? 'split-o-e' :
+                         'split-u-e-oo'
+              };
+              break;
+            }
+          }
+        }
+      }
+
+      // 3. Open syllable recognition (e.g. paper, tiger, baby, spider, music, robot, bacon)
+      let openSyllableVowel = null;
+      for (let idx = 0; idx < word.length - 2; idx++) {
+        const v = word[idx];
+        const c1 = word[idx + 1];
+        const v2 = word[idx + 2];
+        if (vowels.includes(v) && !vowels.includes(c1) && vowels.includes(v2)) {
+          const shortExceptions = ['seven', 'robin', 'river', 'dragon', 'cabin', 'habit', 'limit', 'lizard', 'visit', 'camel', 'clever', 'never', 'ever'];
+          if (!shortExceptions.includes(word) && !droppedESplit && !splitInfo) {
+            openSyllableVowel = {
+              vowIdx: idx,
+              soundId: v === 'a' ? 'split-a-e' : v === 'e' ? 'split-e-e' : v === 'i' ? 'split-i-e' : v === 'o' ? 'split-o-e' : 'split-u-e-yoo'
+            };
+            break;
+          }
+        }
+      }
+
       const units = [];
       let i = 0;
 
+      function getSingleCharSound(char, charIdx, fullWord) {
+        if (droppedESplit && charIdx === droppedESplit.vowIdx) {
+          return droppedESplit.soundId;
+        }
+        if (openSyllableVowel && charIdx === openSyllableVowel.vowIdx) {
+          return openSyllableVowel.soundId;
+        }
+        switch (char) {
+          case 'a': return 'a-short';
+          case 'e': return 'e-short';
+          case 'i': return 'i-short';
+          case 'o': return 'o-short';
+          case 'u': return 'u-short';
+          case 'b': return 'b';
+          case 'c': return 'k';
+          case 'd': return 'd';
+          case 'f': return 'f';
+          case 'g': return 'g';
+          case 'h': return 'h';
+          case 'j': return 'j';
+          case 'k': return 'k';
+          case 'l': return 'l';
+          case 'm': return 'm';
+          case 'n': return 'n';
+          case 'p': return 'p';
+          case 'r': return 'r';
+          case 's': return 's';
+          case 't': return 't';
+          case 'v': return 'v';
+          case 'w': return 'w';
+          case 'x': return 'ks';
+          case 'y': return (charIdx === fullWord.length - 1) ? 'ee-long' : 'y';
+          case 'z': return 'z';
+          default: return char;
+        }
+      }
+
       while (i < word.length) {
         if (splitInfo && i === splitInfo.vowIdx) {
-          units.push({
-            letters: word[i],
-            type: 'split-arch-dot',
-            id: splitInfo.soundId,
-            isSplit: true,
-            splitRole: 'vowel',
-            splitSoundId: splitInfo.soundId
-          });
+          units.push({ letters: word[i], type: 'split-arch-dot', id: splitInfo.soundId, isSplit: true, splitRole: 'vowel', splitSoundId: splitInfo.soundId });
           i++;
         }
         else if (splitInfo && i === splitInfo.midIdx) {
-          units.push({
-            letters: word[i],
-            type: 'dot',
-            id: getSingleCharSound(word[i], i, word),
-            isSplit: false
-          });
+          units.push({ letters: word[i], type: 'dot', id: getSingleCharSound(word[i], i, word), isSplit: false });
           i++;
         }
         else if (splitInfo && i === splitInfo.eIdx) {
-          units.push({
-            letters: word[i],
-            type: 'split-arch-dot',
-            id: splitInfo.soundId,
-            isSplit: true,
-            splitRole: 'silent-e',
-            splitSoundId: splitInfo.soundId
-          });
+          units.push({ letters: word[i], type: 'split-arch-dot', id: splitInfo.soundId, isSplit: true, splitRole: 'silent-e', splitSoundId: splitInfo.soundId });
           i++;
         }
+        // Prefixes
         else if (i === 0 && word.substr(i, 2) === 'un' && word.length >= 4 && !['under','unit','uncle'].includes(word)) {
           units.push({ letters: 'un', type: 'dash', id: 'un-prefix' });
           i += 2;
@@ -2535,6 +2733,51 @@
           units.push({ letters: 'pre', type: 'dash', id: 'pre-prefix' });
           i += 3;
         }
+        // Quadgraphs: augh / ough / eigh / aigh
+        else if (word.substr(i, 5) === 'aught') {
+          units.push({ letters: 'augh', type: 'dash', id: 'or-long' });
+          units.push({ letters: 't', type: 'dot', id: 't' });
+          i += 5;
+        }
+        else if (word.substr(i, 4) === 'augh') {
+          units.push({ letters: 'augh', type: 'dash', id: 'or-long' });
+          i += 4;
+        }
+        else if (word.substr(i, 5) === 'ought') {
+          units.push({ letters: 'ough', type: 'dash', id: 'or-long' });
+          units.push({ letters: 't', type: 'dot', id: 't' });
+          i += 5;
+        }
+        else if (word.substr(i, 4) === 'ough') {
+          const soundId = word.includes('through') ? 'oo-long' : ['rough','tough','enough'].includes(word) ? 'f' : 'or-long';
+          units.push({ letters: 'ough', type: 'dash', id: soundId });
+          i += 4;
+        }
+        else if (word.substr(i, 4) === 'eigh' || word.substr(i, 4) === 'aigh') {
+          units.push({ letters: word.substr(i, 4), type: 'dash', id: 'ai-long' });
+          i += 4;
+        }
+        // Suffixes
+        else if (word.substr(i, 4) === 'tion') { units.push({ letters: 'tion', type: 'dash', id: 'tion-suffix' }); i += 4; }
+        else if (word.substr(i, 4) === 'sion') { units.push({ letters: 'sion', type: 'dash', id: 'sion-suffix' }); i += 4; }
+        else if (word.substr(i, 4) === 'ture') { units.push({ letters: 'ture', type: 'dash', id: 'ture-suffix' }); i += 4; }
+        else if (i === word.length - 4 && word.substr(i, 4) === 'less') { units.push({ letters: 'less', type: 'dash', id: 'less-suffix' }); i += 4; }
+        else if (i === word.length - 4 && word.substr(i, 4) === 'ness') { units.push({ letters: 'ness', type: 'dash', id: 'ness-suffix' }); i += 4; }
+        else if (i === word.length - 4 && word.substr(i, 4) === 'ment') { units.push({ letters: 'ment', type: 'dash', id: 'ment-suffix' }); i += 4; }
+        else if (i === word.length - 3 && word.substr(i, 3) === 'ful') { units.push({ letters: 'ful', type: 'dash', id: 'ful-suffix' }); i += 3; }
+        else if (i === word.length - 3 && word.substr(i, 3) === 'est') { units.push({ letters: 'est', type: 'dash', id: 'est-suffix' }); i += 3; }
+        else if (i === word.length - 3 && word.substr(i, 3) === 'ing') { units.push({ letters: 'ing', type: 'dash', id: 'ing-suffix' }); i += 3; }
+        else if (i === word.length - 2 && word.substr(i, 2) === 'ed') {
+          const prev = word[i - 1];
+          const soundId = (prev === 't' || prev === 'd') ? 'id-suffix' : 'ed-d';
+          units.push({ letters: 'ed', type: 'dash', id: soundId });
+          i += 2;
+        }
+        else if (i === word.length - 2 && word.substr(i, 2) === 'ly') {
+          units.push({ letters: 'ly', type: 'dash', id: 'ly-suffix' });
+          i += 2;
+        }
+        // Digraphs & standard units
         else if (word.substr(i, 3) === 'all' && (i + 3 === word.length || !vowels.includes(word[i+3]))) {
           units.push({ letters: 'all', type: 'dash', id: 'or-long' });
           i += 3;
@@ -2544,16 +2787,45 @@
           units.push({ letters: 'k', type: 'dot', id: 'k' });
           i += 3;
         }
-        else if (i === 0 && word.substr(i, 4) === 'wor' + (word[4] || '')) {
-          units.push({ letters: 'w', type: 'dot', id: 'w' });
-          units.push({ letters: 'or', type: 'dash', id: 'ur-long' });
-          i += 3;
+        else if (word.substr(i, 3) === 'igh') { units.push({ letters: 'igh', type: 'dash', id: 'igh-long' }); i += 3; }
+        else if (word.substr(i, 3) === 'ear') { units.push({ letters: 'ear', type: 'dash', id: 'ear-tri' }); i += 3; }
+        else if (word.substr(i, 3) === 'air') { units.push({ letters: 'air', type: 'dash', id: 'air-tri' }); i += 3; }
+        else if (word.substr(i, 3) === 'dge') { units.push({ letters: 'dge', type: 'dash', id: 'j' }); i += 3; }
+        else if (word.substr(i, 3) === 'tch') { units.push({ letters: 'tch', type: 'dash', id: 'ch' }); i += 3; }
+        else if (word.substr(i, 2) === 'll') { units.push({ letters: 'll', type: 'dash', id: 'ul-dark' }); i += 2; }
+        else if (word.substr(i, 2) === 'ss') { units.push({ letters: 'ss', type: 'dash', id: 's' }); i += 2; }
+        else if (word.substr(i, 2) === 'ff') { units.push({ letters: 'ff', type: 'dash', id: 'f' }); i += 2; }
+        else if (word.substr(i, 2) === 'zz') { units.push({ letters: 'zz', type: 'dash', id: 'z' }); i += 2; }
+        else if (word.substr(i, 2) === 'ck') { units.push({ letters: 'ck', type: 'dash', id: 'k' }); i += 2; }
+        else if (word.substr(i, 2) === 'sh') { units.push({ letters: 'sh', type: 'dash', id: 'sh' }); i += 2; }
+        else if (word.substr(i, 2) === 'ch') { units.push({ letters: 'ch', type: 'dash', id: word.includes('school') ? 'k' : 'ch' }); i += 2; }
+        else if (word.substr(i, 2) === 'th') { units.push({ letters: 'th', type: 'dash', id: ['this','that','then','them','they','there','with'].some(w => word.includes(w)) ? 'th-voiced' : 'th-unvoiced' }); i += 2; }
+        else if (word.substr(i, 2) === 'ng') { units.push({ letters: 'ng', type: 'dash', id: 'ng' }); i += 2; }
+        else if (word.substr(i, 2) === 'nk') { units.push({ letters: 'nk', type: 'dash', id: 'nk' }); i += 2; }
+        else if (word.substr(i, 2) === 'ai' || word.substr(i, 2) === 'ay') { units.push({ letters: word.substr(i, 2), type: 'dash', id: 'ai-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'ee') { units.push({ letters: 'ee', type: 'dash', id: 'ee-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'ea') { units.push({ letters: 'ea', type: 'dash', id: ['head','bread','ready'].includes(word) ? 'e-short' : 'ee-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'oa') { units.push({ letters: 'oa', type: 'dash', id: 'oa-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'oo') { units.push({ letters: 'oo', type: 'dash', id: ['book','look','foot','good'].includes(word) ? 'oo-short' : 'oo-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'ar') { units.push({ letters: 'ar', type: 'dash', id: 'ar-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'or') { units.push({ letters: 'or', type: 'dash', id: 'or-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'ur' || word.substr(i, 2) === 'ir') { units.push({ letters: word.substr(i, 2), type: 'dash', id: 'ur-long' }); i += 2; }
+        else if (word.substr(i, 2) === 'er') { units.push({ letters: 'er', type: 'dash', id: 'er-schwa' }); i += 2; }
+        else if (word.substr(i, 2) === 'ow') { units.push({ letters: 'ow', type: 'dash', id: ['snow','blow','slow','low'].includes(word) ? 'oa-long' : 'ow-diph' }); i += 2; }
+        else if (word.substr(i, 2) === 'ou') { units.push({ letters: 'ou', type: 'dash', id: ['soup','group'].includes(word) ? 'oo-long' : 'ow-diph' }); i += 2; }
+        else if (word.substr(i, 2) === 'oi' || word.substr(i, 2) === 'oy') { units.push({ letters: word.substr(i, 2), type: 'dash', id: 'oi-diph' }); i += 2; }
+        else if (word.substr(i, 2) === 'wh') { units.push({ letters: 'wh', type: 'dash', id: 'w' }); i += 2; }
+        else if (word.substr(i, 2) === 'ph') { units.push({ letters: 'ph', type: 'dash', id: 'f' }); i += 2; }
+        else if (word.substr(i, 2) === 'kn') { units.push({ letters: 'kn', type: 'dash', id: 'n' }); i += 2; }
+        else if (word.substr(i, 2) === 'wr') { units.push({ letters: 'wr', type: 'dash', id: 'r' }); i += 2; }
+        else {
+          units.push({ letters: word[i], type: 'dot', id: getSingleCharSound(word[i], i, word) });
+          i++;
         }
-        else if (i === 0 && word.substr(i, 3) === 'war') {
-          units.push({ letters: 'w', type: 'dot', id: 'w' });
-          units.push({ letters: 'ar', type: 'dash', id: 'or-long' });
-          i += 3;
-        }
+      }
+
+      return units;
+    }
         else if ((word.substr(i, 2) === 'wa' || word.substr(i, 3) === 'qua') && ['was','want','watch','wash','swan','swap','squash','wand','swat','swallow'].some(w => word.includes(w))) {
           if (word.substr(i, 3) === 'qua') {
             units.push({ letters: 'qu', type: 'dash', id: 'kw' });
@@ -2830,50 +3102,102 @@
         ipaStr = item.ipa || ipaStr;
         currentWordSenses = item.senses || [];
       } else {
-        // Universal Backend Lexicon & Morphology Fetch
+        // Universal Online & Offline Client-Side Lexicon Engine
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 2500);
+          const timeoutId = setTimeout(() => controller.abort(), 2800);
 
-          const serverRes = await fetch(`/api/word?q=${encodeURIComponent(word)}`, { signal: controller.signal });
+          // 1. Try public CORS dictionary API directly from client browser
+          let apiData = null;
+          try {
+            const apiRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`, { signal: controller.signal });
+            if (apiRes.ok) {
+              const resJson = await apiRes.json();
+              if (Array.isArray(resJson) && resJson.length > 0) {
+                apiData = resJson[0];
+              }
+            }
+          } catch(e) {}
+
+          // 2. If localhost server is running, fallback to /api/word
+          if (!apiData) {
+            try {
+              const serverRes = await fetch(`/api/word?q=${encodeURIComponent(word)}`, { signal: controller.signal });
+              if (serverRes.ok) {
+                const sJson = await serverRes.json();
+                if (sJson && sJson.senses && sJson.senses.length > 0) {
+                  ipaStr = sJson.ipa || ipaStr;
+                  currentWordSenses = sJson.senses;
+                }
+              }
+            } catch(e) {}
+          }
+
           clearTimeout(timeoutId);
 
-          if (serverRes.ok) {
-            const data = await serverRes.json();
-            if (data && data.senses && data.senses.length > 0) {
-              ipaStr = data.ipa || ipaStr;
-              currentWordSenses = data.senses;
+          if (apiData && apiData.meanings && apiData.meanings.length > 0) {
+            if (apiData.phonetics && apiData.phonetics.length > 0) {
+              const p = apiData.phonetics.find(ph => ph.text);
+              if (p && p.text) ipaStr = p.text;
             }
+
+            const senses = [];
+            for (const m of apiData.meanings.slice(0, 3)) {
+              const pos = m.partOfSpeech || 'noun';
+              const rawDef = m.definitions && m.definitions[0] ? m.definitions[0].definition : 'A word used in reading and writing.';
+              const cleanDef = cleanKidDefinition(rawDef);
+              const sentences = synthesizeSentencePair(word, word, pos, cleanDef);
+              const imgQueries = getImageQueryOptions(word, pos, cleanDef);
+
+              senses.push({
+                pos: pos,
+                title: pos.charAt(0).toUpperCase() + pos.slice(1),
+                def: cleanDef,
+                example: sentences.hard,
+                exampleEasy: sentences.easy,
+                phrase: `Context: "${sentences.hard}"`,
+                imgQuery: imgQueries[0],
+                puzzle: {
+                  easy: sentenceToPuzzleTokens(sentences.easy),
+                  hard: sentenceToPuzzleTokens(sentences.hard)
+                }
+              });
+            }
+            if (senses.length > 0) currentWordSenses = senses;
           }
         } catch (err) {}
 
-        // Fail-safe Morphological Synthesizer
+        // 3. Fail-safe Morphological Synthesizer (Offline / Zero-Network)
         if (!currentWordSenses || currentWordSenses.length === 0) {
-          const pos = word.endsWith('ed') || word.endsWith('ing') ? 'verb' :
-                      word.endsWith('ly') ? 'adverb' :
-                      word.endsWith('est') ? 'adjective' : 'noun';
-          
-          const easyEx = (word.endsWith('ed')) ? `The happy child ${word} today.` :
-                         (word.endsWith('ing')) ? `The little duck was ${word}.` :
-                         (pos === 'adverb') ? `The children walked ${word}.` :
-                         `I can see a ${word}.`;
+          const lemmaInfo = lemmatizeWord(word);
+          const pos = lemmaInfo.pos || (word.endsWith('ly') ? 'adverb' : word.endsWith('est') ? 'adjective' : 'noun');
+          const sentences = synthesizeSentencePair(word, lemmaInfo.lemma, pos, '');
+          const imgQueries = getImageQueryOptions(word, pos, '');
 
-          const hardEx = (word.endsWith('ed')) ? `The happy children ${word} together on their way home.` :
-                         (word.endsWith('ing')) ? `We saw a playful squirrel ${word} happily in the garden.` :
-                         (pos === 'adverb') ? `The happy children walked ${word} along the forest path.` :
-                         `I can see a wonderful ${word} right there in the classroom.`;
+          let defStr = "A word used in English reading and writing.";
+          if (word === 'taught') {
+            defStr = "Past tense of teach: to give lessons and help someone learn new knowledge.";
+          } else if (word === 'amazing') {
+            defStr = "Very wonderful, surprising, and exciting.";
+          } else if (pos === 'verb') {
+            defStr = lemmaInfo.isPast ? "An action that happened in the past." : lemmaInfo.isContinuous ? "An action happening right now." : "An action or doing word.";
+          } else if (pos === 'adverb') {
+            defStr = "Describes how, when, or in what way an action is done.";
+          } else if (pos === 'adjective') {
+            defStr = "Describes what a person, animal, or thing is like.";
+          }
 
           currentWordSenses = [{
             pos: pos,
             title: pos.charAt(0).toUpperCase() + pos.slice(1),
-            def: pos === 'verb' ? 'An action or doing word.' : 'A word used in English reading and writing.',
-            example: hardEx,
-            exampleEasy: easyEx,
-            phrase: `Context: "${hardEx}"`,
-            imgQuery: (pos === 'verb') ? `a person ${word.replace(/ed$/, 'ing')} outside` : word,
+            def: defStr,
+            example: sentences.hard,
+            exampleEasy: sentences.easy,
+            phrase: `Context: "${sentences.hard}"`,
+            imgQuery: imgQueries[0],
             puzzle: {
-              easy: easyEx.replace(/[.!?]/g, '').split(' ').concat(['.']),
-              hard: hardEx.replace(/[.!?]/g, '').split(' ').concat(['.'])
+              easy: sentenceToPuzzleTokens(sentences.easy),
+              hard: sentenceToPuzzleTokens(sentences.hard)
             }
           }];
         }
