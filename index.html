@@ -1574,9 +1574,9 @@
         <!-- Clean Meaning & Notion "Want to see a picture? Click here!" Link -->
         <div class="dict-visual-banner">
           <div class="visual-story-body">
-            <div class="visual-story-tag" id="resVisualTitle">Verb</div>
-            <div class="visual-story-headline" id="resVisualDesc">To say words aloud in order to speak with someone.</div>
-            <div class="visual-context-phrase" id="resContextPhrase">Context: "The happy children talked together on their way to school."</div>
+            <div class="visual-story-tag" id="resVisualTitle">Word</div>
+            <div class="visual-story-headline" id="resVisualDesc">Explore the meaning, sound buttons, and sentence examples.</div>
+            <div class="visual-context-phrase" id="resContextPhrase">Type any word to begin!</div>
           </div>
           <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <a class="btn-notion-picture-link" id="btnGoogleSafeSearch" href="#" target="_blank" rel="noopener noreferrer">
@@ -1630,11 +1630,11 @@
         <!-- Definition & Example Sentence with Dedicated Read Aloud Button -->
         <div class="dict-body-content">
           <div class="section-label">Definition</div>
-          <div class="meaning-text-body" id="resMeaningText">To say words aloud in order to speak with someone.</div>
+          <div class="meaning-text-body" id="resMeaningText">Explore the meaning, sound buttons, and sentence examples.</div>
           
           <div class="section-label" style="margin-top: 4px;">Example in a Sentence</div>
           <div class="example-quote-box">
-            <div class="example-quote-text" id="resExampleSentence">"The happy children talked together on their way to school."</div>
+            <div class="example-quote-text" id="resExampleSentence">"Explore the meaning, sound buttons, and sentence examples."</div>
             <button class="btn-sentence-audio" id="btnSentenceVoice" onclick="speakCurrentExampleSentence()" title="Hear sentence read aloud">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
               <span>Read Aloud</span>
@@ -2301,6 +2301,14 @@
         ];
       }
 
+      // 8. General Noun
+      return [
+        `a high quality photo of a ${w}`,
+        `a ${w} in real life`,
+        `a colourful ${w} for children`
+      ];
+    }
+
     // ================= 3B. UNIVERSAL CLIENT-SIDE MORPHOLOGY & DEFINITION SYNTHESIZER =================
     function cleanKidDefinition(rawDef) {
       if (!rawDef) return "A word used in English reading and writing.";
@@ -2579,9 +2587,7 @@
 
       const trickyExceptions = ['have', 'come', 'some', 'done', 'give', 'live', 'love', 'glove', 'shove', 'none', 'dove', 'above', 'one', 'gone', 'were', 'there', 'where', 'eye', 'are'];
       const isTrickySplit = trickyExceptions.includes(word);
-
-      const polysyllabicLe = ['apple', 'little', 'middle', 'bottle', 'candle', 'castle', 'simple', 'puddle', 'bubble', 'jungle', 'single', 'gentle', 'table', 'stable', 'cradle'];
-      const isPolysyllabicLe = polysyllabicLe.includes(word);
+      const isPolysyllabicLe = (word.endsWith('le') || word.endsWith('el')) && word.length >= 4 && !['sole','mole','hole','pole','role','tale','male','sale','pale','rule','mule','scale','whale','smile','stile'].includes(word);
 
       // 1. Check direct split-digraph at end of word (cake, smile, home, amaze)
       let splitInfo = null;
@@ -2777,6 +2783,10 @@
           units.push({ letters: 'ly', type: 'dash', id: 'ly-suffix' });
           i += 2;
         }
+        else if (i === word.length - 2 && (word.substr(i, 2) === 'le' || word.substr(i, 2) === 'el' || word.substr(i, 2) === 'al' || word.substr(i, 2) === 'il')) {
+          units.push({ letters: word.substr(i, 2), type: 'dash', id: 'ul-dark' });
+          i += 2;
+        }
         // Digraphs & standard units
         else if (word.substr(i, 3) === 'all' && (i + 3 === word.length || !vowels.includes(word[i+3]))) {
           units.push({ letters: 'all', type: 'dash', id: 'or-long' });
@@ -2821,83 +2831,6 @@
         else {
           units.push({ letters: word[i], type: 'dot', id: getSingleCharSound(word[i], i, word) });
           i++;
-        }
-      }
-
-      return units;
-    }
-        else if ((word.substr(i, 2) === 'wa' || word.substr(i, 3) === 'qua') && ['was','want','watch','wash','swan','swap','squash','wand','swat','swallow'].some(w => word.includes(w))) {
-          if (word.substr(i, 3) === 'qua') {
-            units.push({ letters: 'qu', type: 'dash', id: 'kw' });
-            units.push({ letters: 'a', type: 'dot', id: 'o-short' });
-            i += 3;
-          } else {
-            units.push({ letters: 'w', type: 'dot', id: 'w' });
-            units.push({ letters: 'a', type: 'dot', id: 'o-short' });
-            i += 2;
-          }
-        }
-        else if (word.substr(i, 4) === 'eigh' || word.substr(i, 4) === 'aigh') { units.push({ letters: word.substr(i, 4), type: 'dash', id: 'ai-long' }); i += 4; }
-        else if (word.substr(i, 4) === 'tion') { units.push({ letters: 'tion', type: 'dash', id: 'tion-suffix' }); i += 4; }
-        else if (word.substr(i, 4) === 'sion') { units.push({ letters: 'sion', type: 'dash', id: 'sion-suffix' }); i += 4; }
-        else if (word.substr(i, 4) === 'ture') { units.push({ letters: 'ture', type: 'dash', id: 'ture-suffix' }); i += 4; }
-        else if (i === word.length - 4 && word.substr(i, 4) === 'less') { units.push({ letters: 'less', type: 'dash', id: 'less-suffix' }); i += 4; }
-        else if (i === word.length - 4 && word.substr(i, 4) === 'ness') { units.push({ letters: 'ness', type: 'dash', id: 'ness-suffix' }); i += 4; }
-        else if (i === word.length - 4 && word.substr(i, 4) === 'ment') { units.push({ letters: 'ment', type: 'dash', id: 'ment-suffix' }); i += 4; }
-        else if (i === word.length - 3 && word.substr(i, 3) === 'ful') { units.push({ letters: 'ful', type: 'dash', id: 'ful-suffix' }); i += 3; }
-        else if (i === word.length - 3 && word.substr(i, 3) === 'est') { units.push({ letters: 'est', type: 'dash', id: 'est-suffix' }); i += 3; }
-        else if (i === word.length - 3 && word.substr(i, 3) === 'ing') { units.push({ letters: 'ing', type: 'dash', id: 'ing-suffix' }); i += 3; }
-        else if (word.substr(i, 3) === 'igh') { units.push({ letters: 'igh', type: 'dash', id: 'igh-long' }); i += 3; }
-        else if (word.substr(i, 3) === 'ear') { units.push({ letters: 'ear', type: 'dash', id: 'ear-tri' }); i += 3; }
-        else if (word.substr(i, 3) === 'air') { units.push({ letters: 'air', type: 'dash', id: 'air-tri' }); i += 3; }
-        else if (word.substr(i, 3) === 'dge') { units.push({ letters: 'dge', type: 'dash', id: 'j' }); i += 3; }
-        else if (word.substr(i, 3) === 'tch') { units.push({ letters: 'tch', type: 'dash', id: 'ch' }); i += 3; }
-        else if (i === word.length - 2 && word.substr(i, 2) === 'ly') {
-          units.push({ letters: 'ly', type: 'dash', id: 'ly-suffix' });
-          i += 2;
-        }
-        else if (i === word.length - 2 && (word.substr(i, 2) === 'el' || word.substr(i, 2) === 'le' || word.substr(i, 2) === 'al' || word.substr(i, 2) === 'il')) {
-          units.push({ letters: word.substr(i, 2), type: 'dash', id: 'ul-dark' });
-          i += 2;
-        }
-        else if (word.substr(i, 2) === 'll') { units.push({ letters: 'll', type: 'dash', id: 'ul-dark' }); i += 2; }
-        else if (word.substr(i, 2) === 'ss') { units.push({ letters: 'ss', type: 'dash', id: 's' }); i += 2; }
-        else if (word.substr(i, 2) === 'ff') { units.push({ letters: 'ff', type: 'dash', id: 'f' }); i += 2; }
-        else if (word.substr(i, 2) === 'zz') { units.push({ letters: 'zz', type: 'dash', id: 'z' }); i += 2; }
-        else if (word.substr(i, 2) === 'ck') { units.push({ letters: 'ck', type: 'dash', id: 'k' }); i += 2; }
-        else if (word.substr(i, 2) === 'sh') { units.push({ letters: 'sh', type: 'dash', id: 'sh' }); i += 2; }
-        else if (word.substr(i, 2) === 'ch') { units.push({ letters: 'ch', type: 'dash', id: word.includes('school') ? 'k' : 'ch' }); i += 2; }
-        else if (word.substr(i, 2) === 'th') { units.push({ letters: 'th', type: 'dash', id: ['this','that','then','them','they','there','with'].some(w => word.includes(w)) ? 'th-voiced' : 'th-unvoiced' }); i += 2; }
-        else if (word.substr(i, 2) === 'ng') { units.push({ letters: 'ng', type: 'dash', id: 'ng' }); i += 2; }
-        else if (word.substr(i, 2) === 'nk') { units.push({ letters: 'nk', type: 'dash', id: 'nk' }); i += 2; }
-        else if (word.substr(i, 2) === 'ai' || word.substr(i, 2) === 'ay') { units.push({ letters: word.substr(i, 2), type: 'dash', id: 'ai-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'ee') { units.push({ letters: 'ee', type: 'dash', id: 'ee-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'ea') { units.push({ letters: 'ea', type: 'dash', id: ['head','bread','ready'].includes(word) ? 'e-short' : 'ee-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'oa') { units.push({ letters: 'oa', type: 'dash', id: 'oa-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'oo') { units.push({ letters: 'oo', type: 'dash', id: ['book','look','foot','good'].includes(word) ? 'oo-short' : 'oo-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'ar') { units.push({ letters: 'ar', type: 'dash', id: 'ar-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'or') { units.push({ letters: 'or', type: 'dash', id: 'or-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'ur' || word.substr(i, 2) === 'ir') { units.push({ letters: word.substr(i, 2), type: 'dash', id: 'ur-long' }); i += 2; }
-        else if (word.substr(i, 2) === 'er') { units.push({ letters: 'er', type: 'dash', id: 'er-schwa' }); i += 2; }
-        else if (word.substr(i, 2) === 'ow') { units.push({ letters: 'ow', type: 'dash', id: ['snow','blow','slow','low'].includes(word) ? 'oa-long' : 'ow-diph' }); i += 2; }
-        else if (word.substr(i, 2) === 'ou') { units.push({ letters: 'ou', type: 'dash', id: ['soup','group'].includes(word) ? 'oo-long' : 'ow-diph' }); i += 2; }
-        else if (word.substr(i, 2) === 'oi' || word.substr(i, 2) === 'oy') { units.push({ letters: word.substr(i, 2), type: 'dash', id: 'oi-diph' }); i += 2; }
-        else if (word.substr(i, 2) === 'wh') { units.push({ letters: 'wh', type: 'dash', id: 'w' }); i += 2; }
-        else if (word.substr(i, 2) === 'ph') { units.push({ letters: 'ph', type: 'dash', id: 'f' }); i += 2; }
-        else if (word.substr(i, 2) === 'kn') { units.push({ letters: 'kn', type: 'dash', id: 'n' }); i += 2; }
-        else if (word.substr(i, 2) === 'wr') { units.push({ letters: 'wr', type: 'dash', id: 'r' }); i += 2; }
-        else if (word.substr(i, 2) === 'ed' && i === word.length - 2) {
-          const prev = word[i - 1];
-          // Syllabic /id/ ONLY after t or d (landed, shouted, farted, painted)
-          // /d/ for all other past-tense endings (talked, played, rained, jumped, walked)
-          const soundId = (prev === 't' || prev === 'd') ? 'id-suffix' : 'ed-d';
-          units.push({ letters: 'ed', type: 'dash', id: soundId });
-          i += 2;
-        }
-        else {
-          const char = word[i];
-          units.push({ letters: char, type: 'dot', id: getSingleCharSound(char, i, word) });
-          i += 1;
         }
       }
 
