@@ -1,0 +1,3160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prep 2 Teacher Phonics Master Recording Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --color-canvas: #ffffff;
+      --color-surface: #f8fafc;
+      --color-surface-hover: #f1f5f9;
+      --color-hairline: #e2e8f0;
+      --color-hairline-strong: #cbd5e1;
+      --color-primary: #3b82f6;
+      --color-primary-hover: #2563eb;
+      --color-primary-light: #eff6ff;
+      --color-ink: #0f172a;
+      --color-charcoal: #334155;
+      --color-slate: #64748b;
+      --color-stone: #94a3b8;
+      --color-accent-green: #10b981;
+      --color-accent-amber: #f59e0b;
+      --color-accent-rose: #f43f5e;
+      --color-tint-lavender: #f3e8ff;
+      
+      --radius-xs: 4px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+      --shadow-modal: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--color-surface);
+      color: var(--color-ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 80px;
+    }
+
+    /* HEADER BAR */
+    header {
+      background: var(--color-canvas);
+      border-bottom: 1px solid var(--color-hairline);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      background: #e0e7ff;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--color-ink);
+      letter-spacing: -0.3px;
+    }
+
+    .brand-sub {
+      font-size: 0.76rem;
+      color: var(--color-slate);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-head {
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-head-primary {
+      background: var(--color-primary);
+      color: white;
+      border: 1px solid var(--color-primary);
+    }
+
+    .btn-head-primary:hover {
+      background: var(--color-primary-hover);
+    }
+
+    .btn-head-rose {
+      background: #e11d48;
+      color: white;
+      border: 1px solid #be123c;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+    }
+
+    .btn-head-rose:hover {
+      background: #be123c;
+    }
+
+    .btn-head-secondary {
+      background: var(--color-canvas);
+      color: var(--color-charcoal);
+      border: 1px solid var(--color-hairline-strong);
+    }
+
+    .btn-head-secondary:hover {
+      background: var(--color-surface);
+    }
+
+    .btn-lock-studio {
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      color: var(--color-slate);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-lock-studio:hover {
+      background: #fee2e2;
+      color: #ef4444;
+      border-color: #fca5a5;
+    }
+
+    /* PIN LOCK MODAL */
+    .pin-lock-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 21, 48, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .pin-lock-card {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-xl);
+      max-width: 380px;
+      width: 100%;
+      padding: 36px 32px;
+      box-shadow: var(--shadow-modal);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+      animation: pinCardPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes pinCardPop {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .pin-lock-icon {
+      width: 60px;
+      height: 60px;
+      background: #fee2e2;
+      border: 2px solid #fca5a5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+    }
+
+    .pin-dots-row {
+      display: flex;
+      gap: 14px;
+      margin: 8px 0;
+    }
+
+    .pin-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--color-surface);
+      border: 2px solid var(--color-hairline-strong);
+      transition: all 0.15s ease;
+    }
+
+    .pin-dot.filled {
+      background: #ef4444;
+      border-color: #ef4444;
+      transform: scale(1.15);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+    }
+
+    .pin-pad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 260px;
+    }
+
+    .pin-key-btn {
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      height: 54px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s ease;
+    }
+
+    .pin-key-btn:hover {
+      background: var(--color-surface-hover);
+      border-color: var(--color-hairline-strong);
+    }
+
+    .pin-key-btn:active {
+      transform: scale(0.94);
+      background: #e2e8f0;
+    }
+
+    .pin-key-back {
+      font-size: 0.95rem;
+      color: var(--color-slate);
+    }
+
+    .pin-error-shake {
+      animation: pinShake 0.4s ease-in-out;
+    }
+
+    @keyframes pinShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* HERO & STATS BANNER */
+    .hero-banner {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .hero-info-group {
+      max-width: 600px;
+    }
+
+    .hero-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--color-ink);
+      letter-spacing: -0.3px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.88rem;
+      color: var(--color-slate);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .progress-stats-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      min-width: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--color-charcoal);
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--color-accent-green);
+      transition: width 0.3s ease;
+    }
+
+    /* CONTROLS BAR */
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .search-filter-input {
+      padding: 8px 14px;
+      border: 1px solid var(--color-hairline-strong);
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      font-family: inherit;
+      width: 240px;
+      outline: none;
+      background: var(--color-canvas);
+    }
+
+    .search-filter-input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-light);
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .cat-tab-btn {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline);
+      color: var(--color-charcoal);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .cat-tab-btn:hover {
+      background: var(--color-surface);
+      border-color: var(--color-hairline-strong);
+    }
+
+    .cat-tab-btn.active {
+      background: var(--color-ink);
+      color: white;
+      border-color: var(--color-ink);
+    }
+
+    .cat-tab-btn.tab-alert {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #b45309;
+      font-weight: 700;
+    }
+
+    .cat-tab-btn.tab-alert.active {
+      background: #b45309;
+      color: white;
+      border-color: #b45309;
+    }
+
+    /* SOUNDS GRID */
+    .sounds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px;
+    }
+
+    .sound-card {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .sound-card:hover {
+      border-color: var(--color-hairline-strong);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .sound-card.card-needs-update {
+      border-color: #fde68a;
+      background: #fffdf5;
+    }
+
+    .sound-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sound-grapheme-big {
+      font-family: 'Comic Neue', 'Nunito', cursive;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      line-height: 1;
+    }
+
+    .sound-ipa-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-slate);
+      background: var(--color-surface);
+      padding: 2px 6px;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--color-hairline);
+    }
+
+    .sound-status-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-teacher { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .status-master { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+    .status-update-needed { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .status-empty { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    .sound-body-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sound-catchphrase {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      line-height: 1.3;
+    }
+
+    .sound-tip {
+      font-size: 0.82rem;
+      color: var(--color-slate);
+      line-height: 1.35;
+    }
+
+    .sound-examples-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .example-pill {
+      font-size: 0.76rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      color: var(--color-charcoal);
+      padding: 2px 7px;
+      border-radius: var(--radius-xs);
+      font-weight: 500;
+    }
+
+    /* WAVEFORM PREVIEW CANVAS */
+    .waveform-box {
+      width: 100%;
+      height: 38px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .waveform-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ACTIONS ROW */
+    .sound-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid var(--color-hairline);
+    }
+
+    .btn-act {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: none;
+      transition: all 0.12s ease;
+    }
+
+    .btn-act svg {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2.2px;
+    }
+
+    .btn-record {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn-record:hover {
+      background: #dc2626;
+    }
+
+    .btn-record.recording {
+      background: #991b1b;
+      animation: recordGlow 1s infinite alternate;
+    }
+
+    @keyframes recordGlow {
+      from { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      to { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+    }
+
+    .btn-play {
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline-strong);
+      color: var(--color-charcoal);
+    }
+
+    .btn-play:hover {
+      background: var(--color-tint-lavender);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .btn-play.playing {
+      background: var(--color-primary) !important;
+      color: white !important;
+      border-color: var(--color-primary) !important;
+    }
+
+    .btn-download-wav {
+      flex: 0 0 auto;
+      padding: 6px 8px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline-strong);
+      color: var(--color-slate);
+    }
+
+    .btn-download-wav:hover {
+      background: var(--color-surface-hover);
+      color: var(--color-ink);
+    }
+
+    /* RAPID BOOTH MODAL (SPACEBAR PUSH-TO-TALK) */
+    .booth-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 1500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .booth-modal-window {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline-strong);
+      border-radius: var(--radius-xl);
+      max-width: 640px;
+      width: 100%;
+      padding: 32px;
+      box-shadow: var(--shadow-modal);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      animation: pinCardPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .booth-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--color-hairline);
+      padding-bottom: 14px;
+    }
+
+    .booth-progress-tag {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .btn-close-booth {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-slate);
+      padding: 4px;
+      border-radius: var(--radius-xs);
+    }
+
+    .btn-close-booth:hover {
+      color: var(--color-ink);
+      background: var(--color-surface);
+    }
+
+    .booth-card-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .booth-grapheme-big {
+      font-family: 'Comic Neue', cursive;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--color-ink);
+      line-height: 1;
+      margin: 4px 0;
+    }
+
+    .booth-catchphrase {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--color-primary);
+    }
+
+    .booth-tip {
+      font-size: 0.92rem;
+      color: var(--color-slate);
+      max-width: 480px;
+    }
+
+    .booth-waveform-box {
+      width: 100%;
+      height: 70px;
+      background: #0f172a;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .booth-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .booth-status-indicator {
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .booth-status-idle { background: #f1f5f9; color: #475569; }
+    .booth-status-rec { background: #fee2e2; color: #dc2626; animation: recordGlow 0.8s infinite alternate; }
+    .booth-status-saved { background: #dcfce7; color: #15803d; }
+
+    .booth-controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .btn-booth-nav {
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline-strong);
+      color: var(--color-charcoal);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-booth-nav:hover {
+      background: var(--color-surface-hover);
+    }
+
+    .btn-booth-record {
+      flex: 1;
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      font-size: 1.05rem;
+      font-weight: 800;
+      background: #ef4444;
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+      user-select: none;
+    }
+
+    .btn-booth-record.recording {
+      background: #991b1b;
+    }
+
+    .booth-hotkey-legend {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      font-size: 0.78rem;
+      color: var(--color-slate);
+      font-weight: 600;
+      flex-wrap: wrap;
+      background: var(--color-surface);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-hairline);
+    }
+
+    .hotkey-kbd {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline-strong);
+      padding: 2px 6px;
+      border-radius: var(--radius-xs);
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--color-ink);
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--color-ink);
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-modal);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+      animation: slideUpToast 0.25s ease;
+    }
+
+    @keyframes slideUpToast {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN CODE LOCK SCREEN (PASS: 1234) -->
+  <div class="pin-lock-backdrop" id="pinLockBackdrop">
+    <div class="pin-lock-card" id="pinLockCard">
+      <div class="pin-lock-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 28px; height: 28px;">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+
+      <div>
+        <div style="font-size: 1.35rem; font-weight: 800; color: var(--color-ink); font-family: 'Nunito', sans-serif;">Teacher Studio Locked</div>
+        <div style="font-size: 0.85rem; color: var(--color-slate); margin-top: 4px;">Enter the 4-digit teacher PIN code to open the studio.</div>
+      </div>
+
+      <div class="pin-dots-row">
+        <div class="pin-dot" id="pindot-0"></div>
+        <div class="pin-dot" id="pindot-1"></div>
+        <div class="pin-dot" id="pindot-2"></div>
+        <div class="pin-dot" id="pindot-3"></div>
+      </div>
+
+      <div class="pin-pad-grid">
+        <button class="pin-key-btn" onclick="enterPinDigit('1')">1</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('2')">2</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('3')">3</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('4')">4</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('5')">5</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('6')">6</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('7')">7</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('8')">8</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('9')">9</button>
+        <button class="pin-key-btn pin-key-back" onclick="clearPin()">C</button>
+        <button class="pin-key-btn" onclick="enterPinDigit('0')">0</button>
+        <button class="pin-key-btn pin-key-back" onclick="backspacePin()">⌫</button>
+      </div>
+
+      <div style="font-size: 0.78rem; color: var(--color-stone); font-weight: 500;">Tip: You can type using your keyboard number keys.</div>
+    </div>
+  </div>
+
+  <!-- RAPID PUSH-TO-TALK BOOTH MODAL (SPACEBAR ZERO-CLICK) -->
+  <div class="booth-modal-backdrop" id="boothModalBackdrop" style="display: none;">
+    <div class="booth-modal-window">
+      <div class="booth-header-row">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="booth-progress-tag" id="boothProgressTag">Sound 1 of 26</span>
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--color-slate);" id="boothFilterLabel">Needs Re-recording (26)</span>
+        </div>
+        <button class="btn-close-booth" onclick="closeRecordingBooth()" title="Close Booth (Esc)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 22px; height: 22px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="booth-card-body">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="sound-ipa-badge" id="boothIpaBadge">/d/</span>
+          <span class="sound-status-badge status-update-needed" id="boothStatusBadge">⚠️ Needs Re-recording</span>
+        </div>
+
+        <div class="booth-grapheme-big" id="boothGrapheme">-ed (/d/)</div>
+        <div class="booth-catchphrase" id="boothCatchphrase">Pure /d/ sound (talked, played, rained)</div>
+        <div class="booth-tip" id="boothTip">Say a clean, punchy /d/ consonant with no extra vowel. Hold space, speak, release space!</div>
+        <div class="sound-examples-row" id="boothExamplesRow"></div>
+
+        <div class="booth-waveform-box">
+          <canvas class="booth-canvas" id="boothCanvas" width="580" height="70"></canvas>
+        </div>
+
+        <div class="booth-status-indicator booth-status-idle" id="boothStatusIndicator">
+          <span>⌨️ Hold <strong>SPACEBAR</strong> to record (Zero Clicks)</span>
+        </div>
+      </div>
+
+      <div class="booth-controls-row">
+        <button class="btn-booth-nav" onclick="prevBoothSound()" id="btnBoothPrev" title="Previous Sound (Left Arrow)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <span>Back (←)</span>
+        </button>
+
+        <button class="btn-booth-record" id="btnBoothRecord" onmousedown="startBoothRecording()" onmouseup="stopBoothRecording()" onmouseleave="if(activeRecordingId) stopBoothRecording()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
+          <span id="txtBoothRecordBtn">Hold SPACEBAR to Record</span>
+        </button>
+
+        <button class="btn-booth-nav" onclick="playBoothPreview()" id="btnBoothPlay" title="Play Preview (P)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span>Listen (P)</span>
+        </button>
+
+        <button class="btn-booth-nav" onclick="nextBoothSound()" id="btnBoothNext" title="Next Sound (Right Arrow or Enter)">
+          <span>Next (→)</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="booth-hotkey-legend">
+        <span><kbd class="hotkey-kbd">Hold Space</kbd> Record (Zero Clicks)</span>
+        <span><kbd class="hotkey-kbd">Release Space</kbd> Save &amp; Play</span>
+        <span><kbd class="hotkey-kbd">→</kbd> / <kbd class="hotkey-kbd">Enter</kbd> Next</span>
+        <span><kbd class="hotkey-kbd">←</kbd> Back</span>
+        <span><kbd class="hotkey-kbd">P</kbd> Replay</span>
+        <span><kbd class="hotkey-kbd">Esc</kbd> Close</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <a class="brand-group" href="/">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+          <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">Teacher Sound Recording Studio</div>
+        <div class="brand-sub">Little Wandle Master Audio Pack &amp; Suffix Engine</div>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <button class="btn-head btn-head-rose" onclick="openRecordingBooth()" title="Rapid Spacebar Push-to-Talk Mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
+        <span>🎙️ Spacebar Booth (26 to Re-Record)</span>
+      </button>
+      <button class="btn-head btn-head-secondary" onclick="exportSoundPackJson()" title="Download updated master pack for GitHub deployment">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>Export Sound Pack</span>
+      </button>
+      <button class="btn-head btn-head-secondary" onclick="syncAllToStudentApp()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        <span>Compile &amp; Sync to App</span>
+      </button>
+      <a class="btn-head btn-head-primary" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span>Open Student App</span>
+      </a>
+      <button class="btn-lock-studio" onclick="lockStudio()" title="Lock Teacher Studio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Lock</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO & STATS BANNER -->
+    <div class="hero-banner">
+      <div class="hero-info-group">
+        <div class="hero-title">Prep 2 Master Soundboard &amp; Suffix Studio</div>
+        <div class="hero-subtitle">
+          Record your own authentic teacher voice for every phoneme, suffix (-ed, -ing, -es), and split digraph chant. Use the <strong>Spacebar Booth</strong> to cycle through sounds with zero mouse clicks!
+        </div>
+        <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn-head btn-head-rose" style="font-size: 0.92rem; padding: 9px 16px;" onclick="openRecordingBooth()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
+            <span>🎙️ Start Rapid Spacebar Booth (26 to Re-Record)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="progress-stats-box">
+        <div class="progress-label-row">
+          <span>Master Pack Progress</span>
+          <span id="txtProgressFraction">0 / 76</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--color-slate); text-align: right;" id="txtProgressPercent">0% Complete</div>
+      </div>
+    </div>
+
+    <!-- CONTROLS & FILTER BAR -->
+    <div class="controls-bar">
+      <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <input type="text" class="search-filter-input" id="searchFilterInput" placeholder="Search sounds (e.g. ed, ing, split, or)..." oninput="handleSearchFilter(this.value)">
+        <div class="category-tabs" id="categoryTabs">
+          <button class="cat-tab-btn tab-alert" onclick="filterCategory('needs-update')" id="tabNeedsUpdate">⚠️ Needs Re-record (26)</button>
+          <button class="cat-tab-btn active" onclick="filterCategory('all')">All (76)</button>
+          <button class="cat-tab-btn" onclick="filterCategory('Suffixes')">Suffixes (15)</button>
+          <button class="cat-tab-btn" onclick="filterCategory('Prefixes')">Prefixes (5)</button>
+          <button class="cat-tab-btn" onclick="filterCategory('Split Digraphs')">Split Digraphs (6)</button>
+          <button class="cat-tab-btn" onclick="filterCategory('Nuance Sounds')">Nuances (3)</button>
+          <button class="cat-tab-btn" onclick="filterCategory('Phase 2')">Phase 2</button>
+          <button class="cat-tab-btn" onclick="filterCategory('Phase 3')">Phase 3</button>
+        </div>
+      </div>
+
+      <div>
+        <input type="file" id="batchAudioFileInput" multiple accept="audio/*,.wav,.mp3,.m4a,.webm" style="display: none;" onchange="handleAudioBatchUpload(this.files)">
+        <button class="btn-act btn-head-secondary" onclick="document.getElementById('batchAudioFileInput').click()" title="Upload WAV/MP3 files from your computer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width: 14px; height: 14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <span>Upload Audio Files (.wav / .mp3)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SOUND CARDS GRID -->
+    <div class="sounds-grid" id="soundsGrid">
+      <!-- Populated dynamically via JS -->
+    </div>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-popup" id="toastPopup">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" style="width: 18px; height: 18px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span id="toastMsg">Saved recording successfully!</span>
+  </div>
+
+  <script>
+    // ================= 1. PIN CODE LOCK SECURITY (PASS: 1234) =================
+    const TEACHER_STUDIO_PIN = "1234";
+    let enteredPin = "";
+
+    function checkStudioAuth() {
+      const isUnlocked = sessionStorage.getItem('teacher_studio_unlocked') === 'true';
+      const backdrop = document.getElementById('pinLockBackdrop');
+      if (isUnlocked) {
+        backdrop.style.display = 'none';
+        initStudioData();
+      } else {
+        backdrop.style.display = 'flex';
+        renderPinDots();
+      }
+    }
+
+    function enterPinDigit(digit) {
+      if (enteredPin.length < 4) {
+        enteredPin += digit;
+        renderPinDots();
+        if (enteredPin.length === 4) {
+          validateEnteredPin();
+        }
+      }
+    }
+
+    function backspacePin() {
+      if (enteredPin.length > 0) {
+        enteredPin = enteredPin.slice(0, -1);
+        renderPinDots();
+      }
+    }
+
+    function clearPin() {
+      enteredPin = "";
+      renderPinDots();
+    }
+
+    function renderPinDots() {
+      for (let i = 0; i < 4; i++) {
+        const dot = document.getElementById('pindot-' + i);
+        if (dot) dot.classList.toggle('filled', i < enteredPin.length);
+      }
+    }
+
+    function validateEnteredPin() {
+      if (enteredPin === TEACHER_STUDIO_PIN) {
+        sessionStorage.setItem('teacher_studio_unlocked', 'true');
+        document.getElementById('pinLockBackdrop').style.display = 'none';
+        if (window.confetti) confetti({ particleCount: 60, spread: 50, origin: { y: 0.6 } });
+        showToast("Teacher Studio Unlocked!");
+        initStudioData();
+      } else {
+        const card = document.getElementById('pinLockCard');
+        card.classList.remove('pin-error-shake');
+        void card.offsetWidth;
+        card.classList.add('pin-error-shake');
+        showToast("Incorrect PIN. Access Denied.");
+        setTimeout(() => {
+          clearPin();
+        }, 500);
+      }
+    }
+
+    function lockStudio() {
+      sessionStorage.removeItem('teacher_studio_unlocked');
+      clearPin();
+      document.getElementById('pinLockBackdrop').style.display = 'flex';
+    }
+
+    // ================= 2. MASTER 76 SOUNDS CATALOG =================
+    const EMBEDDED_REGISTRY = [
+  {
+    "id": "ed-d",
+    "grapheme": "-ed (/d/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/d/",
+    "catchphrase": "played, rained, talked",
+    "examples": [
+      "talked",
+      "played",
+      "rained",
+      "called",
+      "burned",
+      "opened"
+    ],
+    "prompt": "d",
+    "teacherTip": "Voiced stop sound. Use after vowels and voiced consonants. Say crisp /d/ with no schwa.",
+    "needsUpdate": true
+  },
+  {
+    "id": "ed-t",
+    "grapheme": "-ed (/t/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/t/",
+    "catchphrase": "jumped, walked, looked",
+    "examples": [
+      "jumped",
+      "walked",
+      "looked",
+      "hopped",
+      "helped",
+      "missed"
+    ],
+    "prompt": "t",
+    "teacherTip": "Unvoiced stop sound. Use after unvoiced consonants. Say a crisp /t/ puff.",
+    "needsUpdate": true
+  },
+  {
+    "id": "id-suffix",
+    "grapheme": "-ed (/id/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/ɪd/",
+    "catchphrase": "landed, shouted, farted",
+    "examples": [
+      "landed",
+      "shouted",
+      "farted",
+      "painted",
+      "started",
+      "hunted"
+    ],
+    "prompt": "id",
+    "teacherTip": "Syllabic suffix. ONLY used after root words ending in /t/ or /d/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ing-suffix",
+    "grapheme": "-ing (/ɪŋ/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/ɪŋ/",
+    "catchphrase": "talking, jumping, singing",
+    "examples": [
+      "talking",
+      "jumping",
+      "floating",
+      "playing",
+      "singing"
+    ],
+    "prompt": "ing",
+    "teacherTip": "Continuous action suffix. Say a crisp /ing/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "iz-suffix",
+    "grapheme": "-es (/ɪz/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/ɪz/",
+    "catchphrase": "boxes, dishes, foxes",
+    "examples": [
+      "boxes",
+      "dishes",
+      "watches",
+      "witches",
+      "foxes",
+      "busses"
+    ],
+    "prompt": "iz",
+    "teacherTip": "Plural / 3rd person suffix after sibilants (s, x, ch, sh, z).",
+    "needsUpdate": false
+  },
+  {
+    "id": "est-suffix",
+    "grapheme": "-est (/ɪst/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/ɪst/",
+    "catchphrase": "fastest, tallest, biggest",
+    "examples": [
+      "fastest",
+      "tallest",
+      "biggest",
+      "coldest",
+      "quickest"
+    ],
+    "prompt": "est",
+    "teacherTip": "Superlative suffix. Say a clean /est/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "er-suffix",
+    "grapheme": "-er (/ə/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/ə/",
+    "catchphrase": "faster, teacher, helper",
+    "examples": [
+      "faster",
+      "teacher",
+      "farmer",
+      "ladder",
+      "helper"
+    ],
+    "prompt": "er",
+    "teacherTip": "Comparative / agent suffix. Say a relaxed neutral schwa /uh/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "ly-suffix",
+    "grapheme": "-ly (/li/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/li/",
+    "catchphrase": "quickly, slowly, softly",
+    "examples": [
+      "quickly",
+      "slowly",
+      "loudly",
+      "softly",
+      "safely",
+      "sadly"
+    ],
+    "prompt": "lee",
+    "teacherTip": "Adverb suffix. Say a bright, crisp /lee/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "ful-suffix",
+    "grapheme": "-ful (/fʊl/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/fʊl/",
+    "catchphrase": "helpful, careful, playful",
+    "examples": [
+      "helpful",
+      "careful",
+      "playful",
+      "colourful",
+      "hopeful"
+    ],
+    "prompt": "ful",
+    "teacherTip": "Adjective suffix meaning full of. Say /ful/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "less-suffix",
+    "grapheme": "-less (/lɪs/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/lɪs/",
+    "catchphrase": "helpless, careless, hopeless",
+    "examples": [
+      "helpless",
+      "careless",
+      "hopeless",
+      "cloudless",
+      "spotless"
+    ],
+    "prompt": "less",
+    "teacherTip": "Suffix meaning without. Say /less/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "ness-suffix",
+    "grapheme": "-ness (/nɪs/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/nɪs/",
+    "catchphrase": "kindness, darkness, sadness",
+    "examples": [
+      "kindness",
+      "darkness",
+      "sadness",
+      "softness",
+      "goodness"
+    ],
+    "prompt": "ness",
+    "teacherTip": "Noun state suffix. Say /ness/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "ment-suffix",
+    "grapheme": "-ment (/mənt/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/mənt/",
+    "catchphrase": "movement, enjoyment, payment",
+    "examples": [
+      "movement",
+      "enjoyment",
+      "payment",
+      "statement"
+    ],
+    "prompt": "ment",
+    "teacherTip": "Noun suffix. Say /ment/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "tion-suffix",
+    "grapheme": "-tion (/ʃən/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/ʃən/",
+    "catchphrase": "station, action, fraction",
+    "examples": [
+      "station",
+      "action",
+      "fiction",
+      "fraction",
+      "motion"
+    ],
+    "prompt": "shun",
+    "teacherTip": "Say /shun/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "sion-suffix",
+    "grapheme": "-sion (/ʒən/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/ʒən/",
+    "catchphrase": "vision, television, decision",
+    "examples": [
+      "vision",
+      "television",
+      "decision",
+      "confusion",
+      "explosion"
+    ],
+    "prompt": "zhun",
+    "teacherTip": "Say voiced /zhun/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "ture-suffix",
+    "grapheme": "-ture (/tʃə/)",
+    "category": "Suffixes",
+    "phase": "Phase 5C",
+    "ipa": "/tʃə/",
+    "catchphrase": "picture, nature, creature",
+    "examples": [
+      "picture",
+      "nature",
+      "adventure",
+      "creature",
+      "capture"
+    ],
+    "prompt": "cher",
+    "teacherTip": "Say /cher/ with schwa ending.",
+    "needsUpdate": true
+  },
+  {
+    "id": "un-prefix",
+    "grapheme": "un- (/ʌn/)",
+    "category": "Prefixes",
+    "phase": "Phase 5",
+    "ipa": "/ʌn/",
+    "catchphrase": "unhappy, unpack, unlock",
+    "examples": [
+      "unhappy",
+      "unpack",
+      "unlock",
+      "unsafe",
+      "untie"
+    ],
+    "prompt": "un",
+    "teacherTip": "Prefix meaning not or opposite. Say /un/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "re-prefix",
+    "grapheme": "re- (/riː/)",
+    "category": "Prefixes",
+    "phase": "Phase 5",
+    "ipa": "/riː/",
+    "catchphrase": "replay, refill, rewrite",
+    "examples": [
+      "replay",
+      "refill",
+      "rewrite",
+      "return",
+      "restart"
+    ],
+    "prompt": "ree",
+    "teacherTip": "Prefix meaning again. Say /ree/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "dis-prefix",
+    "grapheme": "dis- (/dɪs/)",
+    "category": "Prefixes",
+    "phase": "Phase 5",
+    "ipa": "/dɪs/",
+    "catchphrase": "dislike, disagree, disappear",
+    "examples": [
+      "dislike",
+      "disagree",
+      "disappear",
+      "distrust"
+    ],
+    "prompt": "dis",
+    "teacherTip": "Prefix meaning not / opposite. Say /dis/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "mis-prefix",
+    "grapheme": "mis- (/mɪs/)",
+    "category": "Prefixes",
+    "phase": "Phase 5",
+    "ipa": "/mɪs/",
+    "catchphrase": "mishear, mislead, mistake",
+    "examples": [
+      "mishear",
+      "mislead",
+      "mistake",
+      "misplace"
+    ],
+    "prompt": "mis",
+    "teacherTip": "Prefix meaning wrong. Say /mis/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "pre-prefix",
+    "grapheme": "pre- (/priː/)",
+    "category": "Prefixes",
+    "phase": "Phase 5",
+    "ipa": "/priː/",
+    "catchphrase": "preheat, preview, preset",
+    "examples": [
+      "preheat",
+      "preview",
+      "preset",
+      "prepare"
+    ],
+    "prompt": "pree",
+    "teacherTip": "Prefix meaning before. Say /pree/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "split-a-e",
+    "grapheme": "a-e (/ai/)",
+    "category": "Split Digraphs",
+    "phase": "Phase 5A",
+    "ipa": "/eɪ/",
+    "catchphrase": "make a cake",
+    "examples": [
+      "cake",
+      "make",
+      "name",
+      "same",
+      "game",
+      "late"
+    ],
+    "prompt": "ai",
+    "teacherTip": "Split digraph for long A. Chant: 'a-e make a cake'.",
+    "needsUpdate": true
+  },
+  {
+    "id": "split-e-e",
+    "grapheme": "e-e (/ee/)",
+    "category": "Split Digraphs",
+    "phase": "Phase 5A",
+    "ipa": "/iː/",
+    "catchphrase": "these trees",
+    "examples": [
+      "these",
+      "theme",
+      "complete",
+      "eve"
+    ],
+    "prompt": "ee",
+    "teacherTip": "Split digraph for long E. Chant: 'e-e these trees'.",
+    "needsUpdate": true
+  },
+  {
+    "id": "split-i-e",
+    "grapheme": "i-e (/igh/)",
+    "category": "Split Digraphs",
+    "phase": "Phase 5A",
+    "ipa": "/aɪ/",
+    "catchphrase": "nice smile",
+    "examples": [
+      "like",
+      "smile",
+      "time",
+      "nice",
+      "slide",
+      "white"
+    ],
+    "prompt": "igh",
+    "teacherTip": "Split digraph for long I. Chant: 'i-e nice smile'.",
+    "needsUpdate": true
+  },
+  {
+    "id": "split-o-e",
+    "grapheme": "o-e (/oa/)",
+    "category": "Split Digraphs",
+    "phase": "Phase 5A",
+    "ipa": "/əʊ/",
+    "catchphrase": "phone home",
+    "examples": [
+      "home",
+      "phone",
+      "stone",
+      "bone",
+      "rope",
+      "note"
+    ],
+    "prompt": "oa",
+    "teacherTip": "Split digraph for long O. Chant: 'o-e phone home'.",
+    "needsUpdate": true
+  },
+  {
+    "id": "split-u-e-oo",
+    "grapheme": "u-e (/oo/)",
+    "category": "Split Digraphs",
+    "phase": "Phase 5A",
+    "ipa": "/uː/",
+    "catchphrase": "huge flute",
+    "examples": [
+      "flute",
+      "rule",
+      "june",
+      "rude"
+    ],
+    "prompt": "oo",
+    "teacherTip": "Split digraph for /oo/. Chant: 'u-e huge flute'.",
+    "needsUpdate": true
+  },
+  {
+    "id": "split-u-e-yoo",
+    "grapheme": "u-e (/y-oo/)",
+    "category": "Split Digraphs",
+    "phase": "Phase 5A",
+    "ipa": "/juː/",
+    "catchphrase": "huge cube",
+    "examples": [
+      "cube",
+      "huge",
+      "cute",
+      "tube",
+      "mule",
+      "tune"
+    ],
+    "prompt": "yoo",
+    "teacherTip": "Split digraph for /y-oo/. Chant: 'u-e huge cube'.",
+    "needsUpdate": true
+  },
+  {
+    "id": "schwa",
+    "grapheme": "ə (Schwa)",
+    "category": "Nuance Sounds",
+    "phase": "Phase 5",
+    "ipa": "/ə/",
+    "catchphrase": "about, banana, letter",
+    "examples": [
+      "about",
+      "banana",
+      "ladder",
+      "lemon",
+      "the"
+    ],
+    "prompt": "uh",
+    "teacherTip": "The unstressed neutral vowel in English. Say a soft, relaxed /uh/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "broad-a",
+    "grapheme": "a (Broad /ah/)",
+    "category": "Nuance Sounds",
+    "phase": "Phase 5",
+    "ipa": "/ɑː/",
+    "catchphrase": "bath, grass, fast, path",
+    "examples": [
+      "bath",
+      "path",
+      "grass",
+      "fast",
+      "glass",
+      "ask"
+    ],
+    "prompt": "ah",
+    "teacherTip": "Southern British accent broad A. Say /ah/.",
+    "needsUpdate": true
+  },
+  {
+    "id": "ul-dark",
+    "grapheme": "-le / -el (/əl/)",
+    "category": "Nuance Sounds",
+    "phase": "Phase 5",
+    "ipa": "/əl/",
+    "catchphrase": "apple, bottle, little",
+    "examples": [
+      "apple",
+      "little",
+      "bottle",
+      "candle",
+      "simple",
+      "table"
+    ],
+    "prompt": "ul",
+    "teacherTip": "Dark syllabic L at the end of words. Say /ul/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "s",
+    "grapheme": "s",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/s/",
+    "catchphrase": "slither down the snake",
+    "examples": [
+      "sun",
+      "sit",
+      "sand",
+      "stop"
+    ],
+    "prompt": "s",
+    "teacherTip": "Unvoiced hissing consonant sound.",
+    "needsUpdate": false
+  },
+  {
+    "id": "a-short",
+    "grapheme": "a",
+    "category": "Phase 2 Vowels",
+    "phase": "Phase 2",
+    "ipa": "/æ/",
+    "catchphrase": "round the apple, down the leaf",
+    "examples": [
+      "ant",
+      "apple",
+      "cat",
+      "hat"
+    ],
+    "prompt": "a",
+    "teacherTip": "Short vowel /a/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "t",
+    "grapheme": "t",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/t/",
+    "catchphrase": "down the tower, across the tower",
+    "examples": [
+      "tap",
+      "tin",
+      "top",
+      "trip"
+    ],
+    "prompt": "t",
+    "teacherTip": "Unvoiced stop /t/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "p",
+    "grapheme": "p",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/p/",
+    "catchphrase": "down the pirate, over face",
+    "examples": [
+      "pan",
+      "pig",
+      "pot",
+      "pup"
+    ],
+    "prompt": "p",
+    "teacherTip": "Unvoiced stop /p/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "i-short",
+    "grapheme": "i",
+    "category": "Phase 2 Vowels",
+    "phase": "Phase 2",
+    "ipa": "/ɪ/",
+    "catchphrase": "down body, dot for head",
+    "examples": [
+      "tin",
+      "in",
+      "it",
+      "pin"
+    ],
+    "prompt": "i",
+    "teacherTip": "Short vowel /i/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "n",
+    "grapheme": "n",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/n/",
+    "catchphrase": "down Nobby, over his net",
+    "examples": [
+      "net",
+      "nut",
+      "nest",
+      "nod"
+    ],
+    "prompt": "n",
+    "teacherTip": "Nasal consonant /n/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "m",
+    "grapheme": "m",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/m/",
+    "catchphrase": "Maisie, mountain, mountain",
+    "examples": [
+      "man",
+      "map",
+      "mat",
+      "mud"
+    ],
+    "prompt": "m",
+    "teacherTip": "Nasal consonant /m/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "d",
+    "grapheme": "d",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/d/",
+    "catchphrase": "round bottom, up neck, down feet",
+    "examples": [
+      "dog",
+      "dad",
+      "dig",
+      "duck"
+    ],
+    "prompt": "d",
+    "teacherTip": "Voiced stop /d/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "g",
+    "grapheme": "g",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/ɡ/",
+    "catchphrase": "round face, down tail",
+    "examples": [
+      "got",
+      "gap",
+      "gum",
+      "glad"
+    ],
+    "prompt": "g",
+    "teacherTip": "Voiced stop /g/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "o-short",
+    "grapheme": "o",
+    "category": "Phase 2 Vowels",
+    "phase": "Phase 2",
+    "ipa": "/ɒ/",
+    "catchphrase": "all around the orange",
+    "examples": [
+      "hot",
+      "on",
+      "off",
+      "pot"
+    ],
+    "prompt": "o",
+    "teacherTip": "Short vowel /o/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "k",
+    "grapheme": "c / k / ck",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/k/",
+    "catchphrase": "curl around caterpillar",
+    "examples": [
+      "cat",
+      "kid",
+      "back",
+      "clock"
+    ],
+    "prompt": "k",
+    "teacherTip": "Unvoiced stop /k/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "e-short",
+    "grapheme": "e",
+    "category": "Phase 2 Vowels",
+    "phase": "Phase 2",
+    "ipa": "/e/",
+    "catchphrase": "lift top, scoop out egg",
+    "examples": [
+      "egg",
+      "bed",
+      "red",
+      "pen"
+    ],
+    "prompt": "e",
+    "teacherTip": "Short vowel /e/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "u-short",
+    "grapheme": "u",
+    "category": "Phase 2 Vowels",
+    "phase": "Phase 2",
+    "ipa": "/ʌ/",
+    "catchphrase": "down & under, up to top",
+    "examples": [
+      "cup",
+      "up",
+      "bus",
+      "mud"
+    ],
+    "prompt": "u",
+    "teacherTip": "Short vowel /u/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "r",
+    "grapheme": "r",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/r/",
+    "catchphrase": "down robot, over his arm",
+    "examples": [
+      "red",
+      "run",
+      "rat",
+      "rip"
+    ],
+    "prompt": "r",
+    "teacherTip": "Liquid consonant /r/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "h",
+    "grapheme": "h",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/h/",
+    "catchphrase": "down head to hooves, over back",
+    "examples": [
+      "hat",
+      "hen",
+      "hop",
+      "hug"
+    ],
+    "prompt": "h",
+    "teacherTip": "Breath sound /h/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "b",
+    "grapheme": "b",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/b/",
+    "catchphrase": "down boot to heel, around toe",
+    "examples": [
+      "bat",
+      "bed",
+      "big",
+      "box"
+    ],
+    "prompt": "b",
+    "teacherTip": "Voiced stop /b/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "f",
+    "grapheme": "f / ff",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/f/",
+    "catchphrase": "down stem, draw the leaves",
+    "examples": [
+      "fish",
+      "fun",
+      "puff",
+      "off"
+    ],
+    "prompt": "f",
+    "teacherTip": "Fricative /f/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "l",
+    "grapheme": "l",
+    "category": "Phase 2 Consonants",
+    "phase": "Phase 2",
+    "ipa": "/l/",
+    "catchphrase": "down the long leg",
+    "examples": [
+      "leg",
+      "lip",
+      "lot",
+      "look"
+    ],
+    "prompt": "l",
+    "teacherTip": "Clear L.",
+    "needsUpdate": false
+  },
+  {
+    "id": "j",
+    "grapheme": "j",
+    "category": "Phase 3 Consonants",
+    "phase": "Phase 3",
+    "ipa": "/dʒ/",
+    "catchphrase": "down his body, curl and dot",
+    "examples": [
+      "jam",
+      "jug",
+      "jump",
+      "jet"
+    ],
+    "prompt": "j",
+    "teacherTip": "Affricate /j/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "v",
+    "grapheme": "v",
+    "category": "Phase 3 Consonants",
+    "phase": "Phase 3",
+    "ipa": "/v/",
+    "catchphrase": "down a wing, up a wing",
+    "examples": [
+      "van",
+      "vet",
+      "visit",
+      "vest"
+    ],
+    "prompt": "v",
+    "teacherTip": "Voiced fricative /v/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "w",
+    "grapheme": "w",
+    "category": "Phase 3 Consonants",
+    "phase": "Phase 3",
+    "ipa": "/w/",
+    "catchphrase": "down, up, down, up",
+    "examples": [
+      "win",
+      "web",
+      "wet",
+      "walk"
+    ],
+    "prompt": "w",
+    "teacherTip": "Glide /w/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ks",
+    "grapheme": "x",
+    "category": "Phase 3 Consonants",
+    "phase": "Phase 3",
+    "ipa": "/ks/",
+    "catchphrase": "down the arm, down the leg",
+    "examples": [
+      "fox",
+      "box",
+      "six",
+      "fix"
+    ],
+    "prompt": "ks",
+    "teacherTip": "Blended consonant /ks/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "y",
+    "grapheme": "y",
+    "category": "Phase 3 Consonants",
+    "phase": "Phase 3",
+    "ipa": "/j/",
+    "catchphrase": "down a horn, up a horn",
+    "examples": [
+      "yes",
+      "yell",
+      "yawn",
+      "yak"
+    ],
+    "prompt": "y",
+    "teacherTip": "Consonant /y/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "z",
+    "grapheme": "z / zz",
+    "category": "Phase 3 Consonants",
+    "phase": "Phase 3",
+    "ipa": "/z/",
+    "catchphrase": "zig-zag-zig",
+    "examples": [
+      "zip",
+      "zoo",
+      "buzz",
+      "fizz"
+    ],
+    "prompt": "z",
+    "teacherTip": "Voiced buzz /z/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "kw",
+    "grapheme": "qu",
+    "category": "Phase 3 Consonants",
+    "phase": "Phase 3",
+    "ipa": "/kw/",
+    "catchphrase": "round face, down hair, curl",
+    "examples": [
+      "quick",
+      "queen",
+      "quiz",
+      "quack"
+    ],
+    "prompt": "kw",
+    "teacherTip": "Blended /kw/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ch",
+    "grapheme": "ch",
+    "category": "Phase 3 Digraphs",
+    "phase": "Phase 3",
+    "ipa": "/tʃ/",
+    "catchphrase": "ch-ch-choo choo train",
+    "examples": [
+      "chip",
+      "chin",
+      "chop",
+      "chest"
+    ],
+    "prompt": "ch",
+    "teacherTip": "Affricate /ch/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "sh",
+    "grapheme": "sh",
+    "category": "Phase 3 Digraphs",
+    "phase": "Phase 3",
+    "ipa": "/ʃ/",
+    "catchphrase": "sh says horse to the snake",
+    "examples": [
+      "ship",
+      "shop",
+      "shed",
+      "fish"
+    ],
+    "prompt": "sh",
+    "teacherTip": "Fricative /sh/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "th-unvoiced",
+    "grapheme": "th (unvoiced)",
+    "category": "Phase 3 Digraphs",
+    "phase": "Phase 3",
+    "ipa": "/θ/",
+    "catchphrase": "thank you thumb",
+    "examples": [
+      "thumb",
+      "thin",
+      "thick",
+      "moth"
+    ],
+    "prompt": "th",
+    "teacherTip": "Unvoiced /th/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "th-voiced",
+    "grapheme": "th (voiced)",
+    "category": "Phase 3 Digraphs",
+    "phase": "Phase 3",
+    "ipa": "/ð/",
+    "catchphrase": "this that then",
+    "examples": [
+      "this",
+      "that",
+      "then",
+      "with"
+    ],
+    "prompt": "th",
+    "teacherTip": "Voiced /th/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ng",
+    "grapheme": "ng",
+    "category": "Phase 3 Digraphs",
+    "phase": "Phase 3",
+    "ipa": "/ŋ/",
+    "catchphrase": "a thing on a string",
+    "examples": [
+      "ring",
+      "sing",
+      "song",
+      "king"
+    ],
+    "prompt": "ng",
+    "teacherTip": "Velar nasal /ng/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "nk",
+    "grapheme": "nk",
+    "category": "Phase 3 Digraphs",
+    "phase": "Phase 3",
+    "ipa": "/ŋk/",
+    "catchphrase": "I think I stink",
+    "examples": [
+      "sink",
+      "think",
+      "wink",
+      "bank"
+    ],
+    "prompt": "nk",
+    "teacherTip": "Blended /nk/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ai-long",
+    "grapheme": "ai / ay",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/eɪ/",
+    "catchphrase": "snail in the rain",
+    "examples": [
+      "rain",
+      "tail",
+      "play",
+      "day"
+    ],
+    "prompt": "ai",
+    "teacherTip": "Long vowel /ai/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ee-long",
+    "grapheme": "ee / ea / ey",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/iː/",
+    "catchphrase": "what can you see?",
+    "examples": [
+      "feet",
+      "see",
+      "tea",
+      "key"
+    ],
+    "prompt": "ee",
+    "teacherTip": "Long vowel /ee/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "igh-long",
+    "grapheme": "igh / ie",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/aɪ/",
+    "catchphrase": "fly high in the night",
+    "examples": [
+      "night",
+      "high",
+      "light",
+      "pie"
+    ],
+    "prompt": "igh",
+    "teacherTip": "Trigraph /igh/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "oa-long",
+    "grapheme": "oa / oe / ow",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/əʊ/",
+    "catchphrase": "goat in a boat",
+    "examples": [
+      "boat",
+      "coat",
+      "snow",
+      "toe"
+    ],
+    "prompt": "oa",
+    "teacherTip": "Long vowel /oa/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "oo-short",
+    "grapheme": "oo (short)",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/ʊ/",
+    "catchphrase": "look at a book",
+    "examples": [
+      "book",
+      "look",
+      "foot",
+      "good"
+    ],
+    "prompt": "oo",
+    "teacherTip": "Short /oo/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "oo-long",
+    "grapheme": "oo (long) / ue / ew",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/uː/",
+    "catchphrase": "zoom to the moon",
+    "examples": [
+      "moon",
+      "zoo",
+      "blue",
+      "chew"
+    ],
+    "prompt": "oo",
+    "teacherTip": "Long /oo/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ar-long",
+    "grapheme": "ar",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/ɑː/",
+    "catchphrase": "start the car",
+    "examples": [
+      "car",
+      "star",
+      "park",
+      "farm"
+    ],
+    "prompt": "ar",
+    "teacherTip": "R-controlled vowel /ar/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "or-long",
+    "grapheme": "or / aw / au / al",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/ɔː/",
+    "catchphrase": "shut the door",
+    "examples": [
+      "fork",
+      "door",
+      "saw",
+      "walk",
+      "talk",
+      "ball"
+    ],
+    "prompt": "or",
+    "teacherTip": "R-controlled vowel /or/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ur-long",
+    "grapheme": "ur / ir / er",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/ɜː/",
+    "catchphrase": "nurse with a purse",
+    "examples": [
+      "burn",
+      "bird",
+      "nurse",
+      "girl",
+      "work"
+    ],
+    "prompt": "ur",
+    "teacherTip": "R-controlled vowel /ur/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ow-diph",
+    "grapheme": "ow / ou",
+    "category": "Phase 3 Diphthongs",
+    "phase": "Phase 3",
+    "ipa": "/aʊ/",
+    "catchphrase": "brown cow",
+    "examples": [
+      "cow",
+      "down",
+      "shout",
+      "out"
+    ],
+    "prompt": "ow",
+    "teacherTip": "Diphthong /ow/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "oi-diph",
+    "grapheme": "oi / oy",
+    "category": "Phase 3 Diphthongs",
+    "phase": "Phase 3",
+    "ipa": "/ɔɪ/",
+    "catchphrase": "spoil the boy",
+    "examples": [
+      "coin",
+      "join",
+      "toy",
+      "boy"
+    ],
+    "prompt": "oi",
+    "teacherTip": "Diphthong /oi/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "ear-tri",
+    "grapheme": "ear / eer",
+    "category": "Phase 3 Trigraphs",
+    "phase": "Phase 3",
+    "ipa": "/ɪə/",
+    "catchphrase": "hear with your ear",
+    "examples": [
+      "ear",
+      "hear",
+      "dear",
+      "near"
+    ],
+    "prompt": "ear",
+    "teacherTip": "Trigraph /ear/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "air-tri",
+    "grapheme": "air / are / ear",
+    "category": "Phase 3 Trigraphs",
+    "phase": "Phase 3",
+    "ipa": "/eə/",
+    "catchphrase": "that's not fair",
+    "examples": [
+      "air",
+      "chair",
+      "fair",
+      "care",
+      "bear"
+    ],
+    "prompt": "air",
+    "teacherTip": "Trigraph /air/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "er-schwa",
+    "grapheme": "er",
+    "category": "Phase 3 Vowels",
+    "phase": "Phase 3",
+    "ipa": "/ə/",
+    "catchphrase": "a better letter",
+    "examples": [
+      "ladder",
+      "letter",
+      "water",
+      "summer"
+    ],
+    "prompt": "er",
+    "teacherTip": "Word-ending schwa /er/.",
+    "needsUpdate": false
+  },
+  {
+    "id": "zh",
+    "grapheme": "s / si (/zh/)",
+    "category": "Phase 5 Nuance",
+    "phase": "Phase 5",
+    "ipa": "/ʒ/",
+    "catchphrase": "treasure on the island",
+    "examples": [
+      "treasure",
+      "television",
+      "vision",
+      "measure"
+    ],
+    "prompt": "zh",
+    "teacherTip": "Voiced postalveolar fricative /zh/.",
+    "needsUpdate": false
+  }
+];
+
+    let SOUNDS_REGISTRY = EMBEDDED_REGISTRY;
+    let AUDIO_STEMS_MAP = new Map();
+    let currentCategoryFilter = 'all';
+    let currentSearchFilter = '';
+    let activeMediaRecorder = null;
+    let activeAudioChunks = [];
+    let activeRecordingId = null;
+    let audioContext = null;
+    let analyserNode = null;
+    let animationFrameId = null;
+
+    // BOOTH STATE
+    let boothQueue = [];
+    let boothCurrentIndex = 0;
+    let isBoothOpen = false;
+    let isSpacebarHeld = false;
+
+    async function initStudioData() {
+      try {
+        const res = await fetch('/api/studio/sounds');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            SOUNDS_REGISTRY = data;
+          }
+        }
+      } catch (e) {
+        console.log("Using embedded 76 sounds registry");
+      }
+
+      // Load local stems and cache
+      SOUNDS_REGISTRY.forEach(s => {
+        const cached = localStorage.getItem('sound_stem_' + s.id);
+        if (cached) {
+          AUDIO_STEMS_MAP.set(s.id, { id: s.id, hasAudio: true, source: 'teacher', base64: cached });
+        } else {
+          AUDIO_STEMS_MAP.set(s.id, { id: s.id, hasAudio: true, source: 'teacher' });
+        }
+      });
+
+      updateProgressStats();
+      renderSoundCards();
+    }
+
+    function updateProgressStats() {
+      let total = SOUNDS_REGISTRY.length;
+      let recorded = 0;
+      let needsUpdateCount = 0;
+
+      SOUNDS_REGISTRY.forEach(s => {
+        const stem = AUDIO_STEMS_MAP.get(s.id);
+        if (stem && stem.hasAudio) recorded++;
+        if (s.needsUpdate) needsUpdateCount++;
+      });
+
+      document.getElementById('txtProgressFraction').innerText = recorded + ' / ' + total;
+      const pct = Math.round((recorded / total) * 100);
+      document.getElementById('txtProgressPercent').innerText = pct + '% Ready';
+      document.getElementById('progressBarFill').style.width = pct + '%';
+
+      const tabAlert = document.getElementById('tabNeedsUpdate');
+      if (tabAlert) {
+        tabAlert.innerText = '⚠️ Needs Re-record (' + needsUpdateCount + ')';
+        tabAlert.style.display = needsUpdateCount > 0 ? 'inline-block' : 'none';
+      }
+    }
+
+    function renderSoundCards() {
+      const grid = document.getElementById('soundsGrid');
+      grid.innerHTML = "";
+
+      const filtered = SOUNDS_REGISTRY.filter(s => {
+        if (currentCategoryFilter === 'needs-update') {
+          return s.needsUpdate === true;
+        }
+        if (currentCategoryFilter !== 'all' && s.category !== currentCategoryFilter) return false;
+        if (currentSearchFilter) {
+          const q = currentSearchFilter.toLowerCase();
+          return s.id.toLowerCase().includes(q) ||
+                 s.grapheme.toLowerCase().includes(q) ||
+                 (s.catchphrase && s.catchphrase.toLowerCase().includes(q)) ||
+                 (s.examples && s.examples.some(e => e.toLowerCase().includes(q)));
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--color-slate); font-weight:600;">No sounds matched the selected filter.</div>';
+        return;
+      }
+
+      filtered.forEach(s => {
+        const stem = AUDIO_STEMS_MAP.get(s.id);
+        const hasAudio = stem && stem.hasAudio;
+        const isNeedsUpdate = s.needsUpdate === true;
+
+        const card = document.createElement('div');
+        card.className = 'sound-card' + (isNeedsUpdate ? ' card-needs-update' : '');
+        card.id = 'card-' + s.id;
+
+        let statusBadge = '';
+        if (isNeedsUpdate) {
+          statusBadge = '<span class="sound-status-badge status-update-needed">⚠️ Needs Re-record</span>';
+        } else if (hasAudio) {
+          statusBadge = '<span class="sound-status-badge status-teacher">✅ Ready</span>';
+        } else {
+          statusBadge = '<span class="sound-status-badge status-empty">Empty</span>';
+        }
+
+        const examplesHtml = (s.examples || []).map(ex => '<span class="example-pill">' + ex + '</span>').join('');
+
+        card.innerHTML = `
+          <div class="sound-card-header">
+            <div>
+              <div class="sound-grapheme-big">${s.grapheme}</div>
+              <span class="sound-ipa-badge">${s.ipa || s.id}</span>
+            </div>
+            ${statusBadge}
+          </div>
+
+          <div class="sound-body-meta">
+            <div class="sound-catchphrase">${s.catchphrase || s.grapheme}</div>
+            <div class="sound-tip">${s.tip || ''}</div>
+            <div class="sound-examples-row">${examplesHtml}</div>
+          </div>
+
+          <!-- Waveform Canvas -->
+          <div class="waveform-box">
+            <canvas class="waveform-canvas" id="canvas-${s.id}" width="280" height="38"></canvas>
+          </div>
+
+          <!-- Actions Bar -->
+          <div class="sound-actions-row">
+            <button class="btn-act btn-record ${activeRecordingId === s.id ? 'recording' : ''}" onclick="toggleRecordSound('${s.id}')" id="btn-rec-${s.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
+              <span>${activeRecordingId === s.id ? 'Stop' : 'Record'}</span>
+            </button>
+
+            <button class="btn-act btn-play" onclick="playSoundPreview('${s.id}', this)" ${!hasAudio ? 'disabled style="opacity:0.45;"' : ''}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Listen</span>
+            </button>
+
+            <label class="btn-act btn-download-wav" title="Upload audio file for this sound" style="cursor: pointer;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:13px;height:13px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <span>Upload</span>
+              <input type="file" accept="audio/*,.wav,.mp3,.m4a,.webm" style="display:none;" onchange="handleSingleSoundUpload('${s.id}', this.files[0])">
+            </label>
+
+            <button class="btn-act btn-download-wav" onclick="downloadSoundStem('${s.id}')" title="Download Audio" ${!hasAudio ? 'disabled style="opacity:0.45;"' : ''}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:13px;height:13px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>WAV</span>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategoryFilter = cat;
+      document.querySelectorAll('.cat-tab-btn').forEach(b => {
+        b.classList.remove('active');
+        if (cat === 'all' && b.innerText.startsWith('All')) b.classList.add('active');
+        else if (cat === 'needs-update' && b.id === 'tabNeedsUpdate') b.classList.add('active');
+        else if (b.innerText.includes(cat)) b.classList.add('active');
+      });
+      renderSoundCards();
+    }
+
+    function handleSearchFilter(val) {
+      currentSearchFilter = val.trim();
+      renderSoundCards();
+    }
+
+    // ================= 3. RAPID BOOTH (SPACEBAR ZERO-CLICK CAROUSEL) =================
+    function openRecordingBooth(filterMode = 'needs-update') {
+      if (filterMode === 'needs-update') {
+        boothQueue = SOUNDS_REGISTRY.filter(s => s.needsUpdate);
+        if (boothQueue.length === 0) boothQueue = SOUNDS_REGISTRY;
+      } else {
+        boothQueue = SOUNDS_REGISTRY;
+      }
+
+      boothCurrentIndex = 0;
+      isBoothOpen = true;
+      document.getElementById('boothModalBackdrop').style.display = 'flex';
+      renderBoothCard();
+    }
+
+    function closeRecordingBooth() {
+      if (activeRecordingId) stopBoothRecording();
+      isBoothOpen = false;
+      document.getElementById('boothModalBackdrop').style.display = 'none';
+      updateProgressStats();
+      renderSoundCards();
+    }
+
+    function renderBoothCard() {
+      if (!boothQueue || boothQueue.length === 0) return;
+      const sound = boothQueue[boothCurrentIndex];
+
+      document.getElementById('boothProgressTag').innerText = 'Sound ' + (boothCurrentIndex + 1) + ' of ' + boothQueue.length;
+      document.getElementById('boothFilterLabel').innerText = sound.category || 'Sound';
+      document.getElementById('boothIpaBadge').innerText = sound.ipa || sound.id;
+      document.getElementById('boothGrapheme').innerText = sound.grapheme;
+      document.getElementById('boothCatchphrase').innerText = sound.catchphrase || sound.grapheme;
+      document.getElementById('boothTip').innerText = sound.tip || 'Say a pure, punchy sound with no extra vowel. Hold space, speak, release space!';
+
+      const statusBadge = document.getElementById('boothStatusBadge');
+      if (sound.needsUpdate) {
+        statusBadge.className = 'sound-status-badge status-update-needed';
+        statusBadge.innerText = '⚠️ Needs Re-recording';
+      } else {
+        statusBadge.className = 'sound-status-badge status-teacher';
+        statusBadge.innerText = '✅ Recorded';
+      }
+
+      const exRow = document.getElementById('boothExamplesRow');
+      exRow.innerHTML = (sound.examples || []).map(ex => '<span class="example-pill">' + ex + '</span>').join('');
+
+      document.getElementById('btnBoothPrev').disabled = boothCurrentIndex === 0;
+      document.getElementById('btnBoothNext').disabled = boothCurrentIndex === boothQueue.length - 1;
+
+      setBoothIndicator('idle');
+    }
+
+    function nextBoothSound() {
+      if (activeRecordingId) stopBoothRecording();
+      if (boothCurrentIndex < boothQueue.length - 1) {
+        boothCurrentIndex++;
+        renderBoothCard();
+      } else {
+        showToast("You've reached the end of the sound queue!");
+        if (window.confetti) confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+      }
+    }
+
+    function prevBoothSound() {
+      if (activeRecordingId) stopBoothRecording();
+      if (boothCurrentIndex > 0) {
+        boothCurrentIndex--;
+        renderBoothCard();
+      }
+    }
+
+    function setBoothIndicator(state) {
+      const ind = document.getElementById('boothStatusIndicator');
+      const recBtn = document.getElementById('btnBoothRecord');
+      const txtBtn = document.getElementById('txtBoothRecordBtn');
+
+      if (state === 'recording') {
+        ind.className = 'booth-status-indicator booth-status-rec';
+        ind.innerHTML = '<span>🔴 <strong>RECORDING...</strong> (Speak now, release spacebar when done)</span>';
+        recBtn.classList.add('recording');
+        txtBtn.innerText = 'Recording... (Release to Save)';
+      } else if (state === 'saved') {
+        ind.className = 'booth-status-indicator booth-status-saved';
+        ind.innerHTML = '<span>✅ <strong>Saved &amp; Normalized!</strong> (Press → or Enter for next)</span>';
+        recBtn.classList.remove('recording');
+        txtBtn.innerText = 'Hold SPACEBAR to Re-record';
+      } else {
+        ind.className = 'booth-status-indicator booth-status-idle';
+        ind.innerHTML = '<span>⌨️ Hold <strong>SPACEBAR</strong> to record (Zero Clicks)</span>';
+        recBtn.classList.remove('recording');
+        txtBtn.innerText = 'Hold SPACEBAR to Record';
+      }
+    }
+
+    async function startBoothRecording() {
+      if (activeRecordingId) return;
+      const sound = boothQueue[boothCurrentIndex];
+      if (!sound) return;
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        activeRecordingId = sound.id;
+        activeAudioChunks = [];
+
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaStreamSource(stream);
+        analyserNode = audioContext.createAnalyser();
+        analyserNode.fftSize = 256;
+        source.connect(analyserNode);
+
+        activeMediaRecorder = new MediaRecorder(stream);
+        activeMediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) activeAudioChunks.push(e.data);
+        };
+
+        activeMediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(activeAudioChunks, { type: 'audio/webm' });
+          stream.getTracks().forEach(t => t.stop());
+          if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+          await processAndSaveBlob(sound.id, audioBlob);
+          sound.needsUpdate = false;
+          renderBoothCard();
+          setBoothIndicator('saved');
+          playBoothPreview();
+        };
+
+        activeMediaRecorder.start();
+        setBoothIndicator('recording');
+        drawBoothLiveWaveform();
+      } catch (err) {
+        alert("Please enable microphone permissions in your browser to record.");
+      }
+    }
+
+    function stopBoothRecording() {
+      if (activeMediaRecorder && activeMediaRecorder.state !== 'inactive') {
+        activeMediaRecorder.stop();
+      }
+      activeRecordingId = null;
+    }
+
+    function drawBoothLiveWaveform() {
+      const canvas = document.getElementById('boothCanvas');
+      if (!canvas || !analyserNode) return;
+
+      const ctx = canvas.getContext('2d');
+      const bufferLength = analyserNode.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function draw() {
+        if (!activeRecordingId) return;
+        animationFrameId = requestAnimationFrame(draw);
+
+        analyserNode.getByteFrequencyData(dataArray);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const barWidth = (canvas.width / bufferLength) * 2.2;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * canvas.height;
+          ctx.fillStyle = '#ef4444';
+          ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+          x += barWidth + 1;
+        }
+      }
+
+      draw();
+    }
+
+    function playBoothPreview() {
+      const sound = boothQueue[boothCurrentIndex];
+      if (!sound) return;
+      const stem = AUDIO_STEMS_MAP.get(sound.id);
+      if (stem && stem.base64) {
+        const audio = new Audio(stem.base64);
+        audio.play();
+      } else {
+        const audio = new Audio('/api/studio/play?id=' + encodeURIComponent(sound.id));
+        audio.play().catch(() => showToast("Audio clip not available yet."));
+      }
+    }
+
+    // ================= 4. GLOBAL KEYBOARD SHORTCUTS ENGINE =================
+    window.addEventListener('keydown', (e) => {
+      // 1. PIN Lock Keyboard Handling
+      const pinBackdrop = document.getElementById('pinLockBackdrop');
+      if (pinBackdrop.style.display !== 'none') {
+        if (e.key >= '0' && e.key <= '9') enterPinDigit(e.key);
+        else if (e.key === 'Backspace') backspacePin();
+        else if (e.key === 'Escape') clearPin();
+        return;
+      }
+
+      // 2. Spacebar Recording in Booth (Zero-Click)
+      if (isBoothOpen) {
+        if (e.code === 'Space' || e.key === ' ') {
+          e.preventDefault();
+          if (!isSpacebarHeld && !activeRecordingId) {
+            isSpacebarHeld = true;
+            startBoothRecording();
+          }
+        } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+          e.preventDefault();
+          nextBoothSound();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prevBoothSound();
+        } else if (e.key === 'p' || e.key === 'P') {
+          e.preventDefault();
+          playBoothPreview();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          closeRecordingBooth();
+        }
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (isBoothOpen && (e.code === 'Space' || e.key === ' ')) {
+        e.preventDefault();
+        if (isSpacebarHeld) {
+          isSpacebarHeld = false;
+          stopBoothRecording();
+        }
+      }
+    });
+
+    // ================= 5. AUDIO NORMALIZATION, TRIMMING & WAV ENCODER =================
+    function createWavHeaderHelper(dataLength, sampleRate, channels, bitDepth) {
+      const buffer = new ArrayBuffer(44);
+      const view = new DataView(buffer);
+      function writeString(offset, str) {
+        for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+      }
+      writeString(0, 'RIFF');
+      view.setUint32(4, 36 + dataLength, true);
+      writeString(8, 'WAVE');
+      writeString(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true); // PCM
+      view.setUint16(22, channels, true);
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * channels * (bitDepth / 8), true);
+      view.setUint16(32, channels * (bitDepth / 8), true);
+      view.setUint16(34, bitDepth, true);
+      writeString(36, 'data');
+      view.setUint32(40, dataLength, true);
+      return new Uint8Array(buffer);
+    }
+
+    async function processAndSaveBlob(soundId, audioBlob) {
+      try {
+        const arrayBuf = await audioBlob.arrayBuffer();
+        const decodeCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const audioBuf = await decodeCtx.decodeAudioData(arrayBuf);
+        const channelData = audioBuf.getChannelData(0);
+        const sampleRate = audioBuf.sampleRate;
+
+        // 1. Peak calculation & Auto-Gain Normalization (-0.7 dB target)
+        let peak = 0;
+        for (let i = 0; i < channelData.length; i++) {
+          const v = Math.abs(channelData[i]);
+          if (v > peak) peak = v;
+        }
+
+        const targetPeak = 0.92;
+        let gain = 1.0;
+        if (peak > 0 && peak < targetPeak) {
+          gain = targetPeak / peak;
+          if (gain > 10.0) gain = 10.0;
+        }
+
+        // 2. Silence Trimming (remove initial & ending quiet periods)
+        const thresh = 0.015;
+        let startIdx = 0;
+        while (startIdx < channelData.length && Math.abs(channelData[startIdx]) < thresh) startIdx++;
+        startIdx = Math.max(0, startIdx - Math.floor(sampleRate * 0.05)); // 50ms pre-pad
+
+        let endIdx = channelData.length - 1;
+        while (endIdx > startIdx && Math.abs(channelData[endIdx]) < thresh) endIdx--;
+        endIdx = Math.min(channelData.length - 1, endIdx + Math.floor(sampleRate * 0.08)); // 80ms post-pad
+
+        const trimmedLen = Math.max(1, endIdx - startIdx + 1);
+        const boostedPcm = new Int16Array(trimmedLen);
+
+        for (let i = 0; i < trimmedLen; i++) {
+          let val = channelData[startIdx + i] * gain;
+          if (val > 1.0) val = 1.0;
+          if (val < -1.0) val = -1.0;
+          boostedPcm[i] = val < 0 ? val * 32768 : val * 32767;
+        }
+
+        // 3. Encode to 16-bit PCM WAV
+        const header = createWavHeaderHelper(trimmedLen * 2, sampleRate, 1, 16);
+        const wavBytes = new Uint8Array(44 + trimmedLen * 2);
+        wavBytes.set(header, 0);
+        wavBytes.set(new Uint8Array(boostedPcm.buffer), 44);
+
+        let binary = '';
+        for (let i = 0; i < wavBytes.byteLength; i++) binary += String.fromCharCode(wavBytes[i]);
+        const base64Wav = 'data:audio/wav;base64,' + btoa(binary);
+
+        AUDIO_STEMS_MAP.set(soundId, { id: soundId, hasAudio: true, source: 'teacher', base64: base64Wav });
+        localStorage.setItem('sound_stem_' + soundId, base64Wav);
+
+        saveAudioDirect(soundId, base64Wav);
+        showToast('Recorded, normalized (' + gain.toFixed(1) + 'x boost), and saved "' + soundId + '"!');
+        decodeCtx.close();
+      } catch (err) {
+        console.error("Audio processing fallback:", err);
+      }
+    }
+
+    async function toggleRecordSound(soundId) {
+      if (activeRecordingId === soundId) {
+        stopRecordingSound(soundId);
+      } else {
+        if (activeRecordingId) stopRecordingSound(activeRecordingId);
+        startRecordingSound(soundId);
+      }
+    }
+
+    async function startRecordingSound(soundId) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        activeRecordingId = soundId;
+        activeAudioChunks = [];
+
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaStreamSource(stream);
+        analyserNode = audioContext.createAnalyser();
+        analyserNode.fftSize = 256;
+        source.connect(analyserNode);
+
+        activeMediaRecorder = new MediaRecorder(stream);
+        activeMediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) activeAudioChunks.push(e.data);
+        };
+
+        activeMediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(activeAudioChunks, { type: 'audio/webm' });
+          stream.getTracks().forEach(t => t.stop());
+          if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+          await processAndSaveBlob(soundId, audioBlob);
+          const s = SOUNDS_REGISTRY.find(x => x.id === soundId);
+          if (s) s.needsUpdate = false;
+          updateProgressStats();
+          renderSoundCards();
+        };
+
+        activeMediaRecorder.start();
+        renderSoundCards();
+        drawLiveWaveform(soundId);
+      } catch (err) {
+        alert("Please enable microphone permissions in your browser to record.");
+      }
+    }
+
+    function stopRecordingSound(soundId) {
+      if (activeMediaRecorder && activeMediaRecorder.state !== 'inactive') {
+        activeMediaRecorder.stop();
+      }
+      activeRecordingId = null;
+    }
+
+    function drawLiveWaveform(soundId) {
+      const canvas = document.getElementById('canvas-' + soundId);
+      if (!canvas || !analyserNode) return;
+
+      const ctx = canvas.getContext('2d');
+      const bufferLength = analyserNode.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function draw() {
+        if (activeRecordingId !== soundId) return;
+        animationFrameId = requestAnimationFrame(draw);
+
+        analyserNode.getByteFrequencyData(dataArray);
+
+        ctx.fillStyle = '#fef2f2';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const barWidth = (canvas.width / bufferLength) * 2.5;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * canvas.height;
+          ctx.fillStyle = '#ef4444';
+          ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+          x += barWidth + 1;
+        }
+      }
+
+      draw();
+    }
+
+    async function handleSingleSoundUpload(soundId, file) {
+      if (!file) return;
+      await processAndSaveBlob(soundId, file);
+      const s = SOUNDS_REGISTRY.find(x => x.id === soundId);
+      if (s) s.needsUpdate = false;
+      updateProgressStats();
+      renderSoundCards();
+      showToast('Uploaded and saved "' + soundId + '"!');
+    }
+
+    async function handleAudioBatchUpload(files) {
+      if (!files || files.length === 0) return;
+      showToast('Processing ' + files.length + ' audio files...');
+      for (const file of Array.from(files)) {
+        const rawName = file.name.replace(/\.[^/.]+$/, "").toLowerCase().trim();
+        const matched = SOUNDS_REGISTRY.find(s => s.id.toLowerCase() === rawName || s.grapheme.toLowerCase() === rawName || rawName.includes(s.id.toLowerCase()));
+        if (matched) {
+          await processAndSaveBlob(matched.id, file);
+          matched.needsUpdate = false;
+        }
+      }
+      updateProgressStats();
+      renderSoundCards();
+      showToast('Finished processing audio files!');
+    }
+
+    async function saveAudioDirect(soundId, base64) {
+      try {
+        await fetch('/api/studio/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: soundId, base64Audio: base64 })
+        });
+      } catch (err) {
+        // Standalone offline mode
+      }
+    }
+
+    async function playSoundPreview(soundId, btnEl) {
+      if (btnEl) btnEl.classList.add('playing');
+      const stem = AUDIO_STEMS_MAP.get(soundId);
+      
+      let audio;
+      if (stem && stem.base64) {
+        audio = new Audio(stem.base64);
+      } else {
+        audio = new Audio('/api/studio/play?id=' + encodeURIComponent(soundId));
+      }
+
+      audio.onended = () => { if (btnEl) btnEl.classList.remove('playing'); };
+      audio.onerror = () => {
+        if (btnEl) btnEl.classList.remove('playing');
+        showToast("Audio clip not available yet.");
+      };
+      audio.play().catch(() => { if (btnEl) btnEl.classList.remove('playing'); });
+    }
+
+    function downloadSoundStem(soundId) {
+      const stem = AUDIO_STEMS_MAP.get(soundId);
+      if (stem && stem.base64) {
+        const a = document.createElement('a');
+        a.href = stem.base64;
+        a.download = soundId + '.wav';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        window.open('/api/studio/play?id=' + encodeURIComponent(soundId), '_blank');
+      }
+    }
+
+    function exportSoundPackJson() {
+      const exportClips = [];
+      SOUNDS_REGISTRY.forEach(s => {
+        const stem = AUDIO_STEMS_MAP.get(s.id);
+        if (stem && stem.base64) {
+          exportClips.push({ id: s.id, grapheme: s.grapheme, base64Audio: stem.base64, source: stem.source });
+        }
+      });
+
+      const exportObj = {
+        name: "Prep 2 Little Wandle Master Sound Pack",
+        version: "3.0-teacher-custom",
+        exportedAt: new Date().toISOString(),
+        totalClips: exportClips.length,
+        clips: exportClips
+      };
+
+      const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'little_wandle_master_voice_pack_v3.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("Master Sound Pack JSON Exported (" + exportClips.length + " clips)!");
+    }
+
+    async function syncAllToStudentApp() {
+      showToast("Compiling all master sounds & synchronizing to Student App...");
+      try {
+        const res = await fetch('/api/studio/sync', { method: 'POST' });
+        if (res.ok) {
+          showToast("Master Sound Pack synchronized successfully!");
+          if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        } else {
+          showToast("Error syncing to student app.");
+        }
+      } catch (e) {
+        showToast("Network error during sync.");
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastPopup');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.style.display = 'flex';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', checkStudioAuth);
+  </script>
+</body>
+</html>
