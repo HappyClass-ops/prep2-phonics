@@ -1888,23 +1888,213 @@
 
     // ================= 3. MULTI-SENSE & HOMONYM RICH CURATED DICTIONARY =================
     const PRIMARY_CURATED_DB = {
+      'perfect': {
+        ipa: '/ˈpɜː.fɪkt/',
+        senses: [{
+          pos: 'adjective',
+          title: 'Adjective (Describing Word)',
+          def: 'Having no mistakes or flaws; completely excellent and wonderful.',
+          example: 'The happy children worked carefully to create a perfect painting for the art display.',
+          exampleEasy: 'Your drawing looks completely perfect.',
+          phrase: 'Context: "The happy children worked carefully to create a perfect painting for the art display."',
+          imgQuery: 'a perfect colourful rainbow over hills',
+          puzzle: {
+            easy: ["Your", "drawing", "looks", "completely", "perfect", "."],
+            hard: ["The", "happy", "children", "created", "a", "perfect", "painting", "for", "art", "class", "."]
+          }
+        }]
+      },
+      'purple': {
+        ipa: '/ˈpɜː.pəl/',
+        senses: [{
+          pos: 'adjective',
+          title: 'Adjective / Noun (Colour)',
+          def: 'A beautiful colour made by mixing red and blue together.',
+          example: 'The little girl wore a warm purple coat and cosy purple gloves on her morning walk.',
+          exampleEasy: 'I painted a bright purple flower.',
+          phrase: 'Context: "The little girl wore a warm purple coat and cosy purple gloves on her morning walk."',
+          imgQuery: 'fresh juicy purple grapes on a vine',
+          puzzle: {
+            easy: ["I", "painted", "a", "bright", "purple", "flower", "."],
+            hard: ["The", "little", "girl", "wore", "a", "warm", "purple", "coat", "outside", "."]
+          }
+        }]
+      },
+      'amazing': {
+        ipa: '/əˈmeɪ.zɪŋ/',
+        senses: [{
+          pos: 'adjective',
+          title: 'Adjective (Describing Word)',
+          def: 'Causing great wonder, surprise, and excitement; very wonderful.',
+          example: 'The clever magician did an amazing trick that delighted all the children in the hall.',
+          exampleEasy: 'The magic show was truly amazing.',
+          phrase: 'Context: "The clever magician did an amazing trick that delighted all the children in the hall."',
+          imgQuery: 'an amazing colourful fireworks display in night sky',
+          puzzle: {
+            easy: ["The", "magic", "show", "was", "truly", "amazing", "."],
+            hard: ["The", "clever", "magician", "did", "an", "amazing", "magic", "trick", "today", "."]
+          }
+        }]
+      },
+      'taught': {
+        ipa: '/tɔːt/',
+        senses: [{
+          pos: 'verb',
+          title: 'Verb (Past Tense Action)',
+          def: 'Past tense of teach: to give lessons and help someone learn new knowledge.',
+          example: 'Our kind teacher taught the children how to read and write exciting stories.',
+          exampleEasy: 'Our kind teacher taught us a fun song.',
+          phrase: 'Context: "Our kind teacher taught the children how to read and write exciting stories."',
+          imgQuery: 'a kind teacher helping happy children learn in classroom',
+          puzzle: {
+            easy: ["Our", "kind", "teacher", "taught", "us", "a", "fun", "song", "."],
+            hard: ["Our", "kind", "teacher", "taught", "the", "children", "how", "to", "read", "."]
+          }
+        }]
+      },
+      'caught': {
+        ipa: '/kɔːt/',
+        senses: [{
+          pos: 'verb',
+          title: 'Verb (Past Tense Action)',
+          def: 'Past tense of catch: to capture or take hold of something moving.',
+          example: 'The playful puppy jumped up high and caught the bright red ball in the air.',
+          exampleEasy: 'He caught the ball in the garden.',
+          phrase: 'Context: "The playful puppy jumped up high and caught the bright red ball in the air."',
+          imgQuery: 'a playful dog catching a flying frisbee ball',
+          puzzle: {
+            easy: ["He", "caught", "the", "ball", "in", "the", "garden", "."],
+            hard: ["The", "playful", "puppy", "caught", "the", "flying", "ball", "in", "the", "air", "."]
+          }
+        }]
+      },
+      'thought': {
+        ipa: '/θɔːt/',
+        senses: [{
+          pos: 'verb',
+          title: 'Verb / Noun (Thinking)',
+          def: 'Past tense of think: an idea or picture formed in the mind.',
+          example: "The little girl thought carefully before answering the teacher's question.",
+          exampleEasy: "She thought of a good idea.",
+          phrase: 'Context: "The little girl thought carefully before answering the question."',
+          imgQuery: 'a child thinking with a lightbulb idea cartoon',
+          puzzle: {
+            easy: ["She", "thought", "of", "a", "good", "idea", "."],
+            hard: ["The", "little", "girl", "thought", "carefully", "about", "the", "question", "."]
+          }
+        }]
+      },
+      'making': {
+        ipa: '/ˈmeɪ.kɪŋ/',
+        senses: [{
+          pos: 'verb',
+          title: 'Verb (Continuous Action)',
+          def: 'Creating, building, or putting things together right now.',
+          example: 'The children were making colourful paper lanterns for the school festival.',
+          exampleEasy: 'We are making a card.',
+          phrase: 'Context: "The children were making colourful paper lanterns for the school festival."',
+          imgQuery: 'children making colourful craft art projects with glue and paper',
+          puzzle: {
+            easy: ["We", "are", "making", "a", "card", "."],
+            hard: ["The", "children", "were", "making", "colourful", "paper", "crafts", "together", "."]
+          }
+        }]
+      },
+      'baking': {
+        ipa: '/ˈbeɪ.kɪŋ/',
+        senses: [{
+          pos: 'verb',
+          title: 'Verb (Continuous Action)',
+          def: 'Cooking food like bread, cookies, or cakes in a warm oven.',
+          example: 'Grandma was baking delicious warm cinnamon biscuits in the kitchen.',
+          exampleEasy: 'We are baking yummy cookies.',
+          phrase: 'Context: "Grandma was baking delicious warm cinnamon biscuits in the kitchen."',
+          imgQuery: 'baking fresh chocolate chip cookies on a baking tray',
+          puzzle: {
+            easy: ["We", "are", "baking", "yummy", "cookies", "."],
+            hard: ["Grandma", "was", "baking", "warm", "cinnamon", "biscuits", "in", "the", "oven", "."]
+          }
+        }]
+      },
+      'smiling': {
+        ipa: '/ˈsmaɪ.lɪŋ/',
+        senses: [{
+          pos: 'verb',
+          title: 'Verb (Continuous Action)',
+          def: 'Making a happy curved shape with your lips to show joy.',
+          example: 'The happy baby was smiling brightly at everyone in the sunny room.',
+          exampleEasy: 'The baby was smiling happily.',
+          phrase: 'Context: "The happy baby was smiling brightly at everyone in the sunny room."',
+          imgQuery: 'a happy smiling child laughing in the sunshine',
+          puzzle: {
+            easy: ["The", "baby", "was", "smiling", "happily", "."],
+            hard: ["The", "happy", "baby", "was", "smiling", "brightly", "at", "everyone", "today", "."]
+          }
+        }]
+      },
+      'shining': {
+        ipa: '/ˈʃaɪ.nɪŋ/',
+        senses: [{
+          pos: 'verb',
+          title: 'Verb (Continuous Action)',
+          def: 'Giving off bright glowing light; sparkling brightly.',
+          example: 'The golden sun was shining warmly over the green meadow.',
+          exampleEasy: 'The bright sun is shining.',
+          phrase: 'Context: "The golden sun was shining warmly over the green meadow."',
+          imgQuery: 'golden bright sunshine shining over green hills',
+          puzzle: {
+            easy: ["The", "bright", "sun", "is", "shining", "."],
+            hard: ["The", "golden", "sun", "was", "shining", "warmly", "over", "the", "meadow", "."]
+          }
+        }]
+      },
+      'table': {
+        ipa: '/ˈteɪ.bəl/',
+        senses: [{
+          pos: 'noun',
+          title: 'Noun (Furniture / Object)',
+          def: 'A piece of furniture with a flat top and legs for eating or writing on.',
+          example: 'The teacher placed the reading books neatly on the classroom table.',
+          exampleEasy: 'The book is on the table.',
+          phrase: 'Context: "The teacher placed the reading books neatly on the classroom table."',
+          imgQuery: 'a tidy wooden school desk table in a bright classroom',
+          puzzle: {
+            easy: ["The", "book", "is", "on", "the", "table", "."],
+            hard: ["The", "teacher", "placed", "the", "books", "on", "the", "wooden", "table", "."]
+          }
+        }]
+      },
+      'apple': {
+        ipa: '/ˈæp.əl/',
+        senses: [{
+          pos: 'noun',
+          title: 'Noun (Fruit / Food)',
+          def: 'A round fruit with red, green, or yellow skin and crisp sweet flesh.',
+          example: 'The little boy ate a crunchy red apple for his healthy morning snack.',
+          exampleEasy: 'I ate a sweet red apple.',
+          phrase: 'Context: "The little boy ate a crunchy red apple for his healthy morning snack."',
+          imgQuery: 'a fresh shiny red apple with a green leaf on wooden board',
+          puzzle: {
+            easy: ["I", "ate", "a", "sweet", "red", "apple", "."],
+            hard: ["The", "little", "boy", "ate", "a", "crunchy", "red", "apple", "today", "."]
+          }
+        }]
+      },
       'talked': {
         ipa: '/tɔːkt/',
-        senses: [
-          {
-            pos: 'verb',
-            title: 'Verb (Past Tense Action)',
-            def: 'To say words aloud in order to speak with someone.',
-            example: 'The happy children talked together on their way to school.',
-            exampleEasy: 'We talked to our teacher.',
-            phrase: 'Context: "The happy children talked together on their way to school."',
-            imgQuery: 'children talking together happily',
-            puzzle: {
-              easy: ["We", "talked", "to", "our", "teacher", "."],
-              hard: ["The", "happy", "children", "talked", "together", "on", "the", "way", "to", "school", "."]
-            }
+        senses: [{
+          pos: 'verb',
+          title: 'Verb (Past Tense Action)',
+          def: 'To say words aloud in order to speak with someone.',
+          example: 'The happy children talked together on their way to school.',
+          exampleEasy: 'We talked to our teacher.',
+          phrase: 'Context: "The happy children talked together on their way to school."',
+          imgQuery: 'children talking together happily in school classroom',
+          puzzle: {
+            easy: ["We", "talked", "to", "our", "teacher", "."],
+            hard: ["The", "happy", "children", "talked", "together", "on", "the", "way", "to", "school", "."]
           }
-        ]
+        }]
       },
       'trip': {
         ipa: '/trɪp/',
@@ -1950,12 +2140,12 @@
             imgQuery: 'autumn leaves falling from trees',
             puzzle: {
               easy: ["Red", "leaves", "fall", "from", "the", "tree", "."],
-              hard: ["In", "autumn", "the", "golden", "leaves", "fall", "gently", "to", "the", "ground", "."]
+              hard: ["The", "colourful", "autumn", "leaves", "fall", "gently", "from", "the", "trees", "."]
             }
           },
           {
             pos: 'noun',
-            title: 'Noun (Season / Autumn)',
+            title: 'Noun (Autumn Season)',
             def: 'The season between summer and winter, also known as Autumn.',
             example: 'In the fall, we collect acorns and wear warm cosy jackets.',
             exampleEasy: 'I love the crisp fall weather.',
@@ -2366,8 +2556,17 @@
         return { lemma: w.slice(0, -3), suffix: 'est', pos: 'adjective' };
       }
 
-      if (w.endsWith('er') && w.length > 3) {
+      if (w.endsWith('er') && w.length > 3 && !['teacher', 'father', 'mother', 'brother', 'sister', 'paper', 'tiger', 'spider', 'water', 'letter', 'winter', 'summer'].includes(w)) {
         return { lemma: w.slice(0, -2), suffix: 'er', pos: 'adjective' };
+      }
+
+      if ((w.endsWith('ful') || w.endsWith('less') || w.endsWith('able') || w.endsWith('ous') || w.endsWith('ive') || w.endsWith('ic') || w.endsWith('ish')) && w.length > 4) {
+        return { lemma: w, suffix: '', pos: 'adjective' };
+      }
+
+      const COMMON_ADJS = ['perfect', 'purple', 'amazing', 'beautiful', 'pretty', 'funny', 'happy', 'sunny', 'clever', 'gentle', 'quiet', 'loud', 'bright', 'dark', 'huge', 'tiny', 'soft', 'hard', 'warm', 'cold', 'kind', 'sweet', 'clean', 'quick', 'slow', 'brave', 'proud', 'glad', 'green', 'yellow', 'orange', 'pink', 'brown', 'black', 'white', 'golden'];
+      if (COMMON_ADJS.includes(w)) {
+        return { lemma: w, suffix: '', pos: 'adjective' };
       }
 
       return { lemma: w, suffix: '', pos: 'noun' };
@@ -2992,6 +3191,7 @@
 
       currentSearchWord = word;
       currentActiveSenseIdx = 0;
+      currentWordSenses = [];
 
       const workspaceCard = document.getElementById('dictWorkspaceCard');
       const skeletonCard = document.getElementById('skeletonCard');
@@ -3208,8 +3408,12 @@
       document.getElementById('resVisualDesc').innerText = defStr;
 
       // Dynamic Semantic Image Options
-      currentImageOptions = getImageQueryOptions(currentSearchWord, sense.pos, sense.def);
-      currentImageIndex = Math.floor(Math.random() * currentImageOptions.length);
+      if (sense.imgQuery) {
+        currentImageOptions = [sense.imgQuery, ...getImageQueryOptions(currentSearchWord, sense.pos, sense.def)];
+      } else {
+        currentImageOptions = getImageQueryOptions(currentSearchWord, sense.pos, sense.def);
+      }
+      currentImageIndex = 0;
       updateImageQueryDisplay();
     }
 
