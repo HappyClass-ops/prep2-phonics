@@ -849,6 +849,40 @@
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #7c6ee6;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 900px) {
+      header { flex-wrap: wrap; }
+      .header-actions { width: 100%; overflow-x: auto; padding-bottom: 3px; }
+      .btn-head { flex: 0 0 auto; min-height: 44px; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding-bottom: 40px; }
+      header { padding: 10px 12px; }
+      .brand-sub { display: none; }
+      main { padding: 18px 12px; }
+      .studio-hero { padding: 18px; }
+      .studio-title { font-size: 1.7rem; }
+      .filter-toolbar { overflow-x: auto; flex-wrap: nowrap; }
+      .filter-btn { flex: 0 0 auto; min-height: 42px; }
+      .sounds-grid { grid-template-columns: 1fr; }
+      .pin-lock-card { width: calc(100vw - 24px); padding: 22px 16px; }
+      .pin-key { min-width: 56px; min-height: 52px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -962,7 +996,7 @@
 
   <!-- HEADER -->
   <header>
-    <a class="brand-group" href="/">
+    <a class="brand-group" data-app-root-link href="../">
       <div class="brand-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
@@ -986,11 +1020,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         <span>Export Sound Pack</span>
       </button>
-      <button class="btn-head btn-head-secondary" onclick="syncAllToStudentApp()">
+      <button class="btn-head btn-head-secondary" onclick="syncAllToStudentApp()" title="Use saved teacher recordings in the Student App on this browser">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-        <span>Compile &amp; Sync to App</span>
+        <span>Sync to Student App</span>
       </button>
-      <a class="btn-head btn-head-primary" href="/">
+      <a class="btn-head btn-head-primary" data-app-root-link href="../">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
         <span>Open Student App</span>
       </a>
@@ -2474,25 +2508,32 @@
     let isSpacebarHeld = false;
 
     async function initStudioData() {
+      let bundledClips = [];
       try {
-        const res = await fetch('/api/studio/sounds');
+        const appRoot = window.location.pathname.endsWith('/studio/') ? '../' : './';
+        document.querySelectorAll('[data-app-root-link]').forEach(link => { link.href = appRoot; });
+        const res = await fetch(appRoot + 'little_wandle_master_voice_pack_v3.json', { cache: 'no-cache' });
         if (res.ok) {
           const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            SOUNDS_REGISTRY = data;
-          }
+          bundledClips = Array.isArray(data.clips) ? data.clips : [];
         }
       } catch (e) {
-        console.log("Using embedded 76 sounds registry");
+        console.warn('The published master voice pack could not be loaded.', e);
       }
 
-      // Load local stems and cache
+      const bundledById = new Map(bundledClips.map(clip => [clip.id, clip]));
+
+      // Local teacher recordings take priority; otherwise use the published
+      // master pack that ships beside this static GitHub Pages studio.
       SOUNDS_REGISTRY.forEach(s => {
         const cached = localStorage.getItem('sound_stem_' + s.id);
         if (cached) {
           AUDIO_STEMS_MAP.set(s.id, { id: s.id, hasAudio: true, source: 'teacher', base64: cached });
+        } else if (bundledById.has(s.id)) {
+          const bundled = bundledById.get(s.id);
+          AUDIO_STEMS_MAP.set(s.id, { id: s.id, hasAudio: true, source: bundled.source || 'master', base64: bundled.base64Audio });
         } else {
-          AUDIO_STEMS_MAP.set(s.id, { id: s.id, hasAudio: true, source: 'teacher' });
+          AUDIO_STEMS_MAP.set(s.id, { id: s.id, hasAudio: false, source: 'missing', base64: '' });
         }
       });
 
@@ -2813,8 +2854,7 @@
         const audio = new Audio(stem.base64);
         audio.play();
       } else {
-        const audio = new Audio('/api/studio/play?id=' + encodeURIComponent(sound.id));
-        audio.play().catch(() => showToast("Audio clip not available yet."));
+        showToast("Audio clip not available yet. Record or upload this sound first.");
       }
     }
 
@@ -3060,15 +3100,9 @@
     }
 
     async function saveAudioDirect(soundId, base64) {
-      try {
-        await fetch('/api/studio/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: soundId, base64Audio: base64 })
-        });
-      } catch (err) {
-        // Standalone offline mode
-      }
+      // GitHub Pages has no writable server API. Recordings are already saved
+      // in same-origin localStorage and are picked up by the Student App.
+      localStorage.setItem('phonics_audio_last_saved', soundId + ':' + Date.now());
     }
 
     async function playSoundPreview(soundId, btnEl) {
@@ -3079,7 +3113,9 @@
       if (stem && stem.base64) {
         audio = new Audio(stem.base64);
       } else {
-        audio = new Audio('/api/studio/play?id=' + encodeURIComponent(soundId));
+        if (btnEl) btnEl.classList.remove('playing');
+        showToast("Audio clip not available yet. Record or upload this sound first.");
+        return;
       }
 
       audio.onended = () => { if (btnEl) btnEl.classList.remove('playing'); };
@@ -3100,7 +3136,7 @@
         a.click();
         document.body.removeChild(a);
       } else {
-        window.open('/api/studio/play?id=' + encodeURIComponent(soundId), '_blank');
+        showToast("There is no audio file to download for this sound yet.");
       }
     }
 
@@ -3133,18 +3169,9 @@
     }
 
     async function syncAllToStudentApp() {
-      showToast("Compiling all master sounds & synchronizing to Student App...");
-      try {
-        const res = await fetch('/api/studio/sync', { method: 'POST' });
-        if (res.ok) {
-          showToast("Master Sound Pack synchronized successfully!");
-          if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        } else {
-          showToast("Error syncing to student app.");
-        }
-      } catch (e) {
-        showToast("Network error during sync.");
-      }
+      localStorage.setItem('phonics_audio_sync_version', String(Date.now()));
+      showToast("Saved recordings are ready in the Student App on this browser.");
+      if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
     function showToast(msg) {
