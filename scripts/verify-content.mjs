@@ -7,6 +7,9 @@ assert.equal(new Set(pack.clips.map(clip => clip.id)).size, 75, 'Clip ids must b
 assert.ok(pack.clips.every(clip => clip.base64Audio.startsWith('data:audio/wav;base64,')), 'Every clip must be playable WAV audio.');
 assert.ok(pack.clips.find(clip => clip.id === 'ed-d'), 'The supplied -ed /d/ clip must be included.');
 
+const wordPack = JSON.parse(fs.readFileSync('little_wandle_word_voice_pack.json', 'utf8'));
+assert.ok(Array.isArray(wordPack.clips), 'The publishable teacher word voice pack must have a clips array.');
+
 const app = fs.readFileSync('index.html', 'utf8');
 const bundleMatch = app.match(/const AUDIO_BUNDLE = (.*?);\s*const AUDIO_CACHE/s);
 assert.ok(bundleMatch, 'The pupil app must contain its published audio bundle.');
@@ -16,7 +19,16 @@ assert.match(app, /function isAcceptedDictionaryEntry[\s\S]*?entry\.meta[\s\S]*?
 assert.match(app, /const shortDefinitions[\s\S]*?shortDefinitions\.length/, 'Elementary short definitions must be preferred over raw technical sense text.');
 assert.match(app, /function applyDictionaryPronunciation/, 'Selected dictionary pronunciations must control ambiguous phonics.');
 assert.match(app, /function buildVerifiedImageQueries/, 'Image searches must be built from the selected verified sense.');
+assert.match(app, /conflictingAudioUrls/, 'Provider audio shared by different pronunciations must be blocked.');
+assert.match(app, /wordAudioFor\(pronunciationRecordingId/, 'Exact teacher pronunciation recordings must override provider audio.');
+assert.match(app, /Search “\$\{suggestion\.word\}”/, 'Every typed word must keep an exact-search action.');
+assert.doesNotMatch(app, /Different Picture Idea|btnLevelEasy|btnLevelHard/, 'Misleading picture shuffling and duplicate puzzle levels must stay removed.');
 assert.doesNotMatch(app, /currentWordAudioUrl|PRIMARY_CURATED_DB/, 'Audio and meanings must not come from stale global or offline dictionary state.');
 assert.doesNotMatch(app, /I can see the word/, 'The pupil app must not fabricate a generic sentence when the provider has no example.');
-assert.match(fs.readFileSync('studio.html', 'utf8'), /s\.needsUpdate && \(!stem \|\| !stem\.hasAudio\)/, 'The studio must only flag clips that are actually missing.');
-console.log('Content checks passed: audio pack, exact dictionary ownership, pronunciation-aware phonics, safe learning content, and studio status.');
+const studio = fs.readFileSync('studio.html', 'utf8');
+assert.match(studio, /s\.needsUpdate && \(!stem \|\| !stem\.hasAudio\)/, 'The studio must only flag clips that are actually missing.');
+assert.match(studio, /const TRICKY_WORD_RECORDINGS = \[[^\]]+\]/, 'The studio must expose tricky-word recording targets.');
+assert.match(studio, /function exportWordVoicePack/, 'The studio must export a publishable word voice pack.');
+assert.match(studio, /this browser only[\s\S]*send that JSON file/, 'The studio must explain local-only use versus publishing for every pupil.');
+assert.equal(studio, fs.readFileSync('studio/index.html', 'utf8'), 'Both Teacher Studio routes must remain identical.');
+console.log('Content checks passed: exact dictionary ownership, pronunciation-safe audio, one honest example puzzle, complete search, and publishable teacher word recordings.');

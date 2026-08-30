@@ -431,6 +431,40 @@
       gap: 16px;
     }
 
+    .word-recording-section {
+      margin-top: 30px;
+      padding-top: 26px;
+      border-top: 2px solid var(--color-hairline);
+    }
+
+    .word-recording-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .word-recording-title { font-size: 1.3rem; font-weight: 800; color: var(--color-ink); }
+    .word-recording-subtitle { color: var(--color-slate); line-height: 1.45; max-width: 760px; margin-top: 4px; }
+    .publish-note {
+      background: #eff6ff;
+      border: 1px solid #93c5fd;
+      color: #1e3a8a;
+      border-radius: var(--radius-md);
+      padding: 13px 15px;
+      line-height: 1.45;
+      margin-bottom: 16px;
+    }
+    .word-recording-kind {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-primary);
+    }
+
     .sound-card {
       background: var(--color-canvas);
       border: 1px solid var(--color-hairline);
@@ -1022,7 +1056,7 @@
       </button>
       <button class="btn-head btn-head-secondary" onclick="syncAllToStudentApp()" title="Use saved teacher recordings in the Student App on this browser">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-        <span>Sync to Student App</span>
+        <span>Use on This Browser</span>
       </button>
       <a class="btn-head btn-head-primary" data-app-root-link href="../">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
@@ -1093,6 +1127,22 @@
     <div class="sounds-grid" id="soundsGrid">
       <!-- Populated dynamically via JS -->
     </div>
+
+    <section class="word-recording-section" id="wordRecordingSection">
+      <div class="word-recording-heading">
+        <div>
+          <div class="word-recording-title">Teacher Word Recordings</div>
+          <div class="word-recording-subtitle">Record every tricky word, plus separate teacher models for homographs whose spellings are the same but pronunciations are different.</div>
+        </div>
+        <button class="btn-head btn-head-secondary" onclick="exportWordVoicePack()" title="Download teacher word recordings for GitHub publishing">
+          <span>Export Word Voice Pack</span>
+        </button>
+      </div>
+      <div class="publish-note" role="note">
+        <strong>What “Use on This Browser” means:</strong> recordings become available to the Student App in this browser only. This app has no backend, so to publish recordings for every pupil, export the Word Voice Pack and send that JSON file for upload to GitHub.
+      </div>
+      <div class="sounds-grid" id="wordRecordingsGrid"></div>
+    </section>
 
   </main>
 
@@ -2492,6 +2542,7 @@
 
     let SOUNDS_REGISTRY = EMBEDDED_REGISTRY;
     let AUDIO_STEMS_MAP = new Map();
+    let WORD_AUDIO_MAP = new Map();
     let currentCategoryFilter = 'all';
     let currentSearchFilter = '';
     let activeMediaRecorder = null;
@@ -2500,6 +2551,29 @@
     let audioContext = null;
     let analyserNode = null;
     let animationFrameId = null;
+    let activeWordRecordingId = null;
+
+    const TRICKY_WORD_RECORDINGS = ['is','the','I','to','into','go','no','he','she','we','me','was','you','they','my','said','have','come','some','one','people','water','friend','because'];
+    const HOMOGRAPH_RECORDINGS = [
+      { word: 'tear', pronunciation: 'ˈtir', context: 'a drop from your eye' },
+      { word: 'tear', pronunciation: 'ˈter', context: 'to rip or pull apart' },
+      { word: 'read', pronunciation: 'ˈrēd', context: 'to read now' },
+      { word: 'read', pronunciation: 'ˈred', context: 'read before now' },
+      { word: 'lead', pronunciation: 'ˈlēd', context: 'to guide someone' },
+      { word: 'lead', pronunciation: 'ˈled', context: 'the metal' },
+      { word: 'wind', pronunciation: 'ˈwind', context: 'moving air' },
+      { word: 'wind', pronunciation: 'ˈwīnd', context: 'to twist or turn' }
+    ];
+
+    function pronunciationRecordingId(word, pronunciation) {
+      const codepoints = Array.from(String(pronunciation || '')).map(char => char.codePointAt(0).toString(16)).join('-');
+      return `pronunciation:${word.toLowerCase()}:${codepoints}`;
+    }
+
+    const WORD_RECORDING_TARGETS = [
+      ...TRICKY_WORD_RECORDINGS.map(word => ({ id: `tricky:${word.toLowerCase()}`, word, kind: 'Tricky word', context: 'Teacher model for the Tricky Words tab' })),
+      ...HOMOGRAPH_RECORDINGS.map(item => ({ ...item, id: pronunciationRecordingId(item.word, item.pronunciation), kind: 'Pronunciation override' }))
+    ];
 
     // BOOTH STATE
     let boothQueue = [];
@@ -2509,8 +2583,9 @@
 
     async function initStudioData() {
       let bundledClips = [];
+      let bundledWordClips = [];
+      const appRoot = window.location.pathname.endsWith('/studio/') ? '../' : './';
       try {
-        const appRoot = window.location.pathname.endsWith('/studio/') ? '../' : './';
         document.querySelectorAll('[data-app-root-link]').forEach(link => { link.href = appRoot; });
         const res = await fetch(appRoot + 'little_wandle_master_voice_pack_v3.json', { cache: 'no-cache' });
         if (res.ok) {
@@ -2519,6 +2594,16 @@
         }
       } catch (e) {
         console.warn('The published master voice pack could not be loaded.', e);
+      }
+
+      try {
+        const response = await fetch(appRoot + 'little_wandle_word_voice_pack.json', { cache: 'no-cache' });
+        if (response.ok) {
+          const data = await response.json();
+          bundledWordClips = Array.isArray(data.clips) ? data.clips : [];
+        }
+      } catch (error) {
+        console.warn('The published word voice pack could not be loaded.', error);
       }
 
       const bundledById = new Map(bundledClips.map(clip => [clip.id, clip]));
@@ -2537,8 +2622,18 @@
         }
       });
 
+      const bundledWordsById = new Map(bundledWordClips.map(clip => [clip.id, clip]));
+      WORD_RECORDING_TARGETS.forEach(target => {
+        const cached = localStorage.getItem('word_audio_' + target.id);
+        const bundled = bundledWordsById.get(target.id);
+        if (cached) WORD_AUDIO_MAP.set(target.id, { id: target.id, hasAudio: true, source: 'teacher', base64: cached });
+        else if (bundled && bundled.base64Audio) WORD_AUDIO_MAP.set(target.id, { id: target.id, hasAudio: true, source: bundled.source || 'published', base64: bundled.base64Audio });
+        else WORD_AUDIO_MAP.set(target.id, { id: target.id, hasAudio: false, source: 'missing', base64: '' });
+      });
+
       updateProgressStats();
       renderSoundCards();
+      renderWordRecordingCards();
     }
 
     function updateProgressStats() {
@@ -2657,6 +2752,43 @@
           </div>
         `;
 
+        grid.appendChild(card);
+      });
+    }
+
+    function renderWordRecordingCards() {
+      const grid = document.getElementById('wordRecordingsGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      WORD_RECORDING_TARGETS.forEach(target => {
+        const audio = WORD_AUDIO_MAP.get(target.id);
+        const hasAudio = Boolean(audio && audio.base64);
+        const card = document.createElement('div');
+        card.className = 'sound-card';
+        card.dataset.wordRecordingId = target.id;
+        card.innerHTML = `
+          <div class="sound-card-header">
+            <div>
+              <div class="word-recording-kind">${target.kind}</div>
+              <div class="sound-grapheme-big">${target.word}</div>
+              ${target.pronunciation ? `<span class="sound-ipa-badge">/${target.pronunciation}/</span>` : ''}
+            </div>
+            <span class="sound-status-badge ${hasAudio ? 'status-teacher' : 'status-empty'}">${hasAudio ? '✅ Ready' : 'Empty'}</span>
+          </div>
+          <div class="sound-body-meta">
+            <div class="sound-catchphrase">${target.context}</div>
+            <div class="sound-tip">Record the whole word naturally. This is separate from the phoneme recordings.</div>
+          </div>
+          <div class="sound-actions-row">
+            <button class="btn-act btn-record ${activeWordRecordingId === target.id ? 'recording' : ''}" onclick="toggleWordRecording('${target.id}')">
+              <span>${activeWordRecordingId === target.id ? 'Stop' : (hasAudio ? 'Re-record' : 'Record')}</span>
+            </button>
+            <button class="btn-act btn-play" onclick="playWordPreview('${target.id}', this)" ${!hasAudio ? 'disabled style="opacity:0.45;"' : ''}><span>Listen</span></button>
+            <label class="btn-act btn-download-wav" style="cursor:pointer;">
+              <span>Upload</span>
+              <input type="file" accept="audio/*,.wav,.mp3,.m4a,.webm" style="display:none;" onchange="handleWordUpload('${target.id}', this.files[0])">
+            </label>
+          </div>`;
         grid.appendChild(card);
       });
     }
@@ -2931,7 +3063,7 @@
       return new Uint8Array(buffer);
     }
 
-    async function processAndSaveBlob(soundId, audioBlob) {
+    async function processAndSaveBlob(soundId, audioBlob, targetType = 'sound') {
       try {
         const arrayBuf = await audioBlob.arrayBuffer();
         const decodeCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2983,11 +3115,18 @@
         for (let i = 0; i < wavBytes.byteLength; i++) binary += String.fromCharCode(wavBytes[i]);
         const base64Wav = 'data:audio/wav;base64,' + btoa(binary);
 
-        AUDIO_STEMS_MAP.set(soundId, { id: soundId, hasAudio: true, source: 'teacher', base64: base64Wav });
-        localStorage.setItem('sound_stem_' + soundId, base64Wav);
-
-        saveAudioDirect(soundId, base64Wav);
-        showToast('Recorded, normalized (' + gain.toFixed(1) + 'x boost), and saved "' + soundId + '"!');
+        if (targetType === 'word') {
+          WORD_AUDIO_MAP.set(soundId, { id: soundId, hasAudio: true, source: 'teacher', base64: base64Wav });
+          localStorage.setItem('word_audio_' + soundId, base64Wav);
+          localStorage.setItem('phonics_audio_last_saved', soundId + ':' + Date.now());
+          showToast('Word recording normalized and saved on this browser.');
+          renderWordRecordingCards();
+        } else {
+          AUDIO_STEMS_MAP.set(soundId, { id: soundId, hasAudio: true, source: 'teacher', base64: base64Wav });
+          localStorage.setItem('sound_stem_' + soundId, base64Wav);
+          saveAudioDirect(soundId, base64Wav);
+          showToast('Recorded, normalized (' + gain.toFixed(1) + 'x boost), and saved "' + soundId + '"!');
+        }
         decodeCtx.close();
       } catch (err) {
         console.error("Audio processing fallback:", err);
@@ -2998,6 +3137,7 @@
       if (activeRecordingId === soundId) {
         stopRecordingSound(soundId);
       } else {
+        if (activeWordRecordingId) stopWordRecording();
         if (activeRecordingId) stopRecordingSound(activeRecordingId);
         startRecordingSound(soundId);
       }
@@ -3045,6 +3185,61 @@
         activeMediaRecorder.stop();
       }
       activeRecordingId = null;
+    }
+
+    function toggleWordRecording(recordingId) {
+      if (activeWordRecordingId === recordingId) stopWordRecording();
+      else {
+        if (activeRecordingId) stopRecordingSound(activeRecordingId);
+        if (activeWordRecordingId) stopWordRecording();
+        startWordRecording(recordingId);
+      }
+    }
+
+    async function startWordRecording(recordingId) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        activeWordRecordingId = recordingId;
+        activeAudioChunks = [];
+        activeMediaRecorder = new MediaRecorder(stream);
+        activeMediaRecorder.ondataavailable = event => { if (event.data.size > 0) activeAudioChunks.push(event.data); };
+        activeMediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(activeAudioChunks, { type: 'audio/webm' });
+          stream.getTracks().forEach(track => track.stop());
+          await processAndSaveBlob(recordingId, audioBlob, 'word');
+          activeWordRecordingId = null;
+          renderWordRecordingCards();
+        };
+        activeMediaRecorder.start();
+        renderWordRecordingCards();
+      } catch (error) {
+        activeWordRecordingId = null;
+        alert('Please enable microphone permissions in your browser to record.');
+      }
+    }
+
+    function stopWordRecording() {
+      if (activeMediaRecorder && activeMediaRecorder.state !== 'inactive') activeMediaRecorder.stop();
+      activeWordRecordingId = null;
+      renderWordRecordingCards();
+    }
+
+    async function handleWordUpload(recordingId, file) {
+      if (!file) return;
+      await processAndSaveBlob(recordingId, file, 'word');
+    }
+
+    function playWordPreview(recordingId, button) {
+      const recording = WORD_AUDIO_MAP.get(recordingId);
+      if (!recording || !recording.base64) {
+        showToast('Record or upload this word first.');
+        return;
+      }
+      if (button) button.classList.add('playing');
+      const audio = new Audio(recording.base64);
+      audio.onended = () => { if (button) button.classList.remove('playing'); };
+      audio.onerror = () => { if (button) button.classList.remove('playing'); };
+      audio.play().catch(() => { if (button) button.classList.remove('playing'); });
     }
 
     function drawLiveWaveform(soundId) {
@@ -3173,9 +3368,42 @@
       showToast("Master Sound Pack JSON Exported (" + exportClips.length + " clips)!");
     }
 
+    function exportWordVoicePack() {
+      const clips = WORD_RECORDING_TARGETS.map(target => {
+        const recording = WORD_AUDIO_MAP.get(target.id);
+        if (!recording || !recording.base64) return null;
+        return {
+          id: target.id,
+          word: target.word,
+          kind: target.kind,
+          pronunciation: target.pronunciation || '',
+          context: target.context,
+          base64Audio: recording.base64,
+          source: recording.source || 'teacher'
+        };
+      }).filter(Boolean);
+      const pack = {
+        name: 'Prep 2 Teacher Word Voice Pack',
+        version: '1.0-teacher-custom',
+        exportedAt: new Date().toISOString(),
+        totalClips: clips.length,
+        clips
+      };
+      const blob = new Blob([JSON.stringify(pack, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'little_wandle_word_voice_pack.json';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      showToast('Word Voice Pack exported. Send this JSON file for GitHub publishing.');
+    }
+
     async function syncAllToStudentApp() {
       localStorage.setItem('phonics_audio_sync_version', String(Date.now()));
-      showToast("Saved recordings are ready in the Student App on this browser.");
+      showToast("Saved recordings are ready in the Student App on this browser only.");
       if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 

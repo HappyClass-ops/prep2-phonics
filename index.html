@@ -1683,10 +1683,6 @@
                 <line x1="10" y1="14" x2="21" y2="3"></line>
               </svg>
             </a>
-            <button class="btn-act btn-head-secondary" style="padding: 7px 12px; font-size: 0.82rem; border-radius: var(--radius-sm); border: 1px solid var(--color-hairline-strong);" onclick="shuffleImageQuery()" title="Try a different example image context">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width: 13px; height: 13px;"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-              <span>Different Picture Idea</span>
-            </button>
           </div>
         </div>
 
@@ -1713,7 +1709,7 @@
             </button>
             <button class="btn-act btn-act-green" id="btnSentenceBuilder" onclick="openSentenceGame()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v4h1.5a2.5 2.5 0 0 1 0 5H2v4a2 2 0 0 0 2 2h4v-1.5a2.5 2.5 0 0 1 5 0V22h4a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"></path></svg>
-              <span>Make a Sentence</span>
+              <span>Build the Example</span>
             </button>
           </div>
         </div>
@@ -1724,7 +1720,7 @@
           <div class="meaning-text-body" id="resMeaningText">Explore the meaning, sound buttons, and sentence examples.</div>
           
           <div id="dictionaryExampleSection">
-          <div class="section-label" style="margin-top: 4px;">Example in a Sentence</div>
+          <div class="section-label" style="margin-top: 4px;">Dictionary Example</div>
           <div class="example-quote-box">
             <div class="example-quote-text" id="resExampleSentence">"Explore the meaning, sound buttons, and sentence examples."</div>
             <button class="btn-sentence-audio" id="btnSentenceVoice" onclick="speakCurrentExampleSentence()" title="Hear sentence read aloud">
@@ -1841,11 +1837,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--color-primary);">
             <path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v4h1.5a2.5 2.5 0 0 1 0 5H2v4a2 2 0 0 0 2 2h4v-1.5a2.5 2.5 0 0 1 5 0V22h4a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"></path>
           </svg>
-          <div class="game-title">Sentence Builder Puzzle</div>
-        </div>
-        <div class="game-level-tabs">
-          <button class="game-level-btn active" id="btnLevelEasy" onclick="setGameLevel('easy')">Level 1 (Core)</button>
-          <button class="game-level-btn" id="btnLevelHard" onclick="setGameLevel('hard')">Level 2 (Extended)</button>
+          <div class="game-title">Example Builder Puzzle</div>
         </div>
         <button class="btn-close-modal" onclick="closeSentenceGame()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -1853,9 +1845,9 @@
       </div>
 
       <div>
-        <div class="puzzle-bank-label" style="margin-bottom: 6px;">Sentence Track</div>
+        <div class="puzzle-bank-label" style="margin-bottom: 6px;">Example Track</div>
         <div class="puzzle-target-dropzone" id="puzzleDropzone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-          <div class="dropzone-placeholder-text" id="dropzonePlaceholder">Drag or tap puzzle tiles below to build the sentence.</div>
+          <div class="dropzone-placeholder-text" id="dropzonePlaceholder">Drag or tap puzzle tiles below to rebuild the dictionary example.</div>
         </div>
       </div>
 
@@ -1873,10 +1865,10 @@
       </div>
 
       <div class="game-actions-bar">
-        <div class="game-feedback-msg" id="gameFeedbackMsg">Tap or drag words to construct the sentence in order.</div>
+        <div class="game-feedback-msg" id="gameFeedbackMsg">Tap or drag words to rebuild the dictionary example.</div>
         <div class="game-buttons-group">
           <button class="btn-act btn-act-secondary" onclick="resetCurrentSentencePuzzle()">Reset</button>
-          <button class="btn-act btn-act-primary" onclick="validateSentencePuzzle()">Check Sentence</button>
+          <button class="btn-act btn-act-primary" onclick="validateSentencePuzzle()">Check Example</button>
         </div>
       </div>
     </div>
@@ -1897,6 +1889,30 @@
     } catch (e) {
       console.warn('Teacher recordings could not be loaded from this device.', e);
     }
+
+    const WORD_AUDIO_CACHE = new Map();
+    function pronunciationRecordingId(word, pronunciation) {
+      const codepoints = Array.from(String(pronunciation || '')).map(char => char.codePointAt(0).toString(16)).join('-');
+      return `pronunciation:${String(word || '').toLowerCase()}:${codepoints}`;
+    }
+    function trickyRecordingId(word) {
+      return `tricky:${String(word || '').toLowerCase()}`;
+    }
+    function localWordAudio(recordingId) {
+      try { return localStorage.getItem('word_audio_' + recordingId) || ''; }
+      catch (error) { return ''; }
+    }
+    function wordAudioFor(recordingId) {
+      return localWordAudio(recordingId) || WORD_AUDIO_CACHE.get(recordingId) || '';
+    }
+    const wordAudioLoadPromise = fetch('./little_wandle_word_voice_pack.json', { cache: 'no-cache' })
+      .then(response => response.ok ? response.json() : { clips: [] })
+      .then(pack => {
+        (Array.isArray(pack.clips) ? pack.clips : []).forEach(clip => {
+          if (clip && clip.id && clip.base64Audio) WORD_AUDIO_CACHE.set(clip.id, clip.base64Audio);
+        });
+      })
+      .catch(error => console.warn('The published word voice pack could not be loaded.', error));
 
     let audioCtx;
     async function ensureAudioContext() {
@@ -2458,6 +2474,10 @@
     let activeLookupController = null;
     let lookupRequestId = 0;
 
+    wordAudioLoadPromise.then(() => {
+      if (currentWordSenses.length) applyActiveSenseData(currentActiveSenseIdx);
+    });
+
     // The dictionary is deliberately live and provider-led: there is no local
     // definition database, no historical fallback, and no guessed root word.
     // The key is public by design for this non-commercial GitHub Pages app.
@@ -2584,7 +2604,7 @@
         const def = cleanMerriamText(sourceSense.definition);
         return {
           pos,
-          title: `${pos.charAt(0).toUpperCase() + pos.slice(1)}${sourceSenses.length > 1 ? ` ${sourceSense.number || index + 1}` : ''}`,
+          title: pos.charAt(0).toUpperCase() + pos.slice(1),
           def,
           example: sourceSense.example,
           exampleEasy: sourceSense.example,
@@ -2616,6 +2636,26 @@
           if (!seen.has(key)) { seen.add(key); senses.push(sense); }
         });
       });
+      const audioPronunciations = new Map();
+      senses.forEach(sense => (sense.pronunciations || []).forEach(pronunciation => {
+        if (!pronunciation.audioUrl) return;
+        if (!audioPronunciations.has(pronunciation.audioUrl)) audioPronunciations.set(pronunciation.audioUrl, new Set());
+        audioPronunciations.get(pronunciation.audioUrl).add(pronunciation.mw);
+      }));
+      const conflictingAudioUrls = new Set(
+        [...audioPronunciations.entries()].filter(([, pronunciations]) => pronunciations.size > 1).map(([audioUrl]) => audioUrl)
+      );
+      if (conflictingAudioUrls.size) {
+        senses.forEach(sense => {
+          (sense.pronunciations || []).forEach(pronunciation => {
+            if (conflictingAudioUrls.has(pronunciation.audioUrl)) {
+              pronunciation.audioUrl = '';
+              pronunciation.providerAudioConflict = true;
+            }
+          });
+          sense.audioUrl = sense.pronunciations && sense.pronunciations[0] ? sense.pronunciations[0].audioUrl : '';
+        });
+      }
       const result = { found: senses.length > 0, ipa: senses[0] ? senses[0].pronunciation : '', senses, suggestions: [] };
       DICTIONARY_LOOKUP_CACHE.set(word, result);
       return result;
@@ -2635,23 +2675,34 @@
       }
 
       // 1. Local instant suggestions from 600+ word primary school lexicon
-      const localMatches = CORE_LEXICON.filter(w => w.startsWith(q)).slice(0, 8);
-      renderSuggestionsDropdown(localMatches);
+      const localMatches = CORE_LEXICON.filter(w => w.startsWith(q) && w !== q).slice(0, 7);
+      renderSuggestionsDropdown(localMatches, q);
 
     }
 
-    function renderSuggestionsDropdown(list) {
+    function renderSuggestionsDropdown(list, exactWord = '') {
       const dropdown = document.getElementById('autocompleteDropdown');
-      currentSuggestions = list;
+      currentSuggestions = [
+        ...(exactWord ? [{ word: exactWord, exact: true }] : []),
+        ...list.map(word => ({ word, exact: false }))
+      ];
       activeDropdownIndex = -1;
 
-      if (list.length > 0) {
-        dropdown.innerHTML = list.map((w, idx) => `
-          <div class="autocomplete-item" id="ac-item-${idx}" onclick="selectAutocomplete('${w}')">
-            <span>${w}</span>
-            <span class="autocomplete-item-tag">Word</span>
-          </div>
-        `).join('');
+      if (currentSuggestions.length > 0) {
+        dropdown.innerHTML = '';
+        currentSuggestions.forEach((suggestion, idx) => {
+          const item = document.createElement('div');
+          item.className = 'autocomplete-item';
+          item.id = `ac-item-${idx}`;
+          const label = document.createElement('span');
+          label.innerText = suggestion.exact ? `Search “${suggestion.word}”` : suggestion.word;
+          const tag = document.createElement('span');
+          tag.className = 'autocomplete-item-tag';
+          tag.innerText = suggestion.exact ? 'Exact word' : 'Suggestion';
+          item.append(label, tag);
+          item.onclick = () => selectAutocomplete(suggestion.word);
+          dropdown.appendChild(item);
+        });
         dropdown.style.display = 'block';
       } else {
         dropdown.style.display = 'none';
@@ -2675,7 +2726,7 @@
         } else if (e.key === 'Enter') {
           e.preventDefault();
           if (activeDropdownIndex >= 0 && activeDropdownIndex < currentSuggestions.length) {
-            selectAutocomplete(currentSuggestions[activeDropdownIndex]);
+            selectAutocomplete(currentSuggestions[activeDropdownIndex].word);
           } else {
             dropdown.style.display = 'none';
             lookupWord();
@@ -2698,7 +2749,7 @@
         el.classList.toggle('selected', idx === activeDropdownIndex);
       });
       if (activeDropdownIndex >= 0) {
-        document.getElementById('wordSearchInput').value = currentSuggestions[activeDropdownIndex];
+        document.getElementById('wordSearchInput').value = currentSuggestions[activeDropdownIndex].word;
       }
     }
 
@@ -2836,7 +2887,9 @@
       currentWordSenses.forEach((s, idx) => {
         const btn = document.createElement('button');
         btn.className = `sense-pill-btn ${idx === currentActiveSenseIdx ? 'active' : ''}`;
-        btn.innerText = `${idx + 1}. ${s.title || s.pos}`;
+        const wordClass = getWordClassDetails(s.pos).name.charAt(0) + getWordClassDetails(s.pos).name.slice(1).toLowerCase();
+        const definitionPreview = s.def.length > 42 ? `${s.def.slice(0, 39).trim()}…` : s.def;
+        btn.innerText = `${idx + 1}. ${wordClass} — ${definitionPreview}`;
         btn.onclick = () => selectSense(idx);
         container.appendChild(btn);
       });
@@ -2964,15 +3017,22 @@
       document.getElementById('resExampleSentence').innerText = hasExample ? `"${sense.example}"` : '';
       const sentenceButton = document.getElementById('btnSentenceBuilder');
       sentenceButton.disabled = !hasExample;
-      sentenceButton.title = hasExample ? 'Build this dictionary example sentence' : 'Sentence Builder needs a dictionary example for this meaning.';
+      sentenceButton.title = hasExample ? 'Rebuild this trusted dictionary example' : 'Example Builder needs a dictionary example for this meaning.';
       document.getElementById('resVisualTitle').innerText = sense.title || wc.name;
       document.getElementById('resVisualDesc').innerText = defStr;
 
       currentParsedResult = applyDictionaryPronunciation(parseWordToPhonemes(currentSearchWord), pronunciation.mw);
       renderSoundButtons(currentParsedResult);
       const wholeWordButton = document.getElementById('btnSayWholeWord');
-      wholeWordButton.disabled = !pronunciation.audioUrl;
-      wholeWordButton.title = pronunciation.audioUrl ? 'Hear this exact dictionary pronunciation' : 'No exact dictionary recording is available for this form.';
+      const teacherWordAudio = wordAudioFor(pronunciationRecordingId(currentSearchWord, pronunciation.mw));
+      wholeWordButton.disabled = !(teacherWordAudio || pronunciation.audioUrl);
+      wholeWordButton.title = teacherWordAudio
+        ? 'Hear the teacher-recorded pronunciation'
+        : pronunciation.audioUrl
+          ? 'Hear this exact dictionary pronunciation'
+          : pronunciation.providerAudioConflict
+            ? 'The dictionary reused one recording for different pronunciations, so it has been blocked.'
+            : 'No exact dictionary recording is available for this form.';
 
       // Every image query is rebuilt from the selected, exact-match dictionary sense.
       currentImageOptions = buildVerifiedImageQueries(currentSearchWord, sense);
@@ -3143,10 +3203,14 @@
       }
     }
 
-    function speakNaturalWord() {
+    async function speakNaturalWord() {
+      await wordAudioLoadPromise;
       const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
       const activePronunciation = activeSense && activeSense.pronunciations && activeSense.pronunciations[currentPronunciationIndex];
-      playAudioUrl(activePronunciation ? activePronunciation.audioUrl : activeSense && activeSense.audioUrl);
+      const teacherAudio = activePronunciation
+        ? wordAudioFor(pronunciationRecordingId(currentSearchWord, activePronunciation.mw))
+        : '';
+      playAudioUrl(teacherAudio || (activePronunciation ? activePronunciation.audioUrl : activeSense && activeSense.audioUrl));
     }
 
     function playAudioUrl(audioUrl, cardElement) {
@@ -3171,6 +3235,12 @@
     async function playTrickyWordAudio(word, cardElement) {
       if (cardElement) cardElement.classList.add('playing');
       try {
+        await wordAudioLoadPromise;
+        const teacherAudio = wordAudioFor(trickyRecordingId(word));
+        if (teacherAudio) {
+          playAudioUrl(teacherAudio, cardElement);
+          return;
+        }
         const result = await resolveDictionaryWord(word);
         const audioUrl = result.senses
           .flatMap(sense => sense.pronunciations || [])
@@ -3290,35 +3360,24 @@
     }
 
     // ================= 10. SENSE-AWARE SENTENCE BUILDER PUZZLE ENGINE =================
-    let currentGameLevel = 'easy';
     let currentPuzzleSolution = [];
     let currentPlacedTiles = [];
     let currentClueUsesLeft = 1;
 
-    function generateUniversalSentence(word, level) {
+    function generateUniversalSentence(word) {
       const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
-      
-      if (activeSense && activeSense.puzzle && activeSense.puzzle[level] && activeSense.puzzle[level].length > 0) {
-        return [...activeSense.puzzle[level]];
-      }
-
-      if (level === 'easy' && activeSense && activeSense.exampleEasy) {
-        const words = activeSense.exampleEasy.replace(/[.!?]/g, '').split(/\s+/).filter(Boolean);
-        return words.concat(['.']);
-      }
-
-      if (activeSense && activeSense.example) {
-        const words = activeSense.example.replace(/[.!?]/g, '').split(/\s+/).filter(Boolean);
-        return words.concat(['.']);
-      }
-
-      return [];
+      const example = activeSense && activeSense.example ? activeSense.example.trim() : '';
+      if (!example) return [];
+      const terminalPunctuation = (example.match(/[.!?]$/) || ['.'])[0];
+      const words = example.replace(/[.!?]+$/, '').split(/\s+/).filter(Boolean);
+      if (words.length) words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+      return words.concat([terminalPunctuation]);
     }
 
     function openSentenceGame() {
       const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
       if (!activeSense || !activeSense.example) {
-        showToast('Sentence Builder is available when the dictionary provides an example for this meaning.');
+        showToast('Example Builder is available when the dictionary provides an example for this meaning.');
         return;
       }
       document.getElementById('gameModalBackdrop').style.display = 'flex';
@@ -3329,15 +3388,8 @@
       document.getElementById('gameModalBackdrop').style.display = 'none';
     }
 
-    function setGameLevel(level) {
-      currentGameLevel = level;
-      document.getElementById('btnLevelEasy').classList.toggle('active', level === 'easy');
-      document.getElementById('btnLevelHard').classList.toggle('active', level === 'hard');
-      setupSentencePuzzle();
-    }
-
     function setupSentencePuzzle() {
-      const sentenceTokens = generateUniversalSentence(currentSearchWord, currentGameLevel);
+      const sentenceTokens = generateUniversalSentence(currentSearchWord);
       if (sentenceTokens.length === 0) return;
 
       const targetLower = currentSearchWord.toLowerCase();
@@ -3372,7 +3424,7 @@
 
       const msg = document.getElementById('gameFeedbackMsg');
       msg.className = "game-feedback-msg";
-      msg.innerText = "Tap or drag words to construct the sentence in order.";
+      msg.innerText = "Tap or drag words to rebuild the dictionary example.";
     }
 
     function updateClueButtonState() {
@@ -3442,7 +3494,7 @@
       dropzone.innerHTML = "";
 
       if (currentPlacedTiles.length === 0) {
-        dropzone.innerHTML = '<div class="dropzone-placeholder-text">Drag or tap puzzle tiles below to build the sentence.</div>';
+        dropzone.innerHTML = '<div class="dropzone-placeholder-text">Drag or tap puzzle tiles below to rebuild the dictionary example.</div>';
         return;
       }
 
@@ -3502,7 +3554,7 @@
       const msg = document.getElementById('gameFeedbackMsg');
       if (currentPlacedTiles.length === 0) {
         msg.className = "game-feedback-msg error";
-        msg.innerText = "Place words in the sentence track first.";
+        msg.innerText = "Place words in the example track first.";
         return;
       }
 
@@ -3511,7 +3563,7 @@
 
       if (isCorrect) {
         msg.className = "game-feedback-msg success";
-        msg.innerText = "Sentence correctly constructed.";
+        msg.innerText = "Dictionary example correctly rebuilt.";
         if (window.confetti) {
           confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
         }

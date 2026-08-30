@@ -8,6 +8,26 @@ const projectRoot = path.resolve(__dirname, '..');
 const chromePath = process.env.CHROME_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
 const entries = {
+  haughty: [{
+    meta: { id: 'haughty', stems: ['haughty', 'haughtier', 'haughtiest'] },
+    hwi: { hw: 'haugh*ty', prs: [{ mw: 'ˈhȯ-tē', sound: { audio: 'haughty01' } }] },
+    fl: 'adjective',
+    shortdef: ['proud and unfriendly'],
+    def: [{ sseq: [[['sense', { sn: '1', dt: [['text', '{bc}proud and unfriendly'], ['vis', [{ t: 'a {it}haughty{/it} princess' }]]] }]]] }]
+  }],
+  tear: [
+    {
+      meta: { id: 'tear:1', stems: ['tear', 'tears'] },
+      hwi: { hw: 'tear', prs: [{ mw: 'ˈtir', sound: { audio: 'tear0001' } }] },
+      fl: 'noun', shortdef: ['a drop of liquid that comes from your eye']
+    },
+    {
+      meta: { id: 'tear:2', stems: ['tear', 'tears', 'tearing', 'tore', 'torn'] },
+      hwi: { hw: 'tear', prs: [{ mw: 'ˈter', sound: { audio: 'tear0001' } }] },
+      fl: 'verb', shortdef: ['to pull into two or more pieces by force'],
+      def: [{ sseq: [[['sense', { sn: '1', dt: [['text', '{bc}to pull into two or more pieces by force'], ['vis', [{ t: 'This paper is easy to {it}tear{/it}.' }]]] }]]] }]
+    }
+  ],
   cat: [
     {
       meta: { id: 'cat', stems: ['cat', 'cats'] },
@@ -57,7 +77,8 @@ const entries = {
 
 async function startServer() {
   const server = http.createServer((request, response) => {
-    const requestPath = request.url === '/' ? '/index.html' : request.url;
+    let requestPath = request.url === '/' ? '/index.html' : request.url.split('?')[0];
+    if (requestPath.endsWith('/')) requestPath += 'index.html';
     const filePath = path.join(projectRoot, decodeURIComponent(requestPath.split('?')[0]));
     if (!filePath.startsWith(projectRoot) || !fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
       response.writeHead(404).end('Not found');
@@ -104,6 +125,7 @@ async function run() {
     await page.waitForTimeout(100);
     assert.equal(await page.locator('#wordSearchInput').inputValue(), '', 'Word Finder should open with an empty search field');
     assert.equal(await page.locator('#dictWorkspaceCard').isVisible(), false, 'Word Finder should not show stale word content before a search');
+    assert.equal(await page.getByText('Different Picture Idea', { exact: true }).count(), 0, 'the misleading alternate picture control must be removed');
     const trickyTotal = await page.locator('#trickyGrid .tricky-card').count();
     const soundboardTotal = await page.locator('#soundboardGrid .sb-tile').count();
     assert.match(await page.locator('#tabTrickyBtn').innerText(), new RegExp(`\\(${trickyTotal}\\)`));
@@ -122,6 +144,7 @@ async function run() {
     const meaningButtons = await page.locator('#dictSensesContainer .sense-pill-btn').allTextContents();
     const visibleText = await page.locator('#dictWorkspaceCard').innerText();
     assert.equal(meaningButtons.length, 2, `cat should expose two exact-entry meanings, received: ${meaningButtons.join(', ')}`);
+    assert.match(meaningButtons[0], /small animal|soft fur|pet/i, 'meaning tabs should identify the meaning, not merely say Noun 1');
     assert.doesNotMatch(visibleText, /allow or permit|saber-toothed/i);
     assert.match(await page.locator('#resMeaningText').innerText(), /^A small animal with soft fur/i, 'the elementary short definition should be preferred over raw technical sense text');
     const imageUrl = new URL(await page.locator('#btnGoogleSafeSearch').getAttribute('href'));
@@ -148,7 +171,7 @@ async function run() {
 
     await page.locator('#tabDictBtn').click();
     await search(page, 'cautious');
-    const sentenceButton = page.getByRole('button', { name: 'Make a Sentence' });
+    const sentenceButton = page.getByRole('button', { name: 'Build the Example' });
     assert.equal(await sentenceButton.isDisabled(), true, 'Sentence Builder must be unavailable without a provider example');
     assert.equal(await page.locator('#dictionaryExampleSection').isVisible(), false, 'No fabricated sentence should be displayed');
     console.log('PASS: Sentence Builder never fabricates a sentence when the selected sense has no example');
@@ -161,6 +184,22 @@ async function run() {
     assert.deepEqual(cautiousUnits.map(unit => unit.soundId), ['k', 'or-long', 'sh', 'schwa', 's']);
     console.log('PASS: the phonics engine applies ordered grapheme rules to cautious');
 
+    await page.locator('#wordSearchInput').fill('zephyr');
+    const exactSuggestion = page.locator('#autocompleteDropdown .autocomplete-item').first();
+    assert.match(await exactSuggestion.innerText(), /Search “zephyr”/i, 'every typed word should offer an exact-search action even when it is outside the local lexicon');
+    console.log('PASS: autocomplete never dead-ends for an exact typed word');
+
+    await search(page, 'haughty');
+    await page.getByRole('button', { name: 'Build the Example' }).click();
+    assert.equal(await page.locator('.game-level-btn').count(), 0, 'duplicate difficulty controls must be removed');
+    assert.equal(await page.locator('#gameModalBackdrop .game-title').innerText(), 'Example Builder Puzzle');
+    assert.match(await page.locator('.puzzle-bank-label').first().innerText(), /^Example Track$/i);
+    const haughtyTiles = await page.locator('#puzzleSourceBank .puzzle-tile').allTextContents();
+    assert.equal(haughtyTiles.includes('A'), true, 'the first tile must preserve sentence-style capitalization');
+    assert.equal(haughtyTiles.includes('a'), false, 'a lowercase first tile must not replace the capitalized tile');
+    await page.evaluate(() => closeSentenceGame());
+    console.log('PASS: the example puzzle has one honest mode and teaches capitalization');
+
     await search(page, 'read');
     assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').filter({ hasText: 'ea' }).getAttribute('data-sound-id'), 'ee-long');
     assert.equal(await page.locator('#dictPronunciationsContainer .sense-pill-btn').count(), 2);
@@ -168,6 +207,24 @@ async function run() {
     assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').filter({ hasText: 'ea' }).getAttribute('data-sound-id'), 'e-short');
     assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), true, 'an alternate pronunciation with no exact recording must not borrow the headword audio');
     console.log('PASS: selecting a heteronym pronunciation updates phonics without borrowing unrelated audio');
+
+    await search(page, 'tear');
+    await page.locator('#dictSensesContainer .sense-pill-btn').nth(1).click();
+    assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').filter({ hasText: 'ear' }).getAttribute('data-sound-id'), 'air-tri');
+    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), true, 'one provider audio file shared by two pronunciations must be rejected');
+    console.log('PASS: homograph audio collisions cannot teach the wrong whole-word pronunciation');
+
+    await page.evaluate(() => {
+      localStorage.setItem('word_audio_pronunciation:tear:2c8-74-65-72', 'data:audio/wav;base64,VEVTVA==');
+      applyActiveSenseData(currentActiveSenseIdx);
+      window.__playedAudioUrls = [];
+    });
+    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), false, 'a teacher pronunciation override must restore exact whole-word audio');
+    await page.evaluate(() => speakNaturalWord());
+    await page.waitForTimeout(20);
+    assert.equal((await page.evaluate(() => window.__playedAudioUrls)).at(-1), 'data:audio/wav;base64,VEVTVA==');
+    await page.evaluate(() => localStorage.removeItem('word_audio_pronunciation:tear:2c8-74-65-72'));
+    console.log('PASS: teacher-published pronunciation overrides replace blocked provider audio');
 
     await search(page, 'catt');
     const suggestions = await page.locator('#autocompleteDropdown .autocomplete-item span:first-child').allTextContents();
