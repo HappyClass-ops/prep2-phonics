@@ -1718,6 +1718,10 @@
         <div class="dict-body-content">
           <div class="section-label">Definition</div>
           <div class="meaning-text-body" id="resMeaningText">Explore the meaning, sound buttons, and sentence examples.</div>
+          <button class="btn-sentence-audio" id="btnDefinitionVoice" onclick="speakCurrentDefinition()" title="Hear this definition read aloud" style="margin: 8px 0 12px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            <span>Read Definition</span>
+          </button>
           
           <div id="dictionaryExampleSection">
           <div class="section-label" style="margin-top: 4px;">Dictionary Example</div>
@@ -2483,6 +2487,11 @@
     // The key is public by design for this non-commercial GitHub Pages app.
     const MERRIAM_WEBSTER_API_KEY = 'a7c26507-43bf-4771-a653-8efa33e99fb7';
     const MERRIAM_WEBSTER_ENDPOINT = 'https://dictionaryapi.com/api/v3/references/sd2/json/';
+    const ELEVENLABS_API_KEY = 'sk_8f469fefb6298ecdb465d6426fe9b09fc31c108e0d842013';
+    const ELEVENLABS_VOICE_ID = 'JBFqnCBsd6RMkjVDRZzb'; // George — British English
+    const ELEVENLABS_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?output_format=mp3_44100_128`;
+    const ELEVENLABS_AUDIO_CACHE = new Map();
+    let elevenLabsBlocked = false;
     const DICTIONARY_LOOKUP_CACHE = new Map();
     let toastTimer = null;
 
@@ -3016,7 +3025,7 @@
       document.getElementById('dictionaryExampleSection').style.display = hasExample ? 'block' : 'none';
       document.getElementById('resExampleSentence').innerText = hasExample ? `"${sense.example}"` : '';
       const sentenceButton = document.getElementById('btnSentenceBuilder');
-      sentenceButton.disabled = !hasExample;
+      sentenceButton.disabled = false;
       sentenceButton.title = hasExample ? 'Rebuild this trusted dictionary example' : 'Example Builder needs a dictionary example for this meaning.';
       document.getElementById('resVisualTitle').innerText = sense.title || wc.name;
       document.getElementById('resVisualDesc').innerText = defStr;
@@ -3025,14 +3034,12 @@
       renderSoundButtons(currentParsedResult);
       const wholeWordButton = document.getElementById('btnSayWholeWord');
       const teacherWordAudio = wordAudioFor(pronunciationRecordingId(currentSearchWord, pronunciation.mw));
-      wholeWordButton.disabled = !(teacherWordAudio || pronunciation.audioUrl);
+      wholeWordButton.disabled = !(teacherWordAudio || pronunciation.audioUrl || ELEVENLABS_API_KEY);
       wholeWordButton.title = teacherWordAudio
         ? 'Hear the teacher-recorded pronunciation'
         : pronunciation.audioUrl
           ? 'Hear this exact dictionary pronunciation'
-          : pronunciation.providerAudioConflict
-            ? 'The dictionary reused one recording for different pronunciations, so it has been blocked.'
-            : 'No exact dictionary recording is available for this form.';
+          : 'Hear this exact word with the British ElevenLabs voice';
 
       // Every image query is rebuilt from the selected, exact-match dictionary sense.
       currentImageOptions = buildVerifiedImageQueries(currentSearchWord, sense);
@@ -3068,6 +3075,18 @@
       const btn = document.getElementById('btnSentenceVoice');
       btn.classList.add('playing');
       speakText(sentenceText, () => btn.classList.remove('playing'));
+    }
+
+    function speakCurrentDefinition() {
+      const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
+      const definition = activeSense ? activeSense.def : '';
+      if (!definition) {
+        showToast('This word does not have a trusted definition to read.');
+        return;
+      }
+      const button = document.getElementById('btnDefinitionVoice');
+      button.classList.add('playing');
+      speakText(definition.charAt(0).toUpperCase() + definition.slice(1), () => button.classList.remove('playing'));
     }
 
     function toggleHomophoneWord() {
@@ -3210,7 +3229,16 @@
       const teacherAudio = activePronunciation
         ? wordAudioFor(pronunciationRecordingId(currentSearchWord, activePronunciation.mw))
         : '';
-      playAudioUrl(teacherAudio || (activePronunciation ? activePronunciation.audioUrl : activeSense && activeSense.audioUrl));
+      if (teacherAudio) {
+        playAudioUrl(teacherAudio);
+        return;
+      }
+      const dictionaryAudio = activePronunciation ? activePronunciation.audioUrl : activeSense && activeSense.audioUrl;
+      const pronunciationContext = activeSense ? (activeSense.example || activeSense.def || '') : '';
+      playElevenLabsSpeech(currentSearchWord, {
+        nextText: pronunciationContext,
+        onFailure: () => playAudioUrl(dictionaryAudio)
+      });
     }
 
     function playAudioUrl(audioUrl, cardElement) {
@@ -3246,14 +3274,75 @@
           .flatMap(sense => sense.pronunciations || [])
           .map(pronunciation => pronunciation.audioUrl)
           .find(Boolean);
-        playAudioUrl(audioUrl, cardElement);
+        const context = result.senses[0] ? (result.senses[0].example || result.senses[0].def || '') : '';
+        playElevenLabsSpeech(word, {
+          nextText: context,
+          cardElement,
+          onFailure: () => playAudioUrl(audioUrl, cardElement)
+        });
       } catch (error) {
         if (cardElement) cardElement.classList.remove('playing');
         showToast(`Audio for "${word}" is not available just now.`);
       }
     }
 
-    function speakText(text, onFinish) {
+    async function playElevenLabsSpeech(text, options = {}) {
+      const onFinish = typeof options.onFinish === 'function' ? options.onFinish : () => {};
+      const onFailure = typeof options.onFailure === 'function' ? options.onFailure : () => {
+        onFinish();
+        showToast('The British voice is unavailable just now.');
+      };
+      if (!text || elevenLabsBlocked) {
+        onFailure();
+        return;
+      }
+      const nextText = String(options.nextText || '').trim();
+      const cacheKey = `${text}\u241f${nextText}`;
+      try {
+        let audioUrl = ELEVENLABS_AUDIO_CACHE.get(cacheKey);
+        if (!audioUrl) {
+          const body = {
+            text,
+            model_id: 'eleven_flash_v2_5',
+            voice_settings: { stability: 0.55, similarity_boost: 0.75, style: 0.1, speed: 0.9 }
+          };
+          if (nextText) body.next_text = nextText;
+          const response = await fetch(ELEVENLABS_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVENLABS_API_KEY },
+            body: JSON.stringify(body)
+          });
+          if (!response.ok) {
+            if (response.status === 401 || response.status === 403) elevenLabsBlocked = true;
+            throw new Error(`ElevenLabs request failed (${response.status}).`);
+          }
+          audioUrl = URL.createObjectURL(await response.blob());
+          ELEVENLABS_AUDIO_CACHE.set(cacheKey, audioUrl);
+        }
+        if (options.cardElement) options.cardElement.classList.add('playing');
+        const audio = new Audio(audioUrl);
+        let finished = false;
+        const failOnce = () => {
+          if (finished) return;
+          finished = true;
+          if (options.cardElement) options.cardElement.classList.remove('playing');
+          onFailure();
+        };
+        audio.onended = () => {
+          if (finished) return;
+          finished = true;
+          if (options.cardElement) options.cardElement.classList.remove('playing');
+          onFinish();
+        };
+        audio.onerror = failOnce;
+        audio.play().catch(failOnce);
+      } catch (error) {
+        console.warn('ElevenLabs read-aloud unavailable; using the approved fallback.', error);
+        onFailure();
+      }
+    }
+
+    function speakBrowserText(text, onFinish) {
       const finish = typeof onFinish === 'function' ? onFinish : () => {};
       if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
         finish();
@@ -3271,6 +3360,13 @@
       utterance.onend = finish;
       utterance.onerror = finish;
       window.speechSynthesis.speak(utterance);
+    }
+
+    function speakText(text, onFinish) {
+      playElevenLabsSpeech(text, {
+        onFinish,
+        onFailure: () => speakBrowserText(text, onFinish)
+      });
     }
 
     function fallbackGoogleTTS(text) {
@@ -3377,7 +3473,7 @@
     function openSentenceGame() {
       const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
       if (!activeSense || !activeSense.example) {
-        showToast('Example Builder is available when the dictionary provides an example for this meaning.');
+        showToast('There is no dictionary example for this meaning, so there is nothing safe to build. Try another meaning.');
         return;
       }
       document.getElementById('gameModalBackdrop').style.display = 'flex';

@@ -21,6 +21,11 @@ assert.match(app, /function applyDictionaryPronunciation/, 'Selected dictionary 
 assert.match(app, /function buildVerifiedImageQueries/, 'Image searches must be built from the selected verified sense.');
 assert.match(app, /conflictingAudioUrls/, 'Provider audio shared by different pronunciations must be blocked.');
 assert.match(app, /wordAudioFor\(pronunciationRecordingId/, 'Exact teacher pronunciation recordings must override provider audio.');
+assert.match(app, /const ELEVENLABS_API_KEY = 'sk_[^']+'/, 'A valid-format ElevenLabs key must be configured.');
+assert.match(app, /JBFqnCBsd6RMkjVDRZzb/, 'The configured ElevenLabs voice must be George, the verified British voice.');
+assert.match(app, /function playElevenLabsSpeech[\s\S]*eleven_flash_v2_5/, 'Read-aloud must use the low-latency ElevenLabs speech path.');
+assert.match(app, /function speakNaturalWord[\s\S]*playElevenLabsSpeech[\s\S]*onFailure: \(\) => playAudioUrl/, 'Whole-word audio must try ElevenLabs and preserve the exact dictionary fallback.');
+assert.match(app, /function speakCurrentDefinition/, 'Definitions must expose read-aloud.');
 assert.match(app, /Search “\$\{suggestion\.word\}”/, 'Every typed word must keep an exact-search action.');
 assert.doesNotMatch(app, /Different Picture Idea|btnLevelEasy|btnLevelHard/, 'Misleading picture shuffling and duplicate puzzle levels must stay removed.');
 assert.doesNotMatch(app, /currentWordAudioUrl|PRIMARY_CURATED_DB/, 'Audio and meanings must not come from stale global or offline dictionary state.');
@@ -31,4 +36,4 @@ assert.match(studio, /const TRICKY_WORD_RECORDINGS = \[[^\]]+\]/, 'The studio mu
 assert.match(studio, /function exportWordVoicePack/, 'The studio must export a publishable word voice pack.');
 assert.match(studio, /this browser only[\s\S]*send that JSON file/, 'The studio must explain local-only use versus publishing for every pupil.');
 assert.equal(studio, fs.readFileSync('studio/index.html', 'utf8'), 'Both Teacher Studio routes must remain identical.');
-console.log('Content checks passed: exact dictionary ownership, pronunciation-safe audio, one honest example puzzle, complete search, and publishable teacher word recordings.');
+console.log('Content checks passed: exact dictionary ownership, ElevenLabs with safe audio fallback, responsive Example Builder, complete search, and publishable teacher recordings.');

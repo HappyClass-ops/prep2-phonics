@@ -8,6 +8,7 @@ const projectRoot = path.resolve(__dirname, '..');
 const chromePath = process.env.CHROME_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
 const entries = {
+  dog: [{ meta: { id: 'dog', stems: ['dog', 'dogs'] }, hwi: { hw: 'dog', prs: [{ mw: 'ˈdȯg', sound: { audio: 'dog00001' } }] }, fl: 'noun', shortdef: ['an animal often kept as a pet'] }],
   haughty: [{
     meta: { id: 'haughty', stems: ['haughty', 'haughtier', 'haughtiest'] },
     hwi: { hw: 'haugh*ty', prs: [{ mw: 'ˈhȯ-tē', sound: { audio: 'haughty01' } }] },
@@ -106,6 +107,8 @@ async function run() {
   const browser = await chromium.launch({ headless: true, executablePath: chromePath });
   const page = await browser.newPage();
   const pageErrors = [];
+  const elevenRequests = [];
+  let elevenMode = 'success';
   page.on('pageerror', error => pageErrors.push(error.message));
   await page.addInitScript(() => {
     window.__playedAudioUrls = [];
@@ -118,6 +121,11 @@ async function run() {
     const word = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).toLowerCase();
     if (word === 'slow') await new Promise(resolve => setTimeout(resolve, 250));
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(entries[word] || []) });
+  });
+  await page.route('https://api.elevenlabs.io/v1/text-to-speech/**', async route => {
+    elevenRequests.push(JSON.parse(route.request().postData() || '{}'));
+    if (elevenMode === 'failure') await route.fulfill({ status: 401, contentType: 'application/json', body: '{"detail":"invalid_api_key"}' });
+    else await route.fulfill({ status: 200, contentType: 'audio/mpeg', body: Buffer.from('FAKE_MP3') });
   });
 
   try {
@@ -153,28 +161,39 @@ async function run() {
     assert.match(imageQuery, /small animal|soft fur|pet/i);
     assert.doesNotMatch(imageQuery, /saber|permit|carnivorous|Felis/i);
     await page.evaluate(() => speakNaturalWord());
+    await page.waitForFunction(() => window.__playedAudioUrls.some(url => String(url).startsWith('blob:')));
     const catAudioUrls = await page.evaluate(() => window.__playedAudioUrls);
-    assert.match(catAudioUrls.at(-1) || '', /\/c\/cat00001\.mp3$/, `cat played the wrong whole-word audio: ${catAudioUrls.at(-1)}`);
+    assert.match(catAudioUrls.at(-1) || '', /^blob:/, `cat did not use ElevenLabs whole-word audio: ${catAudioUrls.at(-1)}`);
+    assert.equal(elevenRequests.at(-1).text, 'cat');
+    assert.match(elevenRequests.at(-1).next_text, /cat slept|small animal|soft fur|pet/i);
     await page.evaluate(() => playFullBlendSequence());
     await page.waitForTimeout(450);
     const catBlendUrls = await page.evaluate(() => window.__playedAudioUrls);
-    assert.match(catBlendUrls.at(-1) || '', /\/c\/cat00001\.mp3$/, `cat blending ended with the wrong word audio: ${catBlendUrls.at(-1)}`);
-    console.log('PASS: a search displays only meanings belonging to an accepted form of the searched word');
+    assert.match(catBlendUrls.at(-1) || '', /^blob:/, `cat blending did not end with ElevenLabs whole-word audio: ${catBlendUrls.at(-1)}`);
+    console.log('PASS: a search displays only exact meanings and blending ends with contextual ElevenLabs audio');
+
+    await page.getByRole('button', { name: 'Read Definition' }).click();
+    await page.waitForTimeout(20);
+    assert.match(elevenRequests.at(-1).text, /^A small animal with soft fur/i);
+    console.log('PASS: definitions use ElevenLabs read-aloud');
 
     await page.locator('#tabTrickyBtn').click();
     const isCard = page.locator('#trickyGrid .tricky-word-display', { hasText: /^is$/ }).locator('..');
     await isCard.click();
     await page.waitForTimeout(50);
     const playedUrls = await page.evaluate(() => window.__playedAudioUrls);
-    assert.match(playedUrls.at(-1) || '', /\/i\/is000001\.mp3$/, `the is card played the wrong audio: ${playedUrls.at(-1)}`);
-    console.log('PASS: each tricky-word card plays audio belonging to that card');
+    assert.match(playedUrls.at(-1) || '', /^blob:/, `the is card did not use ElevenLabs audio: ${playedUrls.at(-1)}`);
+    assert.equal(elevenRequests.at(-1).text, 'is');
+    console.log('PASS: each tricky-word card uses the British ElevenLabs voice');
 
     await page.locator('#tabDictBtn').click();
     await search(page, 'cautious');
     const sentenceButton = page.getByRole('button', { name: 'Build the Example' });
-    assert.equal(await sentenceButton.isDisabled(), true, 'Sentence Builder must be unavailable without a provider example');
+    assert.equal(await sentenceButton.isDisabled(), false, 'Build the Example must respond even when the provider has no example');
     assert.equal(await page.locator('#dictionaryExampleSection').isVisible(), false, 'No fabricated sentence should be displayed');
-    console.log('PASS: Sentence Builder never fabricates a sentence when the selected sense has no example');
+    await sentenceButton.click();
+    assert.match(await page.locator('#appToast').innerText(), /no dictionary example/i);
+    console.log('PASS: Build the Example explains missing provider content instead of silently doing nothing');
 
     const cautiousUnits = await page.locator('#soundButtonsRow .phoneme-unit').evaluateAll(units => units.map(unit => ({
       letters: unit.querySelector('.phoneme-letters')?.textContent,
@@ -197,6 +216,10 @@ async function run() {
     const haughtyTiles = await page.locator('#puzzleSourceBank .puzzle-tile').allTextContents();
     assert.equal(haughtyTiles.includes('A'), true, 'the first tile must preserve sentence-style capitalization');
     assert.equal(haughtyTiles.includes('a'), false, 'a lowercase first tile must not replace the capitalized tile');
+    for (const token of ['A', 'haughty', 'princess', '.']) await page.locator('#puzzleSourceBank .puzzle-tile').filter({ hasText: new RegExp(`^${token.replace('.', '\\.')}$`) }).click();
+    await page.getByRole('button', { name: 'Check Example' }).click();
+    await page.waitForTimeout(20);
+    assert.equal(elevenRequests.at(-1).text, 'A haughty princess.');
     await page.evaluate(() => closeSentenceGame());
     console.log('PASS: the example puzzle has one honest mode and teaches capitalization');
 
@@ -205,13 +228,13 @@ async function run() {
     assert.equal(await page.locator('#dictPronunciationsContainer .sense-pill-btn').count(), 2);
     await page.locator('#dictPronunciationsContainer .sense-pill-btn').nth(1).click();
     assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').filter({ hasText: 'ea' }).getAttribute('data-sound-id'), 'e-short');
-    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), true, 'an alternate pronunciation with no exact recording must not borrow the headword audio');
-    console.log('PASS: selecting a heteronym pronunciation updates phonics without borrowing unrelated audio');
+    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), false, 'ElevenLabs should keep an alternate pronunciation playable without borrowing headword audio');
+    console.log('PASS: selecting a heteronym pronunciation updates phonics and remains available through contextual ElevenLabs audio');
 
     await search(page, 'tear');
     await page.locator('#dictSensesContainer .sense-pill-btn').nth(1).click();
     assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').filter({ hasText: 'ear' }).getAttribute('data-sound-id'), 'air-tri');
-    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), true, 'one provider audio file shared by two pronunciations must be rejected');
+    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), false, 'ElevenLabs should replace one provider file shared by two pronunciations');
     console.log('PASS: homograph audio collisions cannot teach the wrong whole-word pronunciation');
 
     await page.evaluate(() => {
@@ -225,6 +248,16 @@ async function run() {
     assert.equal((await page.evaluate(() => window.__playedAudioUrls)).at(-1), 'data:audio/wav;base64,VEVTVA==');
     await page.evaluate(() => localStorage.removeItem('word_audio_pronunciation:tear:2c8-74-65-72'));
     console.log('PASS: teacher-published pronunciation overrides replace blocked provider audio');
+
+    elevenMode = 'failure';
+    await page.evaluate(() => { ELEVENLABS_AUDIO_CACHE.clear(); elevenLabsBlocked = false; });
+    await page.locator('#tabTrickyBtn').click();
+    await isCard.click();
+    await page.waitForTimeout(30);
+    const fallbackUrls = await page.evaluate(() => window.__playedAudioUrls);
+    assert.match(fallbackUrls.at(-1) || '', /\/i\/is000001\.mp3$/, 'Merriam audio must remain the fallback when ElevenLabs fails');
+    await page.locator('#tabDictBtn').click();
+    console.log('PASS: Merriam exact-word audio remains the ElevenLabs failure fallback');
 
     await search(page, 'catt');
     const suggestions = await page.locator('#autocompleteDropdown .autocomplete-item span:first-child').allTextContents();

@@ -34,6 +34,17 @@ opening capital and final punctuation. Meaning buttons include a short
 definition preview so pupils can choose by meaning rather than labels such as
 “Noun 1”.
 
+## Read-aloud
+
+ElevenLabs' George voice provides British English read-aloud for whole words,
+tricky words, definitions, dictionary examples, and successfully completed
+Example Builder puzzles. Whole-word requests include the selected meaning as
+silent context so homographs can be pronounced for the active sense. Teacher
+word recordings still take priority when present; if ElevenLabs is unavailable,
+the app uses Merriam-Webster audio only when that exact pronunciation is safe.
+Browser speech remains the last-resort fallback for definitions and examples,
+because Merriam-Webster does not provide audio for those full passages.
+
 Image buttons open a Google Images search with SafeSearch enabled. Each query
 is rebuilt from the selected verified word and meaning; no unrelated API entry
 or unverified fallback text can supply the image context.
