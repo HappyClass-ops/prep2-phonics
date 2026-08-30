@@ -1,31 +1,18 @@
-# Child-safe dictionary and audio repair plan
+# Dictionary and audio architecture
 
-## What caused the reported issues
+## Published audio
 
-1. The Teacher Studio labelled 26 sounds as needing recording from a stale
-   metadata flag, even though all 75 clips were present.
-2. The pupil app carried an embedded copy of the audio. Updating the downloadable
-   pack alone could leave children listening to an older recording.
-3. The fallback dictionary includes historical Webster entries. When a common
-   word has no child-curated override, its first historical sense can be
-   inappropriate (for example, the firearm sense of `trail`).
-4. The multi-meaning interface existed but was only populated for a few words,
-   so it could not help with uncurated ambiguous words.
+- One normalized 75-clip teacher pack is published in both the Teacher Studio
+  and pupil app.
+- The supplied standalone `ed-d.wav` is used for the `-ed (/d/)` sound.
+- A clip is marked unfinished only when it has no playable audio.
 
-## Delivered in this repair
+## Pupil dictionary
 
-- Publish one normalized 75-clip teacher pack in both the Studio and pupil app.
-- Use the supplied standalone `ed-d.wav` for the `-ed (/d/)` sound.
-- Treat a sound as unfinished only when it has no playable published clip.
-- Curate child-appropriate, matching definition/example/image choices for
-  `trail` and `nonsense`; `trail` now exposes two meanings.
-- Keep a repeatable verification script for the published audio and these
-  child-safety regressions.
-
-## Next content pass
-
-Audit high-frequency pupil-search words against the historical fallback data,
-then add curated entries wherever the first sense, example, or image suggestion
-is unsuitable. Each curated entry should include every sense a child is likely
-to meet, a plain definition, a natural sentence, and a matching safe image
-search phrase.
+- Merriam-Webster Elementary Dictionary is the sole source of meanings,
+  examples, word classes, pronunciations, and full-word audio.
+- The app never uses a historical dictionary, guesses a base word, generates a
+  definition, or invents a sentence.
+- Multiple provider meanings appear as selectable meaning buttons.
+- If the provider has no entry, pupils can use phonics blending only; the app
+  does not claim a definition, picture context, or full-word pronunciation.

@@ -1700,6 +1700,7 @@
           <div class="section-label">Definition</div>
           <div class="meaning-text-body" id="resMeaningText">Explore the meaning, sound buttons, and sentence examples.</div>
           
+          <div id="dictionaryExampleSection">
           <div class="section-label" style="margin-top: 4px;">Example in a Sentence</div>
           <div class="example-quote-box">
             <div class="example-quote-text" id="resExampleSentence">"Explore the meaning, sound buttons, and sentence examples."</div>
@@ -1707,6 +1708,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
               <span>Read Aloud</span>
             </button>
+          </div>
           </div>
         </div>
 
@@ -1868,7 +1870,6 @@
     } catch (e) {
       console.warn('Teacher recordings could not be loaded from this device.', e);
     }
-    const DICT_CACHE = new Map();
 
     let audioCtx;
     async function ensureAudioContext() {
@@ -1966,338 +1967,6 @@
     };
 
     // ================= 3. MULTI-SENSE & HOMONYM RICH CURATED DICTIONARY =================
-    const PRIMARY_CURATED_DB = {
-      'perfect': {
-        ipa: '/ˈpɜː.fɪkt/',
-        senses: [{
-          pos: 'adjective',
-          title: 'Adjective (Describing Word)',
-          def: 'Having no mistakes or flaws; completely excellent and wonderful.',
-          example: 'The happy children worked carefully to create a perfect painting for the art display.',
-          exampleEasy: 'Your drawing looks completely perfect.',
-          phrase: 'Context: "The happy children worked carefully to create a perfect painting for the art display."',
-          imgQuery: 'a perfect colourful rainbow over hills',
-          puzzle: {
-            easy: ["Your", "drawing", "looks", "completely", "perfect", "."],
-            hard: ["The", "happy", "children", "created", "a", "perfect", "painting", "for", "art", "class", "."]
-          }
-        }]
-      },
-      'purple': {
-        ipa: '/ˈpɜː.pəl/',
-        senses: [{
-          pos: 'adjective',
-          title: 'Adjective / Noun (Colour)',
-          def: 'A beautiful colour made by mixing red and blue together.',
-          example: 'The little girl wore a warm purple coat and cosy purple gloves on her morning walk.',
-          exampleEasy: 'I painted a bright purple flower.',
-          phrase: 'Context: "The little girl wore a warm purple coat and cosy purple gloves on her morning walk."',
-          imgQuery: 'fresh juicy purple grapes on a vine',
-          puzzle: {
-            easy: ["I", "painted", "a", "bright", "purple", "flower", "."],
-            hard: ["The", "little", "girl", "wore", "a", "warm", "purple", "coat", "outside", "."]
-          }
-        }]
-      },
-      'amazing': {
-        ipa: '/əˈmeɪ.zɪŋ/',
-        senses: [{
-          pos: 'adjective',
-          title: 'Adjective (Describing Word)',
-          def: 'Causing great wonder, surprise, and excitement; very wonderful.',
-          example: 'The clever magician did an amazing trick that delighted all the children in the hall.',
-          exampleEasy: 'The magic show was truly amazing.',
-          phrase: 'Context: "The clever magician did an amazing trick that delighted all the children in the hall."',
-          imgQuery: 'an amazing colourful fireworks display in night sky',
-          puzzle: {
-            easy: ["The", "magic", "show", "was", "truly", "amazing", "."],
-            hard: ["The", "clever", "magician", "did", "an", "amazing", "magic", "trick", "today", "."]
-          }
-        }]
-      },
-      'taught': {
-        ipa: '/tɔːt/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb (Past Tense Action)',
-          def: 'Past tense of teach: to give lessons and help someone learn new knowledge.',
-          example: 'Our kind teacher taught the children how to read and write exciting stories.',
-          exampleEasy: 'Our kind teacher taught us a fun song.',
-          phrase: 'Context: "Our kind teacher taught the children how to read and write exciting stories."',
-          imgQuery: 'a kind teacher helping happy children learn in classroom',
-          puzzle: {
-            easy: ["Our", "kind", "teacher", "taught", "us", "a", "fun", "song", "."],
-            hard: ["Our", "kind", "teacher", "taught", "the", "children", "how", "to", "read", "."]
-          }
-        }]
-      },
-      'caught': {
-        ipa: '/kɔːt/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb (Past Tense Action)',
-          def: 'Past tense of catch: to capture or take hold of something moving.',
-          example: 'The playful puppy jumped up high and caught the bright red ball in the air.',
-          exampleEasy: 'He caught the ball in the garden.',
-          phrase: 'Context: "The playful puppy jumped up high and caught the bright red ball in the air."',
-          imgQuery: 'a playful dog catching a flying frisbee ball',
-          puzzle: {
-            easy: ["He", "caught", "the", "ball", "in", "the", "garden", "."],
-            hard: ["The", "playful", "puppy", "caught", "the", "flying", "ball", "in", "the", "air", "."]
-          }
-        }]
-      },
-      'thought': {
-        ipa: '/θɔːt/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb / Noun (Thinking)',
-          def: 'Past tense of think: an idea or picture formed in the mind.',
-          example: "The little girl thought carefully before answering the teacher's question.",
-          exampleEasy: "She thought of a good idea.",
-          phrase: 'Context: "The little girl thought carefully before answering the question."',
-          imgQuery: 'a child thinking with a lightbulb idea cartoon',
-          puzzle: {
-            easy: ["She", "thought", "of", "a", "good", "idea", "."],
-            hard: ["The", "little", "girl", "thought", "carefully", "about", "the", "question", "."]
-          }
-        }]
-      },
-      'making': {
-        ipa: '/ˈmeɪ.kɪŋ/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb (Continuous Action)',
-          def: 'Creating, building, or putting things together right now.',
-          example: 'The children were making colourful paper lanterns for the school festival.',
-          exampleEasy: 'We are making a card.',
-          phrase: 'Context: "The children were making colourful paper lanterns for the school festival."',
-          imgQuery: 'children making colourful craft art projects with glue and paper',
-          puzzle: {
-            easy: ["We", "are", "making", "a", "card", "."],
-            hard: ["The", "children", "were", "making", "colourful", "paper", "crafts", "together", "."]
-          }
-        }]
-      },
-      'baking': {
-        ipa: '/ˈbeɪ.kɪŋ/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb (Continuous Action)',
-          def: 'Cooking food like bread, cookies, or cakes in a warm oven.',
-          example: 'Grandma was baking delicious warm cinnamon biscuits in the kitchen.',
-          exampleEasy: 'We are baking yummy cookies.',
-          phrase: 'Context: "Grandma was baking delicious warm cinnamon biscuits in the kitchen."',
-          imgQuery: 'baking fresh chocolate chip cookies on a baking tray',
-          puzzle: {
-            easy: ["We", "are", "baking", "yummy", "cookies", "."],
-            hard: ["Grandma", "was", "baking", "warm", "cinnamon", "biscuits", "in", "the", "oven", "."]
-          }
-        }]
-      },
-      'smiling': {
-        ipa: '/ˈsmaɪ.lɪŋ/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb (Continuous Action)',
-          def: 'Making a happy curved shape with your lips to show joy.',
-          example: 'The happy baby was smiling brightly at everyone in the sunny room.',
-          exampleEasy: 'The baby was smiling happily.',
-          phrase: 'Context: "The happy baby was smiling brightly at everyone in the sunny room."',
-          imgQuery: 'a happy smiling child laughing in the sunshine',
-          puzzle: {
-            easy: ["The", "baby", "was", "smiling", "happily", "."],
-            hard: ["The", "happy", "baby", "was", "smiling", "brightly", "at", "everyone", "today", "."]
-          }
-        }]
-      },
-      'shining': {
-        ipa: '/ˈʃaɪ.nɪŋ/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb (Continuous Action)',
-          def: 'Giving off bright glowing light; sparkling brightly.',
-          example: 'The golden sun was shining warmly over the green meadow.',
-          exampleEasy: 'The bright sun is shining.',
-          phrase: 'Context: "The golden sun was shining warmly over the green meadow."',
-          imgQuery: 'golden bright sunshine shining over green hills',
-          puzzle: {
-            easy: ["The", "bright", "sun", "is", "shining", "."],
-            hard: ["The", "golden", "sun", "was", "shining", "warmly", "over", "the", "meadow", "."]
-          }
-        }]
-      },
-      'table': {
-        ipa: '/ˈteɪ.bəl/',
-        senses: [{
-          pos: 'noun',
-          title: 'Noun (Furniture / Object)',
-          def: 'A piece of furniture with a flat top and legs for eating or writing on.',
-          example: 'The teacher placed the reading books neatly on the classroom table.',
-          exampleEasy: 'The book is on the table.',
-          phrase: 'Context: "The teacher placed the reading books neatly on the classroom table."',
-          imgQuery: 'a tidy wooden school desk table in a bright classroom',
-          puzzle: {
-            easy: ["The", "book", "is", "on", "the", "table", "."],
-            hard: ["The", "teacher", "placed", "the", "books", "on", "the", "wooden", "table", "."]
-          }
-        }]
-      },
-      'apple': {
-        ipa: '/ˈæp.əl/',
-        senses: [{
-          pos: 'noun',
-          title: 'Noun (Fruit / Food)',
-          def: 'A round fruit with red, green, or yellow skin and crisp sweet flesh.',
-          example: 'The little boy ate a crunchy red apple for his healthy morning snack.',
-          exampleEasy: 'I ate a sweet red apple.',
-          phrase: 'Context: "The little boy ate a crunchy red apple for his healthy morning snack."',
-          imgQuery: 'a fresh shiny red apple with a green leaf on wooden board',
-          puzzle: {
-            easy: ["I", "ate", "a", "sweet", "red", "apple", "."],
-            hard: ["The", "little", "boy", "ate", "a", "crunchy", "red", "apple", "today", "."]
-          }
-        }]
-      },
-      'talked': {
-        ipa: '/tɔːkt/',
-        senses: [{
-          pos: 'verb',
-          title: 'Verb (Past Tense Action)',
-          def: 'To say words aloud in order to speak with someone.',
-          example: 'The happy children talked together on their way to school.',
-          exampleEasy: 'We talked to our teacher.',
-          phrase: 'Context: "The happy children talked together on their way to school."',
-          imgQuery: 'children talking together happily in school classroom',
-          puzzle: {
-            easy: ["We", "talked", "to", "our", "teacher", "."],
-            hard: ["The", "happy", "children", "talked", "together", "on", "the", "way", "to", "school", "."]
-          }
-        }]
-      },
-      'trip': {
-        ipa: '/trɪp/',
-        senses: [
-          {
-            pos: 'verb',
-            title: 'Verb (Stumble / Action)',
-            def: 'To catch your foot on something and stumble or fall over.',
-            example: 'Be careful not to trip over the big rock on the path.',
-            exampleEasy: 'Do not trip on the rock.',
-            phrase: 'Context: "Be careful not to trip over the big rock on the path."',
-            imgQuery: 'a boy tripping over a rock',
-            puzzle: {
-              easy: ["Do", "not", "trip", "on", "the", "rock", "."],
-              hard: ["Be", "careful", "not", "to", "trip", "over", "the", "big", "stones", "."]
-            }
-          },
-          {
-            pos: 'noun',
-            title: 'Noun (Journey / Holiday)',
-            def: 'A journey, excursion, or holiday to an exciting place.',
-            example: 'Our school class went on an exciting trip to the zoo.',
-            exampleEasy: 'We went on a school trip.',
-            phrase: 'Context: "Our school class went on an exciting trip to the zoo."',
-            imgQuery: 'a family on a road trip vacation',
-            puzzle: {
-              easy: ["We", "went", "on", "a", "school", "trip", "."],
-              hard: ["Our", "class", "went", "on", "an", "exciting", "trip", "to", "the", "zoo", "."]
-            }
-          }
-        ]
-      },
-      'fall': {
-        ipa: '/fɔːl/',
-        senses: [
-          {
-            pos: 'verb',
-            title: 'Verb (Action / Drop)',
-            def: 'To drop down from a higher place towards the ground.',
-            example: 'The colourful autumn leaves fall gently from the tall trees.',
-            exampleEasy: 'Red leaves fall from the tree.',
-            phrase: 'Context: "The colourful autumn leaves fall gently from the tall trees."',
-            imgQuery: 'autumn leaves falling from trees',
-            puzzle: {
-              easy: ["Red", "leaves", "fall", "from", "the", "tree", "."],
-              hard: ["The", "colourful", "autumn", "leaves", "fall", "gently", "from", "the", "trees", "."]
-            }
-          },
-          {
-            pos: 'noun',
-            title: 'Noun (Autumn Season)',
-            def: 'The season between summer and winter, also known as Autumn.',
-            example: 'In the fall, we collect acorns and wear warm cosy jackets.',
-            exampleEasy: 'I love the crisp fall weather.',
-            phrase: 'Context: "In the fall, we collect acorns and wear warm cosy jackets."',
-            imgQuery: 'autumn fall season trees for kids',
-            puzzle: {
-              easy: ["I", "love", "the", "crisp", "fall", "weather", "."],
-              hard: ["In", "the", "fall", "we", "wear", "warm", "jackets", "and", "scarves", "."]
-            }
-          }
-        ]
-      },
-      'farted': {
-        ipa: '/fɑːtɪd/',
-        senses: [
-          {
-            pos: 'verb',
-            title: 'Verb (Past Tense Action)',
-            def: 'To pass tummy gas or make a funny popping tummy sound.',
-            example: 'The funny little puppy farted and dashed out of the room.',
-            exampleEasy: 'The funny dog farted loudly.',
-            phrase: 'Context: "The funny little puppy farted and dashed out of the room."',
-            imgQuery: 'funny cartoon animal farting',
-            puzzle: {
-              easy: ["The", "funny", "dog", "farted", "loudly", "."],
-              hard: ["The", "cheeky", "puppy", "farted", "and", "ran", "across", "the", "room", "."]
-            }
-          }
-        ]
-      },
-      // These are common child-facing words whose first historical dictionary
-      // sense is not the meaning a child is likely to need.  Keep the choices
-      // explicit so that the displayed definition, example, and picture agree.
-      'trail': {
-        ipa: '/treɪl/',
-        senses: [
-          {
-            pos: 'verb',
-            title: 'Verb (Follow Behind)',
-            def: 'To follow behind someone or something.',
-            example: 'The ducklings trail behind their mother as they walk to the pond.',
-            exampleEasy: 'We trail behind our teacher in a line.',
-            phrase: 'Context: "The ducklings trail behind their mother as they walk to the pond."',
-            imgQuery: 'ducklings following their mother to a pond',
-            puzzle: { easy: ['We', 'trail', 'behind', 'our', 'teacher', 'in', 'a', 'line', '.'], hard: ['The', 'ducklings', 'trail', 'behind', 'their', 'mother', 'to', 'the', 'pond', '.'] }
-          },
-          {
-            pos: 'noun',
-            title: 'Noun (Path)',
-            def: 'A path through a park, forest, or countryside.',
-            example: 'We followed the trail through the forest and listened for birds.',
-            exampleEasy: 'The trail leads through the woods.',
-            phrase: 'Context: "We followed the trail through the forest and listened for birds."',
-            imgQuery: 'safe woodland walking trail for children',
-            puzzle: { easy: ['The', 'trail', 'leads', 'through', 'the', 'woods', '.'], hard: ['We', 'followed', 'the', 'trail', 'through', 'the', 'forest', '.'] }
-          }
-        ]
-      },
-      'nonsense': {
-        ipa: '/ˈnɒn.səns/',
-        senses: [{
-          pos: 'noun',
-          title: 'Noun (Silly Words or Ideas)',
-          def: 'Words or ideas that do not make sense.',
-          example: 'The children laughed at the nonsense words in the silly poem.',
-          exampleEasy: '"Bim bam bloop" is nonsense.',
-          phrase: 'Context: "The children laughed at the nonsense words in the silly poem."',
-          imgQuery: 'children laughing at a silly nonsense poem',
-          puzzle: { easy: ['Bim', 'bam', 'bloop', 'is', 'nonsense', '.'], hard: ['The', 'children', 'laughed', 'at', 'the', 'nonsense', 'words', '.'] }
-        }]
-      }
-    };
-
     function getWordClassDetails(pos) {
       const p = (pos || '').toLowerCase();
       if (p.includes('adv') || p === 'r') {
@@ -2315,1128 +1984,6 @@
       return { name: 'NOUN', cssClass: 'pos-noun', tip: '• Names a person, place, or thing' };
     }
 
-    function getImageQueryOptions(word, pos, def) {
-      const w = (word || '').toLowerCase().trim();
-      const p = (pos || 'noun').toLowerCase();
-
-      // 1. Direct High-Yield Words
-      if (w === 'gently') {
-        return [
-          'a cute puppy sleeping gently on a blanket',
-          'a child petting a fluffy kitten gently',
-          'a colourful butterfly landing gently on a flower',
-          'autumn leaves falling gently to the ground',
-          'a mother bird feeding its baby gently'
-        ];
-      }
-      if (w === 'quickly') {
-        return [
-          'a cheetah sprinting quickly across the savanna',
-          'a playful puppy running quickly with a ball',
-          'a boy running quickly in a sports race',
-          'a fast rabbit darting quickly across grass'
-        ];
-      }
-      if (w === 'loudly') {
-        return [
-          'a lion roaring loudly in the wild',
-          'a happy puppy barking loudly in the garden',
-          'a rooster crowing loudly in the morning',
-          'children cheering and clapping loudly'
-        ];
-      }
-      if (w === 'softly') {
-        return [
-          'snow falling softly on winter trees',
-          'a fluffy little bunny sitting in soft green grass',
-          'a child whispering softly to a friend',
-          'a mother singing a soft lullaby to baby'
-        ];
-      }
-      if (w === 'carefully') {
-        return [
-          'a child carefully building a tall block tower',
-          'a squirrel carefully holding a little acorn',
-          'carrying a glass of water carefully'
-        ];
-      }
-      if (w === 'safely') {
-        return [
-          'children safely crossing the road with lollipop person',
-          'wearing a helmet to ride a bicycle safely',
-          'a bird resting safely in a cozy nest'
-        ];
-      }
-      if (w === 'happily') {
-        return [
-          'children playing happily in the school playground',
-          'a playful dog wagging tail happily in the park',
-          'a smiling happy family eating a picnic'
-        ];
-      }
-      if (w === 'painted') {
-        return [
-          'children painting colourful pictures on an easel',
-          'a colourful painted rainbow on canvas',
-          'an artist painting a cute puppy with paintbrush'
-        ];
-      }
-      if (w === 'splashed') {
-        return [
-          'a happy puppy splashing in water puddle',
-          'children splashing happily in a swimming pool',
-          'a yellow duck splashing water in a pond'
-        ];
-      }
-      if (w === 'whistling') {
-        return [
-          'a cheerful bird whistling a tune on a tree branch',
-          'a happy boy whistling a cheerful melody',
-          'a tea kettle whistling on a stove'
-        ];
-      }
-      if (w === 'matches') {
-        return [
-          'wooden safety matchsticks in a box',
-          'two matching colourful socks pair',
-          'children playing a football match'
-        ];
-      }
-      if (w === 'brightest') {
-        return [
-          'the brightest star shining in the night sky',
-          'a bright colourful rainbow in the blue sky',
-          'a golden bright sun shining over green hills'
-        ];
-      }
-      if (w === 'playful') {
-        return [
-          'a playful puppy playing with a ball',
-          'a playful dolphin jumping in the ocean water',
-          'playful kittens playing with a ball of yarn',
-          'playful children laughing on a playground slide'
-        ];
-      }
-      if (w === 'darkness') {
-        return [
-          'a starry night sky full of shining stars',
-          'a cozy room at night with a glowing nightlight',
-          'a magical forest with glowing fireflies'
-        ];
-      }
-      if (w === 'careless') {
-        return [
-          'a dropped ice cream cone on the ground cartoon',
-          'spilled paint on the art floor cartoon',
-          'a messy school desk with fallen books'
-        ];
-      }
-      if (w === 'helpless') {
-        return [
-          'a tiny baby bird in a nest waiting for food',
-          'a little lost puppy looking for help',
-          'a baby sea turtle crawling on sand'
-        ];
-      }
-      if (w === 'unlock') {
-        return [
-          'a key unlocking a golden treasure lock',
-          'unlocking a secret garden gate with a key',
-          'a brass key turning in a keyhole'
-        ];
-      }
-      if (w === 'disagree') {
-        return [
-          'two friendly cartoon characters discussing ideas',
-          'people politely sharing different opinions'
-        ];
-      }
-      if (w === 'grape') {
-        return [
-          'a bunch of fresh sweet purple grapes',
-          'juicy green and purple grapes on a vine',
-          'a bowl of fresh grapes for a snack'
-        ];
-      }
-      if (w === 'stone') {
-        return [
-          'smooth colourful river pebbles and stones',
-          'stepping stones across a tranquil garden path',
-          'a tall natural stone sculpture in nature'
-        ];
-      }
-      if (w === 'flute') {
-        return [
-          'a person playing a shiny silver flute',
-          'a classical concert flute musical instrument',
-          'a wooden recorder flute for kids'
-        ];
-      }
-      if (w === 'bark') {
-        return p.includes('verb') ? [
-          'a golden puppy barking happily in the park',
-          'a small dog barking at a toy'
-        ] : [
-          'the rough brown textured bark of an oak tree',
-          'tree bark with green moss in a forest'
-        ];
-      }
-      if (w === 'watch') {
-        return p.includes('verb') ? [
-          'children watching colourful birds through binoculars',
-          'children watching a science experiment in class'
-        ] : [
-          'a classic stylish wristwatch for telling time',
-          'a colourful digital wristwatch for kids'
-        ];
-      }
-      if (w === 'flour') {
-        return [
-          'baking wheat flour in a bowl with a wooden spoon',
-          'a sack of white flour for making bread',
-          'dusting baking flour on a wooden board'
-        ];
-      }
-      if (w === 'people') {
-        return [
-          'a cheerful group of diverse smiling people',
-          'children and teacher in a happy classroom',
-          'a friendly crowd of people waving'
-        ];
-      }
-      if (w === 'blanket') {
-        return [
-          'a cozy warm knitted blanket on a bed',
-          'a cute puppy wrapped up in a soft fleece blanket',
-          'a colourful picnic blanket laid out on green grass'
-        ];
-      }
-      if (w === 'treasure') {
-        return [
-          'a golden pirate treasure chest full of glowing coins',
-          'sparkling gemstones and gold coins in a chest',
-          'a treasure map with an X marks the spot'
-        ];
-      }
-      if (w === 'farted' || w === 'fart') {
-        return [
-          'funny cartoon animal farting cloud',
-          'silly cute cartoon dinosaur with gas bubbles'
-        ];
-      }
-      if (w === 'talked' || w === 'talk') {
-        return [
-          'two happy children talking together in class',
-          'friends sitting on a bench talking and smiling'
-        ];
-      }
-      if (w === 'trip') {
-        return p.includes('verb') ? [
-          'a boy tripping over a big rock on the path',
-          'a cartoon character stumbling over a stone'
-        ] : [
-          'a happy family on a road trip vacation in the countryside',
-          'school children on a fun field trip to the zoo'
-        ];
-      }
-      if (w === 'fall') {
-        return p.includes('verb') ? [
-          'golden autumn leaves falling gently from tall trees',
-          'colourful maple leaves falling in the park'
-        ] : [
-          'autumn fall season forest with golden orange trees',
-          'children jumping into a pile of autumn leaves'
-        ];
-      }
-
-      // 2. Class-Based Semantic Patterns (Adverbs -ly)
-      if (w.endsWith('ly') || p.includes('adv') || p === 'r') {
-        return [
-          `a cute puppy sitting ${w} in the grass`,
-          `a bird flying ${w} across the sky`,
-          `happy children playing ${w} in the playground`,
-          `a gentle animal moving ${w} in nature`,
-          `a person walking ${w} through a garden`
-        ];
-      }
-
-      // 3. Superlatives (-est) & Comparatives (-er)
-      if (w.endsWith('est')) {
-        return [
-          `the ${w} wild animal in nature`,
-          `the ${w} landmark in the world`,
-          `the ${w} colourful object in the scene`
-        ];
-      }
-      if (w.endsWith('er') && (p.includes('adj') || p === 'adj')) {
-        return [
-          `a ${w} animal in the wild`,
-          `a ${w} tree in the forest`
-        ];
-      }
-
-      // 4. Past Tense Verbs (-ed)
-      if (w.endsWith('ed')) {
-        return [
-          `happy children ${w} together in the park`,
-          `a playful puppy that ${w} outdoors`,
-          `a person who ${w} outside in nature`
-        ];
-      }
-
-      // 5. Continuous Verbs (-ing)
-      if (w.endsWith('ing')) {
-        return [
-          `a happy child ${w} in the garden`,
-          `a playful puppy ${w} outdoors`,
-          `animals ${w} in nature`
-        ];
-      }
-
-      // 6. Base Verbs
-      if (p.includes('verb') || p === 'v') {
-        return [
-          `children love to ${w} together`,
-          `a playful animal that can ${w}`,
-          `a person learning to ${w} outside`
-        ];
-      }
-
-      // 7. Adjectives
-      if (p.includes('adj')) {
-        return [
-          `a very ${w} cute animal in nature`,
-          `a ${w} scene in nature for kids`,
-          `a ${w} friendly character cartoon`
-        ];
-      }
-
-      // 8. General Noun
-      return [
-        `a high quality photo of a ${w}`,
-        `a ${w} in real life`,
-        `a colourful ${w} for children`
-      ];
-    }
-
-    // ================= 3B. UNIVERSAL CLIENT-SIDE MORPHOLOGY & DEFINITION SYNTHESIZER =================
-    function cleanKidDefinition(rawDef) {
-      if (!rawDef) return "A word used in English reading and writing.";
-      let def = rawDef.replace(/([^)]*)/g, '').trim();
-      def = def.replace(/^(especially|specifically|chiefly|often|rarely|usually)s+/i, '');
-      def = def.replace(/(pertaining to|relating to|of or concerning|characteristic of|in a manner of)/gi, 'about');
-      def = def.replace(/(to impart knowledge|cause to learn)/gi, 'to teach lessons and help someone learn');
-      def = def.replace(/(causing wonder and amazement|astonishing|astound)/gi, 'very wonderful, surprising, and exciting');
-      def = def.replace(/(to pass gas from the anus)/gi, 'to pass tummy gas with a funny popping sound');
-      if (!def.endsWith('.')) def += '.';
-      return def.charAt(0).toUpperCase() + def.slice(1);
-    }
-
-    function lemmatizeWord(word) {
-      const w = (word || '').toLowerCase().trim();
-      const IRREGULAR_VERBS = {
-        'taught': 'teach', 'caught': 'catch', 'thought': 'think', 'bought': 'buy', 'brought': 'bring',
-        'fought': 'fight', 'sought': 'seek', 'went': 'go', 'came': 'come', 'ran': 'run',
-        'ate': 'eat', 'saw': 'see', 'took': 'take', 'made': 'make', 'gave': 'give',
-        'found': 'find', 'told': 'tell', 'spoke': 'speak', 'wrote': 'write', 'heard': 'hear',
-        'sung': 'sing', 'sang': 'sing', 'swam': 'swim', 'swung': 'swing', 'flew': 'fly',
-        'drew': 'draw', 'grew': 'grow', 'threw': 'throw', 'knew': 'know', 'blew': 'blow',
-        'built': 'build', 'slept': 'sleep', 'kept': 'keep', 'swept': 'sweep', 'felt': 'feel',
-        'fell': 'fall', 'left': 'leave', 'met': 'meet', 'read': 'read', 'led': 'lead'
-      };
-
-      if (IRREGULAR_VERBS[w]) {
-        return { lemma: IRREGULAR_VERBS[w], suffix: 'ed', isPast: true, pos: 'verb' };
-      }
-
-      if (w.endsWith('ing') && w.length > 4) {
-        let base = w.slice(0, -3);
-        if (base.endsWith('mm') || base.endsWith('nn') || base.endsWith('pp') || base.endsWith('tt') || base.endsWith('gg')) {
-          base = base.slice(0, -1);
-        } else if (!['a','e','i','o','u'].includes(base[base.length-1])) {
-          // might be dropped e (amaze, make, bake, smile, shine, ride, hope)
-          base = base + 'e';
-        }
-        return { lemma: base, suffix: 'ing', isContinuous: true, pos: 'verb' };
-      }
-
-      if (w.endsWith('ed') && w.length > 3) {
-        let base = w.slice(0, -2);
-        if (base.endsWith('mm') || base.endsWith('nn') || base.endsWith('pp') || base.endsWith('tt') || base.endsWith('gg') || base.endsWith('dd')) {
-          base = base.slice(0, -1);
-        }
-        return { lemma: base, suffix: 'ed', isPast: true, pos: 'verb' };
-      }
-
-      if (w.endsWith('ly') && w.length > 3) {
-        return { lemma: w.slice(0, -2), suffix: 'ly', pos: 'adverb' };
-      }
-
-      if (w.endsWith('est') && w.length > 4) {
-        return { lemma: w.slice(0, -3), suffix: 'est', pos: 'adjective' };
-      }
-
-      if (w.endsWith('er') && w.length > 3 && !['teacher', 'father', 'mother', 'brother', 'sister', 'paper', 'tiger', 'spider', 'water', 'letter', 'winter', 'summer'].includes(w)) {
-        return { lemma: w.slice(0, -2), suffix: 'er', pos: 'adjective' };
-      }
-
-      if ((w.endsWith('ful') || w.endsWith('less') || w.endsWith('able') || w.endsWith('ous') || w.endsWith('ive') || w.endsWith('ic') || w.endsWith('ish')) && w.length > 4) {
-        return { lemma: w, suffix: '', pos: 'adjective' };
-      }
-
-      const COMMON_ADJS = ['perfect', 'purple', 'amazing', 'beautiful', 'pretty', 'funny', 'happy', 'sunny', 'clever', 'gentle', 'quiet', 'loud', 'bright', 'dark', 'huge', 'tiny', 'soft', 'hard', 'warm', 'cold', 'kind', 'sweet', 'clean', 'quick', 'slow', 'brave', 'proud', 'glad', 'green', 'yellow', 'orange', 'pink', 'brown', 'black', 'white', 'golden'];
-      if (COMMON_ADJS.includes(w)) {
-        return { lemma: w, suffix: '', pos: 'adjective' };
-      }
-
-      return { lemma: w, suffix: '', pos: 'noun' };
-    }
-
-    function synthesizeSentencePair(word, lemma, pos, def) {
-      const w = word.toLowerCase().trim();
-      const p = (pos || 'noun').toLowerCase();
-
-      if (w === 'amazing') {
-        return {
-          easy: "The magic show was truly amazing.",
-          hard: "The magician did an amazing trick that delighted the children in the hall."
-        };
-      }
-      if (w === 'taught') {
-        return {
-          easy: "Our kind teacher taught us a fun song today.",
-          hard: "Our kind teacher taught the children how to read and write exciting stories."
-        };
-      }
-      if (w === 'gently') {
-        return {
-          easy: "The child stroked the fluffy kitten gently.",
-          hard: "The happy children walked gently along the garden path so they did not wake the baby."
-        };
-      }
-      if (w === 'quickly') {
-        return {
-          easy: "The little rabbit ran quickly across the grass.",
-          hard: "The playful puppy ran quickly through the park to catch the bright red ball."
-        };
-      }
-
-      if (p.includes('verb') || w.endsWith('ed') || w.endsWith('ing')) {
-        if (w.endsWith('ing')) {
-          return {
-            easy: `The happy children were ${w} in the park.`,
-            hard: `We saw the happy children ${w} together near the sunny playground today.`
-          };
-        }
-        if (w.endsWith('ed') || w === 'taught' || w === 'caught') {
-          return {
-            easy: `The happy child ${w} at school today.`,
-            hard: `The happy children ${w} together during their fun morning lessons.`
-          };
-        }
-        return {
-          easy: `Children love to ${w} together.`,
-          hard: `The happy children love to ${w} together with their friends at school.`
-        };
-      }
-
-      if (p.includes('adv') || w.endsWith('ly')) {
-        return {
-          easy: `The children walked ${w} down the hall.`,
-          hard: `The happy children moved ${w} through the classroom to finish their work.`
-        };
-      }
-
-      if (p.includes('adj') || w.endsWith('est') || w.endsWith('er')) {
-        return {
-          easy: `I can see an ${w} picture.`,
-          hard: `The teacher showed the children an ${w} picture during their exciting lesson.`
-        };
-      }
-
-      return {
-        easy: `I can see a ${w} in the room.`,
-        hard: `The children discovered a wonderful ${w} right there on the classroom table.`
-      };
-    }
-
-    function sentenceToPuzzleTokens(sentence) {
-      const clean = (sentence || '').replace(/[.!?]/g, '').trim();
-      const words = clean.split(/s+/).filter(Boolean);
-      return words.concat(['.']);
-    }
-
-    // Shared dictionary morphology engine (also used by the 80k-word compiler).
-// English Morphology, Lemmatizer & Semantic Sentence Synthesizer.
-// The candidate list is deliberately dictionary-driven: spelling rules can be
-// ambiguous, so callers try each candidate and keep the first real root entry.
-
-const IRREGULAR_LEMMAS = {
-  taught: ['teach', 'past', 'verb'], caught: ['catch', 'past', 'verb'], thought: ['think', 'past', 'verb'],
-  bought: ['buy', 'past', 'verb'], brought: ['bring', 'past', 'verb'], fought: ['fight', 'past', 'verb'],
-  sought: ['seek', 'past', 'verb'], went: ['go', 'past', 'verb'], came: ['come', 'past', 'verb'],
-  ran: ['run', 'past', 'verb'], ate: ['eat', 'past', 'verb'], saw: ['see', 'past', 'verb'],
-  took: ['take', 'past', 'verb'], made: ['make', 'past', 'verb'], gave: ['give', 'past', 'verb'],
-  found: ['find', 'past', 'verb'], told: ['tell', 'past', 'verb'], spoke: ['speak', 'past', 'verb'],
-  wrote: ['write', 'past', 'verb'], heard: ['hear', 'past', 'verb'], sang: ['sing', 'past', 'verb'],
-  sung: ['sing', 'past', 'verb'], swam: ['swim', 'past', 'verb'], flew: ['fly', 'past', 'verb'],
-  drew: ['draw', 'past', 'verb'], grew: ['grow', 'past', 'verb'], threw: ['throw', 'past', 'verb'],
-  knew: ['know', 'past', 'verb'], blew: ['blow', 'past', 'verb'], built: ['build', 'past', 'verb'],
-  slept: ['sleep', 'past', 'verb'], kept: ['keep', 'past', 'verb'], swept: ['sweep', 'past', 'verb'],
-  felt: ['feel', 'past', 'verb'], fell: ['fall', 'past', 'verb'], left: ['leave', 'past', 'verb'],
-  met: ['meet', 'past', 'verb'], led: ['lead', 'past', 'verb'], did: ['do', 'past', 'verb'],
-  had: ['have', 'past', 'verb'], was: ['be', 'past', 'verb'], were: ['be', 'past', 'verb'],
-  children: ['child', 'plural', 'noun'], people: ['person', 'plural', 'noun'], men: ['man', 'plural', 'noun'],
-  women: ['woman', 'plural', 'noun'], mice: ['mouse', 'plural', 'noun'], feet: ['foot', 'plural', 'noun'],
-  teeth: ['tooth', 'plural', 'noun'], geese: ['goose', 'plural', 'noun'], leaves: ['leaf', 'plural', 'noun'],
-  better: ['good', 'comparative', 'adjective'], best: ['good', 'superlative', 'adjective'],
-  worse: ['bad', 'comparative', 'adjective'], worst: ['bad', 'superlative', 'adjective'],
-  farther: ['far', 'comparative', 'adjective'], further: ['far', 'comparative', 'adjective'],
-  farthest: ['far', 'superlative', 'adjective'], furthest: ['far', 'superlative', 'adjective'],
-  struggling: ['struggle', 'continuous', 'verb']
-};
-
-function addLemmaCandidate(candidates, seen, lemma, morphology, posHint, suffix) {
-  if (!lemma || lemma.length < 2 || !/^[a-z]+$/.test(lemma)) return;
-  const key = `${lemma}|${morphology}`;
-  if (seen.has(key)) return;
-  seen.add(key);
-  candidates.push({ lemma, morphology, posHint: posHint || null, suffix: suffix || '' });
-}
-
-function lemmatizeWord(word) {
-  const w = (word || '').toLowerCase().trim();
-  const candidates = [];
-  const seen = new Set();
-  addLemmaCandidate(candidates, seen, w, 'base', null, '');
-
-  const irregular = IRREGULAR_LEMMAS[w];
-  if (irregular) addLemmaCandidate(candidates, seen, irregular[0], irregular[1], irregular[2], '');
-
-  if (w.endsWith('ied') && w.length > 4) {
-    addLemmaCandidate(candidates, seen, w.slice(0, -3) + 'y', 'past', 'verb', 'ied');
-  }
-  if (w.endsWith('ing') && w.length > 4) {
-    const stem = w.slice(0, -3);
-    addLemmaCandidate(candidates, seen, stem, 'continuous', 'verb', 'ing');
-    if (/([^aeiou])\1$/.test(stem)) addLemmaCandidate(candidates, seen, stem.slice(0, -1), 'continuous', 'verb', 'ing');
-    addLemmaCandidate(candidates, seen, stem + 'e', 'continuous', 'verb', 'ing');
-  }
-  if (w.endsWith('ed') && w.length > 3 && !w.endsWith('ied')) {
-    const stem = w.slice(0, -2);
-    addLemmaCandidate(candidates, seen, stem, 'past', 'verb', 'ed');
-    if (/([^aeiou])\1$/.test(stem)) addLemmaCandidate(candidates, seen, stem.slice(0, -1), 'past', 'verb', 'ed');
-    addLemmaCandidate(candidates, seen, stem + 'e', 'past', 'verb', 'ed');
-  }
-  if (w.endsWith('ies') && w.length > 4) {
-    addLemmaCandidate(candidates, seen, w.slice(0, -3) + 'y', 'plural-or-third', null, 'ies');
-  }
-  if (w.endsWith('es') && w.length > 3 && !w.endsWith('ies')) {
-    addLemmaCandidate(candidates, seen, w.slice(0, -2), 'plural-or-third', null, 'es');
-    addLemmaCandidate(candidates, seen, w.slice(0, -1), 'plural-or-third', null, 's');
-  }
-  if (w.endsWith('s') && !w.endsWith('ss') && !w.endsWith('ies') && w.length > 2) {
-    addLemmaCandidate(candidates, seen, w.slice(0, -1), 'plural-or-third', null, 's');
-  }
-  if (w.endsWith('iest') && w.length > 5) {
-    addLemmaCandidate(candidates, seen, w.slice(0, -4) + 'y', 'superlative', 'adjective', 'iest');
-  }
-  if (w.endsWith('est') && w.length > 4 && !w.endsWith('iest')) {
-    const stem = w.slice(0, -3);
-    addLemmaCandidate(candidates, seen, stem, 'superlative', 'adjective', 'est');
-    if (/([^aeiou])\1$/.test(stem)) addLemmaCandidate(candidates, seen, stem.slice(0, -1), 'superlative', 'adjective', 'est');
-    addLemmaCandidate(candidates, seen, stem + 'e', 'superlative', 'adjective', 'est');
-  }
-  if (w.endsWith('ier') && w.length > 4) {
-    addLemmaCandidate(candidates, seen, w.slice(0, -3) + 'y', 'comparative', 'adjective', 'ier');
-  }
-  if (w.endsWith('er') && w.length > 3 && !w.endsWith('ier')) {
-    const stem = w.slice(0, -2);
-    addLemmaCandidate(candidates, seen, stem, 'comparative', 'adjective', 'er');
-    if (/([^aeiou])\1$/.test(stem)) addLemmaCandidate(candidates, seen, stem.slice(0, -1), 'comparative', 'adjective', 'er');
-    addLemmaCandidate(candidates, seen, stem + 'e', 'comparative', 'adjective', 'er');
-  }
-  if (w.endsWith('ily') && w.length > 4) {
-    addLemmaCandidate(candidates, seen, w.slice(0, -3) + 'y', 'adverb', 'adjective', 'ily');
-  }
-  if (w.endsWith('ly') && w.length > 3 && !w.endsWith('ily')) {
-    const stem = w.slice(0, -2);
-    addLemmaCandidate(candidates, seen, stem, 'adverb', 'adjective', 'ly');
-    addLemmaCandidate(candidates, seen, stem + 'le', 'adverb', 'adjective', 'ly');
-  }
-
-  return candidates;
-}
-
-// Child-Safe Definition Cleaner
-function cleanKidDefinition(def, word, pos) {
-  if (!def) {
-    if (pos === 'verb' || word.endsWith('ed') || word.endsWith('ing')) return 'An action or doing word.';
-    if (pos === 'adj' || pos === 'adjective') return 'Describes how something looks, feels, or acts.';
-    if (pos === 'adv' || pos === 'adverb') return 'Describes how or when an action is done.';
-    return 'A person, place, or thing.';
-  }
-
-  let cleaned = def
-    .replace(/^[a-z]+\t/i, '')
-    .replace(/^(adj|noun|verb|adv)\s+/i, '')
-    .replace(/\([^)]*\)/gi, '')
-    .replace(/;\s*specifically.*$/i, '')
-    .trim();
-
-  // Fix circular/opaque definitions
-  if (/^that floats/i.test(cleaned) || word === 'floating') {
-    return 'Staying on the surface of water or drifting gently in the air without sinking.';
-  }
-  if (/^that crawls/i.test(cleaned)) {
-    return 'Moving slowly along the ground on tiny legs.';
-  }
-
-  if (word.includes('fart')) {
-    cleaned = 'To pass tummy gas or make a funny popping sound.';
-  } else if (word.includes('burp')) {
-    cleaned = 'To let out air from the tummy with a sudden sound.';
-  }
-
-  cleaned = cleaned.replace(/^to\s+/i, 'To ');
-  cleaned = cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
-  if (!cleaned.endsWith('.') && !cleaned.endsWith('!') && !cleaned.endsWith('?')) cleaned += '.';
-  return cleaned;
-}
-
-function isLowQualityDefinition(def) {
-  const text = (def || '').trim();
-  return !text ||
-    /^(an action|a word used|a person,? (?:animal,? )?place|describes (?:how|what))/i.test(text) ||
-    /^(?:[a-z]\.\s*(?:&\s*[a-z]\.\s*)?|(?:imp|p\. p)\.)\s*(?:from|of)\b/i.test(text) ||
-    /(?:^|\b)(?:compar\.|superl\.|imp\.|p\. p\.|obs\.|archaic)/i.test(text) ||
-    /\bSee\s+[A-Z][a-z-]*/.test(text) ||
-    /^,?\s*(?:comparative|superlative|past tense|plural)\s+of\b/i.test(text);
-}
-
-function rootMeaningFragment(def, lemma) {
-  let text = (def || '').replace(/\s*See also\b.*$/i, '').replace(/\s*See\s+[A-Z][a-z-]*\.?\s*$/i, '').trim();
-  text = text.replace(/^\d+\.\s*/, '').replace(/[.!?]+$/, '');
-  text = text.replace(/^To\s+/i, '').replace(/;\s*to\s+/gi, ', ').replace(/;\s*/g, ', ');
-  text = text.replace(/\s*,\s*,/g, ',').replace(/\s+/g, ' ').trim();
-  if (!text || isLowQualityDefinition(text)) return `the meaning of ${lemma}`;
-  return text.charAt(0).toLowerCase() + text.slice(1);
-}
-
-function resolveMorphologyPos(morphology, rootPos) {
-  const root = (rootPos || '').toLowerCase();
-  if (morphology === 'past' || morphology === 'continuous') return 'verb';
-  if (morphology === 'comparative' || morphology === 'superlative') return 'adjective';
-  if (morphology === 'adverb') return 'adverb';
-  if (morphology === 'plural-or-third') return root.includes('verb') ? 'verb' : 'noun';
-  return root || 'noun';
-}
-
-function transformInflectedDefinition(word, lemma, morphology, rootDef, rootPos) {
-  const meaning = rootMeaningFragment(rootDef, lemma);
-  const rootLabel = lemma.charAt(0).toUpperCase() + lemma.slice(1);
-  const meaningSentence = rootDef && !isLowQualityDefinition(rootDef) ? ` ${rootLabel} means ${meaning}.` : '';
-  if (morphology === 'past') {
-    return `Past tense of ${lemma}: an action that happened before now.${meaningSentence}`;
-  }
-  if (morphology === 'continuous') {
-    return `Continuous form of ${lemma}: the action is happening or continuing.${meaningSentence}`;
-  }
-  if (morphology === 'comparative') {
-    return `Comparative form of ${lemma}: used to compare two things.${meaningSentence}`;
-  }
-  if (morphology === 'superlative') {
-    return `Superlative form of ${lemma}: used to show the greatest amount or degree.${meaningSentence}`;
-  }
-  if (morphology === 'adverb') {
-    return `Adverb made from ${lemma}: describes doing something in a ${lemma} way.${meaningSentence}`;
-  }
-  if (morphology === 'plural-or-third') {
-    if ((rootPos || '').toLowerCase().includes('verb')) {
-      return `Verb form of ${lemma} used with one person, animal, or thing.${meaningSentence}`;
-    }
-    return `Plural of ${lemma}: more than one ${lemma}.${meaningSentence}`;
-  }
-  return cleanKidDefinition(rootDef, word, rootPos);
-}
-
-function semanticKind(word, lemma, def) {
-  const text = `${word} ${lemma || ''} ${def || ''}`.toLowerCase();
-  if (/\b(bother|annoy|disturb|trouble|worry|perplex)\b/.test(text)) return 'disturb';
-  if (/\b(struggl|effort|difficult|hard to|try very hard)\b/.test(text)) return 'struggle';
-  if (/\b(walk|run|jump|hop|move|travel|climb|crawl|swim|fly|float|dance|slide|skate|ride)\b/.test(text)) return 'movement';
-  if (/\b(talk|speak|say|tell|ask|answer|reply|shout|whisper|call|sing)\b/.test(text)) return 'communication';
-  if (/\b(see|look|watch|notice|observe|find|discover|spot)\b/.test(text)) return 'seeing';
-  if (/\b(eat|food|meal|chew|bite|taste)\b/.test(text)) return 'eating';
-  if (/\b(drink|sip|water|juice)\b/.test(text)) return 'drinking';
-  if (/\b(bake|cook|bread|cake|biscuit|cookie)\b/.test(text)) return 'cooking';
-  if (/\b(make|create|build|draw|paint|write|craft|design)\b/.test(text)) return 'creating';
-  if (/\b(carry|hold|lift|push|pull|throw|catch|kick|drop|pick)\b/.test(text)) return 'handling';
-  if (/\b(help|teach|guide|protect|save|rescue|show)\b/.test(text)) return 'helping';
-  if (/\b(happy|sad|angry|worried|excited|frightened|proud|glad|kind)\b/.test(text)) return 'feeling';
-  if (/\b(big|large|small|tiny|huge|tall|short|long|wide|heavy|light)\b/.test(text)) return 'size';
-  if (/\b(fast|quick|slow|early|late)\b/.test(text)) return 'speed';
-  if (/\b(easy|simple|hard|difficult|good|bad|better|worse)\b/.test(text)) return 'quality';
-  return 'general';
-}
-
-function verbSentencePair(word, lemma, morphology, kind) {
-  const isBase = !morphology || morphology === 'base';
-  const isContinuous = morphology === 'continuous' || word.endsWith('ing');
-  const prefix = isContinuous ? `was ${word}` : word;
-  const patterns = {
-    disturb: [`The loud noise ${prefix} the sleeping baby.`, `The sudden banging ${prefix} the baby, so Dad quietly closed the door.`],
-    struggle: [`The child ${isContinuous ? `was ${word}` : word} to open the tight lid.`, `The determined child ${isContinuous ? `was ${word}` : word} to open the tight jar without spilling it.`],
-    movement: [`The rabbit ${prefix} across the grass.`, `The little rabbit ${prefix} quickly across the field towards its safe burrow.`],
-    communication: [`The child ${prefix} to the teacher.`, `The confident child ${prefix} clearly to the teacher during morning circle.`],
-    seeing: [`The child ${prefix} a tiny shell.`, `The curious child ${prefix} a tiny striped shell beside the rock pool.`],
-    eating: [`The hungry puppy ${prefix} its lunch.`, `The hungry puppy ${prefix} its healthy lunch before running into the garden.`],
-    drinking: [`The thirsty child ${prefix} some cool water.`, `After the race, the thirsty child ${prefix} cool water from a blue bottle.`],
-    cooking: [`The baker ${prefix} a warm loaf.`, `The careful baker ${prefix} a warm loaf of bread for the family.`],
-    creating: [`The pupil ${prefix} a colourful picture.`, `The creative pupil ${prefix} a colourful picture for the classroom display.`],
-    handling: [`The child ${prefix} the red ball.`, `During the game, the child ${prefix} the bright red ball with both hands.`],
-    helping: [`The teacher ${prefix} the pupil.`, `The kind teacher ${prefix} the pupil to finish the challenging activity.`],
-    general: [`The child ${prefix} during the activity.`, `The child ${prefix} carefully during the classroom activity yesterday.`]
-  };
-  if (!isBase) return patterns[kind] || patterns.general;
-
-  const basePatterns = {
-    disturb: [`Please do not ${lemma} the sleeping baby.`, `We closed the door quietly so the noise would not ${lemma} the sleeping baby.`],
-    struggle: [`Sometimes we ${lemma} with a hard puzzle.`, `We may ${lemma} at first, but careful practice helps us learn.`],
-    movement: [`The rabbit can ${lemma} across the grass.`, `The little rabbit can ${lemma} quickly across the field towards its burrow.`],
-    communication: [`We can ${lemma} to our teacher.`, `The children can ${lemma} clearly to their teacher during morning circle.`],
-    seeing: [`We can ${lemma} a tiny shell.`, `At the rock pool, we can ${lemma} a tiny striped shell beside a stone.`],
-    cooking: [`We can ${lemma} a warm loaf.`, `With an adult, we can ${lemma} a warm loaf of bread for the family.`],
-    creating: [`We can ${lemma} a colourful picture.`, `The pupils can ${lemma} a colourful picture for the classroom display.`],
-    handling: [`We can ${lemma} the red ball.`, `During the game, we can ${lemma} the bright red ball with both hands.`],
-    helping: [`We can ${lemma} a friend.`, `The class can ${lemma} a friend who finds the activity difficult.`],
-    general: [`We can use the word “${word}” in a sentence.`, `The word “${word}” tells us about an action in this sentence.`]
-  };
-  return basePatterns[kind] || basePatterns.general;
-}
-
-// Grammar-safe, morphology-aware sentence synthesizer. All templates remain
-// natural even when the dictionary contains no example for the searched word.
-function synthesizeSentencePair(word, lemma, pos, def, morphology) {
-  const w = (word || '').toLowerCase().trim();
-  const base = (lemma || w).toLowerCase().trim();
-  const p = (pos || 'noun').toLowerCase();
-  const m = morphology || (lemmatizeWord(w).find(c => c.lemma === base && c.morphology !== 'base') || {}).morphology || 'base';
-  const kind = semanticKind(w, base, def);
-
-  const curated = {
-    talked: ['We talked to our teacher.', 'The children talked together on their way to school.'],
-    farted: ['The funny puppy farted loudly.', 'The funny little puppy farted and dashed out of the room.'],
-    jumped: ['The frog jumped into the pond.', 'The child jumped over the puddle on the way home.'],
-    floating: ['The yellow duck was floating.', 'The bright yellow duck was floating gently on the water.'],
-    bothered: ['The loud noise bothered the sleeping baby.', 'The loud noise bothered the sleeping baby, so Dad quietly closed the door.'],
-    struggling: ['The child was struggling to open the tight lid.', 'The determined child was struggling to open the tight jar without spilling it.'],
-    bigger: ['The elephant is bigger than the dog.', 'The blue box is bigger than the red box, so more blocks fit inside it.'],
-    biggest: ['The elephant is the biggest animal in the picture.', 'The blue box is the biggest of the three boxes, so it holds the most blocks.'],
-    easier: ['This puzzle is easier than the last one.', 'The second puzzle was easier because it had fewer pieces.'],
-    easiest: ['This is the easiest puzzle on the table.', 'The picture puzzle was the easiest of the three because it had fewer pieces.']
-  };
-  if (Object.prototype.hasOwnProperty.call(curated, w)) {
-    return { easy: curated[w][0], hard: curated[w][1] };
-  }
-
-  if (m === 'comparative') {
-    if (kind === 'feeling') return { easy: `The child feels ${w} today.`, hard: `The child feels ${w} today than yesterday because a friend came to help.` };
-    if (kind === 'quality') return { easy: `This puzzle is ${w} than that one.`, hard: `This puzzle is ${w} than the last one because it has fewer pieces.` };
-    if (kind === 'speed') return { easy: `The rabbit is ${w} than the turtle.`, hard: `The rabbit is ${w} than the turtle as they race across the field.` };
-    return { easy: `This box is ${w} than that one.`, hard: `The blue box is ${w} than the red box when we compare them side by side.` };
-  }
-  if (m === 'superlative') {
-    if (kind === 'feeling') return { easy: `The child is the ${w} in the group.`, hard: `The child is the ${w} in the group after hearing the wonderful news.` };
-    if (kind === 'quality') return { easy: `This is the ${w} puzzle.`, hard: `This is the ${w} puzzle of the three because it has fewer pieces.` };
-    if (kind === 'speed') return { easy: `The rabbit is the ${w} animal here.`, hard: `The rabbit is the ${w} animal in the race across the field.` };
-    return { easy: `This is the ${w} box.`, hard: `The blue box is the ${w} of the three boxes when we compare them.` };
-  }
-  if (m === 'adverb' || p.includes('adv')) {
-    if (w === 'also') return { easy: 'I also like apples.', hard: 'Mia packed her reading book and also remembered her water bottle.' };
-    if (/^(always|often|sometimes|never|usually)$/.test(w)) {
-      return { easy: `We ${w} read after lunch.`, hard: `Our class ${w} reads a story together after lunch.` };
-    }
-    if (/^(today|tomorrow|yesterday|soon|now|then|early|late)$/.test(w)) {
-      return { easy: `We will read ${w}.`, hard: `The children will read their new library books ${w}.` };
-    }
-    if (/^(here|there|inside|outside|away)$/.test(w)) {
-      return { easy: `Please put the book ${w}.`, hard: `The child carefully placed the reading book ${w} after the lesson.` };
-    }
-    if (kind === 'speed') return { easy: `The rabbit ran ${w}.`, hard: `The little rabbit ran ${w} across the grass towards its burrow.` };
-    return { easy: `The child completed the task ${w}.`, hard: `The child completed the classroom task ${w} and checked the work at the end.` };
-  }
-  if (p.includes('verb') || m === 'past' || m === 'continuous') {
-    const pair = verbSentencePair(w, base, m, kind);
-    return { easy: pair[0], hard: pair[1] };
-  }
-  if (m === 'plural-or-third' && p.includes('noun')) {
-    return { easy: `We can see the ${w}.`, hard: `We placed the ${w} carefully on the classroom table.` };
-  }
-  if (p.includes('adj')) {
-    if (kind === 'feeling') return { easy: `The child feels ${w}.`, hard: `The child feels ${w} after hearing the wonderful news.` };
-    if (kind === 'size') return { easy: `We found a ${w} box.`, hard: `We found a ${w} blue box beside the classroom shelf.` };
-    return { easy: `We found a ${w} object.`, hard: `We found a ${w} object during our classroom investigation.` };
-  }
-  return {
-    easy: `Here is the word “${w}”.`,
-    hard: `We found the word “${w}” while reading a book in class.`
-  };
-}
-
-function sentenceToPuzzleTokens(sentenceStr) {
-  const clean = sentenceStr.trim();
-  const punctMatch = clean.match(/[.!?]$/);
-  const punct = punctMatch ? punctMatch[0] : '.';
-  const words = clean.replace(/[.!?]/g, '').split(/\s+/).filter(Boolean);
-  return words.concat([punct]);
-}
-
-// POS-Aware Kid-Safe Google Image Queries with Dynamic Semantic Variations
-function getImageQueryOptions(word, pos, def) {
-  const w = word.toLowerCase().trim();
-  const p = (pos || 'noun').toLowerCase();
-
-  // 1. Direct Specific Word Handlers
-  if (w === 'gently') {
-    return [
-      'a cute puppy sleeping gently on a blanket',
-      'a child petting a fluffy kitten gently',
-      'a colourful butterfly landing gently on a flower',
-      'autumn leaves falling gently to the ground',
-      'a mother bird feeding its baby gently'
-    ];
-  }
-  if (w === 'quickly') {
-    return [
-      'a cheetah sprinting quickly across the savanna',
-      'a playful puppy running quickly with a ball',
-      'a boy running quickly in a sports race',
-      'a fast rabbit darting quickly across grass'
-    ];
-  }
-  if (w === 'loudly') {
-    return [
-      'a lion roaring loudly in the wild',
-      'a happy puppy barking loudly in the garden',
-      'a rooster crowing loudly in the morning',
-      'children cheering and clapping loudly'
-    ];
-  }
-  if (w === 'softly') {
-    return [
-      'snow falling softly on winter trees',
-      'a fluffy little bunny sitting in soft green grass',
-      'a child whispering softly to a friend',
-      'a mother singing a soft lullaby to baby'
-    ];
-  }
-  if (w === 'carefully') {
-    return [
-      'a child carefully building a tall block tower',
-      'a squirrel carefully holding a little acorn',
-      'carrying a glass of water carefully'
-    ];
-  }
-  if (w === 'safely') {
-    return [
-      'children safely crossing the road with lollipop person',
-      'wearing a helmet to ride a bicycle safely',
-      'a bird resting safely in a cozy nest'
-    ];
-  }
-  if (w === 'happily') {
-    return [
-      'children playing happily in the school playground',
-      'a playful dog wagging tail happily in the park',
-      'a smiling happy family eating a picnic'
-    ];
-  }
-  if (w === 'painted') {
-    return [
-      'children painting colourful pictures on an easel',
-      'a colourful painted rainbow on canvas',
-      'an artist painting a cute puppy with paintbrush'
-    ];
-  }
-  if (w === 'splashed') {
-    return [
-      'a happy puppy splashing in water puddle',
-      'children splashing happily in a swimming pool',
-      'a yellow duck splashing water in a pond'
-    ];
-  }
-  if (w === 'whistling') {
-    return [
-      'a cheerful bird whistling a tune on a tree branch',
-      'a happy boy whistling a cheerful melody',
-      'a tea kettle whistling on a stove'
-    ];
-  }
-  if (w === 'matches') {
-    return [
-      'wooden safety matchsticks in a box',
-      'two matching colourful socks pair',
-      'children playing a football match'
-    ];
-  }
-  if (w === 'brightest') {
-    return [
-      'the brightest star shining in the night sky',
-      'a bright colourful rainbow in the blue sky',
-      'a golden bright sun shining over green hills'
-    ];
-  }
-  if (w === 'playful') {
-    return [
-      'a playful puppy playing with a ball',
-      'a playful dolphin jumping in the ocean water',
-      'playful kittens playing with a ball of yarn',
-      'playful children laughing on a playground slide'
-    ];
-  }
-  if (w === 'darkness') {
-    return [
-      'a starry night sky full of shining stars',
-      'a cozy room at night with a glowing nightlight',
-      'a magical forest with glowing fireflies'
-    ];
-  }
-  if (w === 'careless') {
-    return [
-      'a dropped ice cream cone on the ground cartoon',
-      'spilled paint on the art floor cartoon',
-      'a messy school desk with fallen books'
-    ];
-  }
-  if (w === 'helpless') {
-    return [
-      'a tiny baby bird in a nest waiting for food',
-      'a little lost puppy looking for help',
-      'a baby sea turtle crawling on sand'
-    ];
-  }
-  if (w === 'unlock') {
-    return [
-      'a key unlocking a golden treasure lock',
-      'unlocking a secret garden gate with a key',
-      'a brass key turning in a keyhole'
-    ];
-  }
-  if (w === 'disagree') {
-    return [
-      'two friendly cartoon characters discussing ideas',
-      'people politely sharing different opinions'
-    ];
-  }
-  if (w === 'grape') {
-    return [
-      'a bunch of fresh sweet purple grapes',
-      'juicy green and purple grapes on a vine',
-      'a bowl of fresh grapes for a snack'
-    ];
-  }
-  if (w === 'stone') {
-    return [
-      'smooth colourful river pebbles and stones',
-      'stepping stones across a tranquil garden path',
-      'a tall natural stone sculpture in nature'
-    ];
-  }
-  if (w === 'flute') {
-    return [
-      'a person playing a shiny silver flute',
-      'a classical concert flute musical instrument',
-      'a wooden recorder flute for kids'
-    ];
-  }
-  if (w === 'bark') {
-    return p.includes('verb') ? [
-      'a golden puppy barking happily in the park',
-      'a small dog barking at a toy'
-    ] : [
-      'the rough brown textured bark of an oak tree',
-      'tree bark with green moss in a forest'
-    ];
-  }
-  if (w === 'watch') {
-    return p.includes('verb') ? [
-      'children watching colourful birds through binoculars',
-      'children watching a science experiment in class'
-    ] : [
-      'a classic stylish wristwatch for telling time',
-      'a colourful digital wristwatch for kids'
-    ];
-  }
-  if (w === 'flour') {
-    return [
-      'baking wheat flour in a bowl with a wooden spoon',
-      'a sack of white flour for making bread',
-      'dusting baking flour on a wooden board'
-    ];
-  }
-  if (w === 'people') {
-    return [
-      'a cheerful group of diverse smiling people',
-      'children and teacher in a happy classroom',
-      'a friendly crowd of people waving'
-    ];
-  }
-  if (w === 'blanket') {
-    return [
-      'a cozy warm knitted blanket on a bed',
-      'a cute puppy wrapped up in a soft fleece blanket',
-      'a colourful picnic blanket laid out on green grass'
-    ];
-  }
-  if (w === 'treasure') {
-    return [
-      'a golden pirate treasure chest full of glowing coins',
-      'sparkling gemstones and gold coins in a chest',
-      'a treasure map with an X marks the spot'
-    ];
-  }
-  if (w === 'farted' || w === 'fart') {
-    return [
-      'funny cartoon animal farting cloud',
-      'silly cute cartoon dinosaur with gas bubbles'
-    ];
-  }
-  if (w === 'talked' || w === 'talk') {
-    return [
-      'two happy children talking together in class',
-      'friends sitting on a bench talking and smiling'
-    ];
-  }
-  if (w === 'trip') {
-    return p.includes('verb') ? [
-      'a boy tripping over a big rock on the path',
-      'a cartoon character stumbling over a stone'
-    ] : [
-      'a happy family on a road trip vacation in the countryside',
-      'school children on a fun field trip to the zoo'
-    ];
-  }
-  if (w === 'fall') {
-    return p.includes('verb') ? [
-      'golden autumn leaves falling gently from tall trees',
-      'colourful maple leaves falling in the park'
-    ] : [
-      'autumn fall season forest with golden orange trees',
-      'children jumping into a pile of autumn leaves'
-    ];
-  }
-
-  const meaningKind = semanticKind(w, w, def);
-  if (meaningKind === 'disturb') {
-    return [
-      `a loud noise that ${w} a sleeping baby`,
-      'a sleeping baby waking because of a loud noise',
-      'a child covering their ears because a sound is annoying'
-    ];
-  }
-  if (meaningKind === 'struggle') {
-    return [
-      `a child ${w} to open a tight jar lid`,
-      'a determined child trying hard to solve a puzzle',
-      'a child carefully working through a difficult task'
-    ];
-  }
-  if (meaningKind === 'size' && (w.endsWith('er') || w.endsWith('est'))) {
-    return [
-      `objects comparing which one is ${w}`,
-      `a ${w} blue box beside smaller red boxes`,
-      `animals comparing which one is ${w}`
-    ];
-  }
-  if (meaningKind === 'quality' && (w.endsWith('er') || w.endsWith('est'))) {
-    return [
-      `children comparing which puzzle is ${w}`,
-      `an ${w} jigsaw puzzle with fewer pieces`,
-      'three classroom puzzles arranged from easy to hard'
-    ];
-  }
-
-  // 2. Class-Based Semantic Patterns (Adverbs -ly)
-  if (w.endsWith('ly') || p.includes('adv') || p === 'r') {
-    return [
-      `a cute puppy sitting ${w} in the grass`,
-      `a bird flying ${w} across the sky`,
-      `happy children playing ${w} in the playground`,
-      `a gentle animal moving ${w} in nature`,
-      `a person walking ${w} through a garden`
-    ];
-  }
-
-  // 3. Superlatives (-est) & Comparatives (-er)
-  if (w.endsWith('est')) {
-    return [
-      `the ${w} wild animal in nature`,
-      `the ${w} landmark in the world`,
-      `the ${w} colourful object in the scene`
-    ];
-  }
-  if (w.endsWith('er') && (p.includes('adj') || p === 'adj')) {
-    return [
-      `a ${w} animal in the wild`,
-      `a ${w} tree in the forest`
-    ];
-  }
-
-  // 4. Past Tense Verbs (-ed)
-  if (w.endsWith('ed')) {
-    return [
-      `happy children ${w} together in the park`,
-      `a playful puppy that ${w} outdoors`,
-      `a person who ${w} outside in nature`
-    ];
-  }
-
-  // 5. Continuous Verbs (-ing)
-  if (w.endsWith('ing')) {
-    return [
-      `a happy child ${w} in the garden`,
-      `a playful puppy ${w} outdoors`,
-      `animals ${w} in nature`
-    ];
-  }
-
-  // 6. Base Verbs
-  if (p.includes('verb') || p === 'v') {
-    return [
-      `children love to ${w} together`,
-      `a playful animal that can ${w}`,
-      `a person learning to ${w} outside`
-    ];
-  }
-
-  // 7. Adjectives
-  if (p.includes('adj')) {
-    return [
-      `a very ${w} cute animal in nature`,
-      `a ${w} scene in nature for kids`,
-      `a ${w} friendly character cartoon`
-    ];
-  }
-
-  // 8. General Noun
-  return [
-    `a high quality photo of a ${w}`,
-    `a ${w} in real life`,
-    `a colourful ${w} for children`
-  ];
-}
-
-function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
-  const options = getImageQueryOptions(word, pos, def);
-  if (typeof seedIndex === 'number') {
-    return options[Math.abs(seedIndex) % options.length];
-  }
-  return options[Math.floor(Math.random() * options.length)];
-}
-
-
-    // ================= 4. EMBEDDED HIGH-FREQUENCY CORE LEXICON =================
     const CORE_LEXICON = ["about","after","again","air","all","almost","along","also","always","animal","another","any","apple","around","ask","away","baby","back","bad","ball","bark","bat","be","beach","bear","beautiful","because","bed","been","before","began","bell","best","better","big","bird","black","blue","boat","book","both","bottle","bounce","box","boxes","boy","brave","bread","bridge","bright","brother","brown","build","burn","bus","busy","butterfly","button","by","cake","call","came","camp","can","candle","car","care","careful","carry","cat","catch","caterpillar","chair","chalk","change","cheer","cheese","chest","chew","chicken","child","children","chin","chip","chirp","chocolate","city","clap","class","classroom","clean","clear","clever","climb","clock","close","cloth","cloud","clown","clue","coat","cold","colour","come","cook","cookie","cool","corn","could","count","country","cover","cow","crawl","cried","cross","crown","cry","cube","cup","cut","cute","dad","damsel","dance","danger","dark","day","deep","delicious","desk","desperately","did","dinner","dinosaur","dirt","dish","do","doctor","dog","doll","dolphin","donkey","door","down","dragon","draw","dream","dress","drink","drip","drive","drop","drum","dry","duck","each","ear","early","earth","east","easy","eat","egg","eight","elephant","eleven","end","enormous","even","every","eye","face","fair","fall","family","far","farm","farmer","fart","farted","farting","fast","fat","father","feather","feed","feel","feet","few","field","fight","fill","find","fine","finger","finish","fire","first","fish","five","flag","flash","flat","floating","floor","flower","fly","food","foot","football","for","forest","fork","form","found","four","fox","friend","frightened","frog","from","front","fruit","full","fun","funny","game","garden","gas","gate","gave","get","giant","girl","give","glad","glass","glove","glow","glue","go","goat","gold","good","goodbye","got","grass","great","green","grew","ground","grow","had","hair","half","hall","hand","hang","happy","hard","has","hat","have","he","head","hear","heart","heavy","help","helpful","hen","her","here","high","hill","him","his","hit","hold","hole","holiday","home","hop","hopped","horn","horse","hot","house","how","hug","huge","hungry","hunt","hurry","hurt","ice","if","important","in","inside","into","is","island","it","its","jacket","jam","jar","jeans","jelly","job","join","joke","joy","juice","jump","jumped","jumping","jungle","just","keep","key","kick","kicked","kicking","kid","kind","king","kiss","kitchen","kite","kitten","knee","knife","knight","knock","know","ladder","lady","lake","lamp","land","landed","large","last","late","laugh","lay","leaf","learn","leave","leaves","left","leg","lesson","let","letter","light","like","line","lion","listen","little","live","lock","long","look","loud","loudly","love","low","lunch","made","magic","make","man","many","map","march","mark","market","match","may","me","meal","mean","meant","meat","meet","men","mice","middle","might","milk","mind","minute","miss","mistake","mix","money","monkey","monster","month","moon","more","morning","most","mother","mountain","mouse","mouth","move","much","mud","music","must","my","name","near","neat","neck","need","nest","never","new","next","nice","night","nine","no","noise","noisy","noon","north","nose","not","note","now","number","nurse","nut","oak","ocean","off","often","oil","old","on","once","one","only","open","or","orange","other","our","out","outside","over","owl","own","pack","page","paint","pair","pan","paper","park","part","party","pass","past","path","paw","pay","pea","peace","peach","pear","pen","pencil","people","pet","phone","photo","piano","pick","picture","pie","piece","pig","pile","pillow","pilot","pin","pink","pipe","pirate","place","plain","plan","plane","planet","plant","plate","play","played","playground","please","pocket","point","police","pond","pool","poor","pop","pork","post","pot","potato","pour","power","present","pretty","prince","princess","prize","proud","puddle","puff","pull","puppy","pure","purple","push","put","puzzle","queen","quick","quickly","quiet","quietly","rabbit","race","radio","rain","rainbow","raise","ran","reach","read","ready","real","red","rescue","rest","ribbon","rice","rich","ride","right","ring","river","road","roar","robot","rock","rocket","roof","room","root","rope","rose","rough","round","row","rub","rubber","rug","ruler","run","running","rush","sad","safe","safely","said","sail","salt","same","sand","sang","sat","sauce","save","saw","say","says","scare","scared","school","science","scissors","scooter","sea","seal","search","season","seat","second","secret","see","seed","seem","seen","send","seven","sew","shadow","shake","shall","shape","share","shark","sharp","she","sheep","sheet","shelf","shell","shine","shiny","ship","shirt","shoe","shoot","shop","short","should","shout","show","shut","shy","sick","side","sight","sign","silver","simple","sing","sink","sister","sit","six","size","skate","skeleton","skin","skirt","sky","sleep","slide","slow","slowly","small","smart","smell","smile","smoke","snail","snake","snow","snowman","so","soap","sock","soft","softly","soil","some","someone","something","sometimes","son","song","soon","sound","soup","sour","south","space","spark","sparkle","speak","special","speed","spell","spend","spider","spill","spin","splash","split","spoil","spoon","sport","spot","spring","square","squash","squeak","squirrel","stage","stairs","stamp","stand","star","stare","start","station","stay","steam","step","stick","still","stone","stop","store","storm","story","straight","strange","straw","strawberry","stream","street","string","strong","student","stumble","subway","such","sudden","sugar","suit","summer","sun","super","supper","sure","surprise","swallow","swan","swap","sweet","swim","swimming","swing","talk","talked"];
     let activeDropdownIndex = -1;
     let currentSuggestions = [];
@@ -3857,113 +2404,96 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
     let currentActiveSenseIdx = 0;
     let searchDebounceTimer = null;
 
-    const ONLINE_APP_BASE = 'https://happyclass-ops.github.io/prep2-phonics/';
-    const STATIC_ASSET_VERSION = '2026.08.28.2';
+    // The dictionary is deliberately live and provider-led: there is no local
+    // definition database, no historical fallback, and no guessed root word.
+    // The key is public by design for this non-commercial GitHub Pages app.
+    const MERRIAM_WEBSTER_API_KEY = 'a7c26507-43bf-4771-a653-8efa33e99fb7';
+    const MERRIAM_WEBSTER_ENDPOINT = 'https://dictionaryapi.com/api/v3/references/sd2/json/';
+    let currentWordAudioUrl = '';
 
-    function versionedAssetUrl(relativePath, baseUrl) {
-      const url = new URL(relativePath, baseUrl);
-      url.searchParams.set('v', STATIC_ASSET_VERSION);
-      return url.href;
+    function cleanMerriamText(value) {
+      return String(value || '')
+        .replace(/\{bc\}/g, '')
+        .replace(/\{it\}|\{\/it\}|\{ldquo\}|\{rdquo\}/g, '')
+        .replace(/\{sx\|([^|}]+)[^}]*\}/g, '$1')
+        .replace(/\{[^}]+\}/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
     }
 
-    async function loadDictionaryLetter(letter) {
-      if (!/^[a-z]$/.test(letter)) return {};
-      if (DICT_CACHE.has(letter)) return DICT_CACHE.get(letter);
+    function merriamAudioUrl(audioId) {
+      if (!audioId) return '';
+      const subdirectory = audioId.startsWith('bix') ? 'bix' : audioId.startsWith('gg') ? 'gg' : /^\d/.test(audioId) ? 'number' : audioId[0];
+      return `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdirectory}/${audioId}.mp3`;
+    }
 
-      const urls = Array.from(new Set([
-        versionedAssetUrl('dict/' + letter + '.json', document.baseURI),
-        versionedAssetUrl('dict/' + letter + '.json', ONLINE_APP_BASE)
-      ]));
+    function merriamSenseText(sense) {
+      const textPart = (sense.dt || []).find(item => Array.isArray(item) && item[0] === 'text');
+      return textPart ? cleanMerriamText(textPart[1]) : '';
+    }
 
-      for (const url of urls) {
-        try {
-          const response = await fetch(url, { cache: 'force-cache' });
-          if (!response.ok) continue;
-          const letterMap = await response.json();
-          DICT_CACHE.set(letter, letterMap);
-          return letterMap;
-        } catch (e) {
-          // A file:// master cannot fetch sibling JSON in most browsers, so it
-          // automatically tries the published dictionary on the next pass.
+    function merriamSenseExample(sense) {
+      const visualIllustrations = (sense.dt || []).find(item => Array.isArray(item) && item[0] === 'vis');
+      if (!visualIllustrations || !Array.isArray(visualIllustrations[1])) return '';
+      return visualIllustrations[1].map(item => cleanMerriamText(item.t)).find(Boolean) || '';
+    }
+
+    function extractMerriamSenses(entry) {
+      const senses = [];
+      const visit = (node) => {
+        if (Array.isArray(node) && (node[0] === 'sense' || node[0] === 'bs') && node[1] && typeof node[1] === 'object') {
+          const sense = node[1];
+          const definition = merriamSenseText(sense);
+          if (definition) senses.push({ definition, example: merriamSenseExample(sense), number: sense.sn || '' });
+          return;
         }
-      }
-      return {};
-    }
-
-    function dictionaryItemToSense(item) {
-      const itemPos = item.pos || 'noun';
-      return {
-        pos: itemPos,
-        title: item.title || (itemPos.charAt(0).toUpperCase() + itemPos.slice(1)),
-        def: item.def || 'A word used in reading and writing.',
-        example: item.example || 'We found the word “' + currentSearchWord + '” while reading a book in class.',
-        exampleEasy: item.exampleEasy || 'Here is the word “' + currentSearchWord + '”.',
-        phrase: item.phrase,
-        imgQuery: item.imgQuery,
-        puzzle: item.puzzle
+        if (Array.isArray(node)) node.forEach(visit);
+        else if (node && typeof node === 'object') Object.values(node).forEach(visit);
       };
+      visit(entry.def || []);
+      return senses;
     }
 
-    function isLowQualityDictionaryEntry(item) {
-      if (item && item.curated === true) return false;
-      if (!item || isLowQualityDefinition(item.def)) return true;
-      return /happy children .* together|wonderful .* right there|can see an? .* in the room/i.test((item.exampleEasy || '') + ' ' + (item.example || ''));
+    function merriamEntryToSenses(entry, word) {
+      const pos = entry.fl || 'word';
+      const pronunciation = (entry.hwi && entry.hwi.prs && entry.hwi.prs[0]) || {};
+      const audioUrl = merriamAudioUrl(pronunciation.sound && pronunciation.sound.audio);
+      const structuredSenses = extractMerriamSenses(entry);
+      const sourceSenses = structuredSenses.length
+        ? structuredSenses
+        : (entry.shortdef || []).map(definition => ({ definition: cleanMerriamText(definition), example: '', number: '' }));
+      return sourceSenses.map((sourceSense, index) => {
+        const def = cleanMerriamText(sourceSense.definition);
+        return {
+          pos,
+          title: `${pos.charAt(0).toUpperCase() + pos.slice(1)}${sourceSenses.length > 1 ? ` ${sourceSense.number || index + 1}` : ''}`,
+          def,
+          example: sourceSense.example,
+          exampleEasy: sourceSense.example,
+          pronunciation: pronunciation.mw || '',
+          audioUrl,
+          imgQuery: `${word} ${def} picture for children`,
+          puzzle: null
+        };
+      }).filter(sense => sense.def);
     }
 
     async function resolveDictionaryWord(word) {
-      const exactMap = await loadDictionaryLetter(word[0]);
-      const exactItem = exactMap[word] || null;
-      const candidates = lemmatizeWord(word).filter(candidate => candidate.morphology !== 'base');
-      let rootMatch = null;
+      const url = `${MERRIAM_WEBSTER_ENDPOINT}${encodeURIComponent(word)}?key=${encodeURIComponent(MERRIAM_WEBSTER_API_KEY)}`;
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Dictionary lookup failed (${response.status}).`);
+      const entries = await response.json();
+      if (!Array.isArray(entries) || entries.length === 0 || typeof entries[0] === 'string') return { found: false, ipa: '', senses: [] };
 
-      for (const candidate of candidates) {
-        const rootMap = await loadDictionaryLetter(candidate.lemma[0]);
-        const rootItem = rootMap[candidate.lemma];
-        if (!rootItem) continue;
-        if ((candidate.morphology === 'comparative' || candidate.morphology === 'superlative' || candidate.morphology === 'adverb') && !(rootItem.pos || '').toLowerCase().includes('adj')) continue;
-        rootMatch = { ...candidate, item: rootItem };
-        break;
-      }
-
-      if (exactItem && (!rootMatch || !isLowQualityDictionaryEntry(exactItem))) {
-        return { ipa: exactItem.ipa || '/' + word + '/', sense: dictionaryItemToSense(exactItem) };
-      }
-
-      const candidate = rootMatch || candidates[0] || { lemma: word, morphology: 'base', posHint: null };
-      const rootItem = rootMatch ? rootMatch.item : null;
-      const rootPos = rootItem ? rootItem.pos : (candidate.posHint || (word.endsWith('ly') ? 'adverb' : word.endsWith('est') || word.endsWith('er') ? 'adjective' : word.endsWith('ed') || word.endsWith('ing') ? 'verb' : 'noun'));
-      const pos = resolveMorphologyPos(candidate.morphology, rootPos);
-      const rootDef = rootItem && !isLowQualityDefinition(rootItem.def) ? rootItem.def : '';
-      const def = candidate.morphology === 'base'
-        ? (exactItem && exactItem.def) || 'A word used in English reading and writing.'
-        : transformInflectedDefinition(word, candidate.lemma, candidate.morphology, rootDef, rootPos);
-      const sentences = synthesizeSentencePair(word, candidate.lemma, pos, def, candidate.morphology);
-      const imageOptions = getImageQueryOptions(word, pos, def);
-      const morphologyLabels = {
-        past: 'Past tense of ' + candidate.lemma,
-        continuous: 'Continuous form of ' + candidate.lemma,
-        comparative: 'Comparative form of ' + candidate.lemma,
-        superlative: 'Superlative form of ' + candidate.lemma,
-        adverb: 'Adverb made from ' + candidate.lemma,
-        'plural-or-third': pos === 'verb' ? 'Verb form of ' + candidate.lemma : 'Plural of ' + candidate.lemma
-      };
-
-      return {
-        ipa: (exactItem && exactItem.ipa) || '/' + word + '/',
-        sense: {
-          pos,
-          title: morphologyLabels[candidate.morphology] || (pos.charAt(0).toUpperCase() + pos.slice(1)),
-          def,
-          example: sentences.hard,
-          exampleEasy: sentences.easy,
-          phrase: 'Context: "' + sentences.hard + '"',
-          imgQuery: imageOptions[0],
-          puzzle: {
-            easy: sentenceToPuzzleTokens(sentences.easy),
-            hard: sentenceToPuzzleTokens(sentences.hard)
-          }
-        }
-      };
+      const senses = [];
+      const seen = new Set();
+      entries.filter(entry => entry && typeof entry === 'object').forEach(entry => {
+        merriamEntryToSenses(entry, word).forEach(sense => {
+          const key = `${sense.pos}|${sense.def}|${sense.pronunciation}`;
+          if (!seen.has(key)) { seen.add(key); senses.push(sense); }
+        });
+      });
+      return { found: senses.length > 0, ipa: senses[0] ? senses[0].pronunciation : '', senses };
     }
 
     async function handleSearchInput(val) {
@@ -3983,16 +2513,6 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
       const localMatches = CORE_LEXICON.filter(w => w.startsWith(q)).slice(0, 8);
       renderSuggestionsDropdown(localMatches);
 
-      // 2. Complete suggestions from the downloaded letter dictionary so the
-      // static GitHub Pages build needs no server-side suggestion route.
-      clearTimeout(searchDebounceTimer);
-      searchDebounceTimer = setTimeout(async () => {
-        if (q.length < 2 || document.getElementById('wordSearchInput').value.trim().toLowerCase() !== q) return;
-        const letterMap = await loadDictionaryLetter(q[0]);
-        const dictionaryMatches = Object.keys(letterMap).filter(word => word.startsWith(q)).slice(0, 12);
-        if (document.getElementById('wordSearchInput').value.trim().toLowerCase() !== q) return;
-        renderSuggestionsDropdown(Array.from(new Set([...localMatches, ...dictionaryMatches])).slice(0, 8));
-      }, 160);
     }
 
     function renderSuggestionsDropdown(list) {
@@ -4096,6 +2616,7 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
       currentSearchWord = word;
       currentActiveSenseIdx = 0;
       currentWordSenses = [];
+      currentWordAudioUrl = '';
 
       const workspaceCard = document.getElementById('dictWorkspaceCard');
       const skeletonCard = document.getElementById('skeletonCard');
@@ -4132,17 +2653,23 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
       workspaceCard.style.display = 'none';
       skeletonCard.style.display = 'flex';
 
-      let ipaStr = `/${word}/`;
-
-      if (PRIMARY_CURATED_DB[word]) {
-        const item = PRIMARY_CURATED_DB[word];
-        ipaStr = item.ipa || ipaStr;
-        currentWordSenses = item.senses || [];
-      } else {
-        const resolved = await resolveDictionaryWord(word);
-        ipaStr = resolved.ipa || ipaStr;
-        currentWordSenses = [resolved.sense];
+      let resolved;
+      try {
+        resolved = await resolveDictionaryWord(word);
+      } catch (error) {
+        console.warn('Merriam-Webster dictionary lookup failed.', error);
+        resolved = { found: false, ipa: '', senses: [], unavailableReason: 'We could not reach the learning dictionary just now.' };
       }
+
+      if (!resolved.found) {
+        showDictionaryUnavailable(word, resolved.unavailableReason);
+        skeletonCard.style.display = 'none';
+        workspaceCard.style.display = 'flex';
+        return;
+      }
+
+      const ipaStr = resolved.ipa || '';
+      currentWordSenses = resolved.senses;
 
       document.getElementById('resWordTitle').innerText = word;
       document.getElementById('resIpaBadge').innerText = ipaStr;
@@ -4165,6 +2692,22 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
 
       skeletonCard.style.display = 'none';
       workspaceCard.style.display = 'flex';
+    }
+
+    function showDictionaryUnavailable(word, reason) {
+      document.getElementById('resWordTitle').innerText = word;
+      document.getElementById('resIpaBadge').innerText = 'Not in dictionary';
+      document.getElementById('resPosBadge').innerText = 'WORD';
+      document.getElementById('resPosChildTip').innerText = '• You can still practise sounding this word out';
+      document.getElementById('resVisualTitle').innerText = 'Phonics practice';
+      document.getElementById('resVisualDesc').innerText = reason || 'This word is not in the learning dictionary yet.';
+      document.getElementById('resContextPhrase').innerText = 'No picture search is shown until a trusted meaning is available.';
+      document.getElementById('resMeaningText').innerText = reason || 'This word is not in the learning dictionary yet. You can still use the sound buttons.';
+      document.getElementById('dictionaryExampleSection').style.display = 'none';
+      document.getElementById('dictSensesBar').style.display = 'none';
+      document.getElementById('btnGoogleSafeSearch').style.display = 'none';
+      currentParsedResult = parseWordToPhonemes(word);
+      renderSoundButtons(currentParsedResult);
     }
 
     function renderSensesBar() {
@@ -4210,17 +2753,17 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
 
       const defStr = sense.def.charAt(0).toUpperCase() + sense.def.slice(1);
       document.getElementById('resMeaningText').innerText = defStr;
-      document.getElementById('resExampleSentence').innerText = `"${sense.example}"`;
+      const hasExample = Boolean(sense.example);
+      document.getElementById('dictionaryExampleSection').style.display = hasExample ? 'block' : 'none';
+      document.getElementById('resExampleSentence').innerText = hasExample ? `"${sense.example}"` : '';
+      currentWordAudioUrl = sense.audioUrl || '';
 
       document.getElementById('resVisualTitle').innerText = sense.title || wc.name;
       document.getElementById('resVisualDesc').innerText = defStr;
 
       // Dynamic Semantic Image Options
-      if (sense.imgQuery) {
-        currentImageOptions = [sense.imgQuery, ...getImageQueryOptions(currentSearchWord, sense.pos, sense.def)];
-      } else {
-        currentImageOptions = getImageQueryOptions(currentSearchWord, sense.pos, sense.def);
-      }
+      document.getElementById('btnGoogleSafeSearch').style.display = 'inline-flex';
+      currentImageOptions = [sense.imgQuery, `${currentSearchWord} ${sense.pos} picture for children`].filter(Boolean);
       currentImageIndex = 0;
       updateImageQueryDisplay();
     }
@@ -4234,7 +2777,8 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
 
     function shuffleImageQuery() {
       if (!currentImageOptions || currentImageOptions.length <= 1) {
-        currentImageOptions = getImageQueryOptions(currentSearchWord, 'noun', '');
+        showToast('There is one picture idea for this meaning.');
+        return;
       }
       currentImageIndex = (currentImageIndex + 1) % currentImageOptions.length;
       updateImageQueryDisplay();
@@ -4243,7 +2787,11 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
 
     function speakCurrentExampleSentence() {
       const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
-      const sentenceText = activeSense ? activeSense.example : document.getElementById('resExampleSentence').innerText.replace(/["]/g, '');
+      const sentenceText = activeSense ? activeSense.example : '';
+      if (!sentenceText) {
+        showToast('This dictionary meaning does not include an example sentence.');
+        return;
+      }
       const btn = document.getElementById('btnSentenceVoice');
       btn.classList.add('playing');
       speakText(sentenceText, () => btn.classList.remove('playing'));
@@ -4386,7 +2934,21 @@ function synthesizeImageSearchQuery(word, pos, def, seedIndex) {
 
     function playDirectWordAudio(word, cardElement) {
       if (cardElement) cardElement.classList.add('playing');
-      speakText(word, () => { if (cardElement) cardElement.classList.remove('playing'); });
+      if (!currentWordAudioUrl) {
+        if (cardElement) cardElement.classList.remove('playing');
+        showToast('No approved full-word audio is available for this meaning.');
+        return;
+      }
+      const audio = new Audio(currentWordAudioUrl);
+      audio.onended = () => { if (cardElement) cardElement.classList.remove('playing'); };
+      audio.onerror = () => {
+        if (cardElement) cardElement.classList.remove('playing');
+        showToast('The dictionary audio could not be played.');
+      };
+      audio.play().catch(() => {
+        if (cardElement) cardElement.classList.remove('playing');
+        showToast('The dictionary audio could not be played.');
+      });
     }
 
     function speakText(text, onFinish) {

@@ -7,7 +7,8 @@ Interactive phonics dictionary and pupil learning app with authentic teacher voi
 - **Teacher Studio (PIN Locked)**: [Open Teacher Studio](https://happyclass-ops.github.io/prep2-phonics/studio/)
 
 ## Dictionary data
-The offline dictionary combines the original Webster-derived word list with a
-modern high-frequency overlay informed by [Free Dictionary API](https://dictionaryapi.dev/)
-and [Princeton WordNet 3.1](https://wordnet.princeton.edu/). Child-facing meanings,
-examples, morphology, and word-sense priorities are curated by the app compiler.
+
+The pupil dictionary looks up entries live from Merriam-Webster's Elementary
+Dictionary API. The app shows provider-supplied meanings, word classes,
+examples, pronunciations, and audio; it does not ship or fall back to a local
+historical dictionary, guessed root word, or generated definition.
