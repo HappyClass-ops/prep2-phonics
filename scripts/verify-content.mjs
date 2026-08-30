@@ -12,7 +12,11 @@ const bundleMatch = app.match(/const AUDIO_BUNDLE = (.*?);\s*const AUDIO_CACHE/s
 assert.ok(bundleMatch, 'The pupil app must contain its published audio bundle.');
 const embedded = JSON.parse(bundleMatch[1]);
 assert.deepEqual(embedded.clips, pack.clips, 'Teacher Studio and pupil app must use identical audio.');
-assert.match(app, /'trail':\s*\{[\s\S]*?Verb \(Follow Behind\)[\s\S]*?Noun \(Path\)/, 'Trail must offer child-appropriate verb and noun meanings.');
-assert.match(app, /'nonsense':\s*\{[\s\S]*?Words or ideas that do not make sense/, 'Nonsense must have a child-appropriate meaning.');
+assert.match(app, /function isAcceptedDictionaryEntry[\s\S]*?entry\.meta[\s\S]*?entry\.ins[\s\S]*?entry\.hwi/, 'Dictionary results must be filtered by provider-owned accepted forms.');
+assert.match(app, /const shortDefinitions[\s\S]*?shortDefinitions\.length/, 'Elementary short definitions must be preferred over raw technical sense text.');
+assert.match(app, /function applyDictionaryPronunciation/, 'Selected dictionary pronunciations must control ambiguous phonics.');
+assert.match(app, /function buildVerifiedImageQueries/, 'Image searches must be built from the selected verified sense.');
+assert.doesNotMatch(app, /currentWordAudioUrl|PRIMARY_CURATED_DB/, 'Audio and meanings must not come from stale global or offline dictionary state.');
+assert.doesNotMatch(app, /I can see the word/, 'The pupil app must not fabricate a generic sentence when the provider has no example.');
 assert.match(fs.readFileSync('studio.html', 'utf8'), /s\.needsUpdate && \(!stem \|\| !stem\.hasAudio\)/, 'The studio must only flag clips that are actually missing.');
-console.log('Content checks passed: audio pack, pupil bundle, child-safe senses, and studio status.');
+console.log('Content checks passed: audio pack, exact dictionary ownership, pronunciation-aware phonics, safe learning content, and studio status.');
