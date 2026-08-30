@@ -2622,33 +2622,6 @@
       const skeletonCard = document.getElementById('skeletonCard');
       const trickyAlertCard = document.getElementById('trickyAlertCard');
 
-      // 🛑 CHECK IF TYPED WORD IS A TRICKY WORD
-      if (MASTER_TRICKY_WORDS_SET.has(word)) {
-        workspaceCard.style.display = 'none';
-        skeletonCard.style.display = 'none';
-
-        playTrickyBuzzer();
-        inputWrapper.classList.remove('shake-anim');
-        void inputWrapper.offsetWidth;
-        inputWrapper.classList.add('shake-anim');
-
-        document.getElementById('trickyAlertWord').innerText = `"${word}" is a Tricky Word!`;
-        document.getElementById('trickyAlertBody').innerText = `"${word}" has tricky parts that cannot be sounded out using sound buttons. Ask your teacher or practice reading it in the Tricky Words tab!`;
-
-        const homophoneInfo = HOMOPHONES_MAP[word];
-        const homophoneBox = document.getElementById('trickyAlertHomophone');
-        if (homophoneInfo) {
-          const decodableAlt = homophoneInfo.match;
-          homophoneBox.innerHTML = `Did you mean <strong>"${decodableAlt}"</strong>? <button class="btn-act btn-act-secondary" style="display:inline-flex; padding:3px 8px; font-size:0.75rem; margin-left:6px;" onclick="setAndLookup('${decodableAlt}')">Sound Out "${decodableAlt}"</button>`;
-          homophoneBox.style.display = 'block';
-        } else {
-          homophoneBox.style.display = 'none';
-        }
-
-        trickyAlertCard.style.display = 'flex';
-        return;
-      }
-
       trickyAlertCard.style.display = 'none';
       workspaceCard.style.display = 'none';
       skeletonCard.style.display = 'flex';
