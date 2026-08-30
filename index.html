@@ -1919,15 +1919,63 @@
       .catch(error => console.warn('The published word voice pack could not be loaded.', error));
 
     let audioCtx;
+    let activeSpeechAudio = null;
+    let activePhonemeAudio = null;
+    let activeBlendToken = 0;
+
+    function stopAllAudio() {
+      activeBlendToken++;
+      if (activeSpeechAudio) {
+        try {
+          activeSpeechAudio.pause();
+          activeSpeechAudio.currentTime = 0;
+        } catch (e) {}
+        activeSpeechAudio = null;
+      }
+      if (activePhonemeAudio) {
+        try {
+          activePhonemeAudio.pause();
+          activePhonemeAudio.currentTime = 0;
+        } catch (e) {}
+        activePhonemeAudio = null;
+      }
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+      document.querySelectorAll('.playing, .active-sound, .active-split').forEach(el => {
+        el.classList.remove('playing');
+        el.classList.remove('active-sound');
+        el.classList.remove('active-split');
+      });
+    }
+
     async function ensureAudioContext() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') await audioCtx.resume();
     }
 
+    function playSinglePhonemeAudio(masterId) {
+      if (!AUDIO_CACHE.has(masterId)) return;
+      if (activePhonemeAudio) {
+        try {
+          activePhonemeAudio.pause();
+          activePhonemeAudio.currentTime = 0;
+        } catch (e) {}
+        activePhonemeAudio = null;
+      }
+      const audio = new Audio(AUDIO_CACHE.get(masterId));
+      activePhonemeAudio = audio;
+      audio.onended = () => { if (activePhonemeAudio === audio) activePhonemeAudio = null; };
+      audio.onerror = () => { if (activePhonemeAudio === audio) activePhonemeAudio = null; };
+      audio.play().catch(() => {});
+    }
+
     function playSound(masterId, element) {
+      stopAllAudio();
       ensureAudioContext();
       if (AUDIO_CACHE.has(masterId)) {
         const audio = new Audio(AUDIO_CACHE.get(masterId));
+        activePhonemeAudio = audio;
         if (element) {
           if (element.classList.contains('split-partner')) {
             document.querySelectorAll('.split-partner').forEach(p => p.classList.add('active-split'));
@@ -1936,12 +1984,20 @@
           }
         }
         audio.onended = () => {
+          if (activePhonemeAudio === audio) activePhonemeAudio = null;
           if (element) {
             document.querySelectorAll('.split-partner').forEach(p => p.classList.remove('active-split'));
             element.classList.remove('active-sound');
           }
         };
-        audio.play();
+        audio.onerror = () => {
+          if (activePhonemeAudio === audio) activePhonemeAudio = null;
+          if (element) {
+            document.querySelectorAll('.split-partner').forEach(p => p.classList.remove('active-split'));
+            element.classList.remove('active-sound');
+          }
+        };
+        audio.play().catch(() => {});
       } else {
         console.warn("Audio not found for:", masterId);
       }
@@ -2488,7 +2544,7 @@
     const MERRIAM_WEBSTER_API_KEY = 'a7c26507-43bf-4771-a653-8efa33e99fb7';
     const MERRIAM_WEBSTER_ENDPOINT = 'https://dictionaryapi.com/api/v3/references/sd2/json/';
     const ELEVENLABS_API_KEY = 'sk_8f469fefb6298ecdb465d6426fe9b09fc31c108e0d842013';
-    const ELEVENLABS_VOICE_ID = 'JBFqnCBsd6RMkjVDRZzb'; // George — British English
+    const ELEVENLABS_VOICE_ID = 'Xb7hH8MSUJpSbSDYk0k2'; // Alice — Clear British English Educator
     const ELEVENLABS_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?output_format=mp3_44100_128`;
     const ELEVENLABS_AUDIO_CACHE = new Map();
     let elevenLabsBlocked = false;
@@ -3187,6 +3243,8 @@
     }
 
     async function playFullBlendSequence() {
+      stopAllAudio();
+      const token = ++activeBlendToken;
       const { units, splitInfo } = currentParsedResult;
       
       if (splitInfo) {
@@ -3195,30 +3253,40 @@
         const initialUnits = units.filter((u, i) => i < vowUnitIdx);
 
         for (let i = 0; i < initialUnits.length; i++) {
+          if (token !== activeBlendToken) return;
           highlightPhoneme(i, false);
-          playSound(initialUnits[i].id, null);
-          await new Promise(r => setTimeout(r, 650));
+          playSinglePhonemeAudio(initialUnits[i].id);
+          await new Promise(r => setTimeout(r, 680));
         }
 
+        if (token !== activeBlendToken) return;
         highlightPhoneme(vowUnitIdx, true);
-        playSound(splitInfo.soundId, null);
-        await new Promise(r => setTimeout(r, 750));
+        playSinglePhonemeAudio(splitInfo.soundId);
+        await new Promise(r => setTimeout(r, 780));
 
         if (midConsIdx !== -1) {
+          if (token !== activeBlendToken) return;
           highlightPhoneme(midConsIdx, false);
-          playSound(units[midConsIdx].id, null);
-          await new Promise(r => setTimeout(r, 650));
+          playSinglePhonemeAudio(units[midConsIdx].id);
+          await new Promise(r => setTimeout(r, 680));
         }
 
-        setTimeout(speakNaturalWord, 450);
+        if (token !== activeBlendToken) return;
+        setTimeout(() => {
+          if (token === activeBlendToken) speakNaturalWord();
+        }, 400);
       } else {
         for (let i = 0; i < units.length; i++) {
+          if (token !== activeBlendToken) return;
           const u = units[i];
           highlightPhoneme(i, false);
-          playSound(u.id, null);
-          await new Promise(r => setTimeout(r, 650));
+          playSinglePhonemeAudio(u.id);
+          await new Promise(r => setTimeout(r, 680));
         }
-        setTimeout(speakNaturalWord, 400);
+        if (token !== activeBlendToken) return;
+        setTimeout(() => {
+          if (token === activeBlendToken) speakNaturalWord();
+        }, 380);
       }
     }
 
@@ -3234,33 +3302,39 @@
         return;
       }
       const dictionaryAudio = activePronunciation ? activePronunciation.audioUrl : activeSense && activeSense.audioUrl;
-      const pronunciationContext = activeSense ? (activeSense.example || activeSense.def || '') : '';
       playElevenLabsSpeech(currentSearchWord, {
-        nextText: pronunciationContext,
         onFailure: () => playAudioUrl(dictionaryAudio)
       });
     }
 
     function playAudioUrl(audioUrl, cardElement) {
-      if (cardElement) cardElement.classList.add('playing');
+      stopAllAudio();
       if (!audioUrl) {
-        if (cardElement) cardElement.classList.remove('playing');
         showToast('No approved full-word audio is available for this meaning.');
         return;
       }
+      if (cardElement) cardElement.classList.add('playing');
       const audio = new Audio(audioUrl);
-      audio.onended = () => { if (cardElement) cardElement.classList.remove('playing'); };
-      audio.onerror = () => {
+      activeSpeechAudio = audio;
+      
+      const cleanup = () => {
+        if (activeSpeechAudio === audio) activeSpeechAudio = null;
         if (cardElement) cardElement.classList.remove('playing');
+      };
+
+      audio.onended = cleanup;
+      audio.onerror = () => {
+        cleanup();
         showToast('The dictionary audio could not be played.');
       };
       audio.play().catch(() => {
-        if (cardElement) cardElement.classList.remove('playing');
+        cleanup();
         showToast('The dictionary audio could not be played.');
       });
     }
 
     async function playTrickyWordAudio(word, cardElement) {
+      stopAllAudio();
       if (cardElement) cardElement.classList.add('playing');
       try {
         await wordAudioLoadPromise;
@@ -3274,9 +3348,7 @@
           .flatMap(sense => sense.pronunciations || [])
           .map(pronunciation => pronunciation.audioUrl)
           .find(Boolean);
-        const context = result.senses[0] ? (result.senses[0].example || result.senses[0].def || '') : '';
         playElevenLabsSpeech(word, {
-          nextText: context,
           cardElement,
           onFailure: () => playAudioUrl(audioUrl, cardElement)
         });
@@ -3292,26 +3364,37 @@
         onFinish();
         showToast('The British voice is unavailable just now.');
       };
-      if (!text || elevenLabsBlocked) {
+
+      const rawText = String(text || '').trim();
+      if (!rawText || elevenLabsBlocked) {
         onFailure();
         return;
       }
-      const nextText = String(options.nextText || '').trim();
-      const cacheKey = `${text}\u241f${nextText}`;
+
+      // Normalization: Ensure clean terminal punctuation so the neural model completes the full phoneme decay without clipping the final consonant.
+      const normalizedSpeechText = /[.!?]$/.test(rawText) ? rawText : rawText + '.';
+      const cacheKey = `v3_${ELEVENLABS_VOICE_ID}_${normalizedSpeechText}`;
+
       try {
         let audioUrl = ELEVENLABS_AUDIO_CACHE.get(cacheKey);
         if (!audioUrl) {
           const body = {
-            text,
-            model_id: 'eleven_flash_v2_5',
-            voice_settings: { stability: 0.55, similarity_boost: 0.75, style: 0.1, speed: 0.9 }
+            text: normalizedSpeechText,
+            model_id: 'eleven_multilingual_v2', // Studio-quality neural acoustic model
+            voice_settings: {
+              stability: 0.85,          // Eliminates syllable bleeding and tail chatter
+              similarity_boost: 0.85,   // High clarity
+              style: 0.0,               // Clean, neutral teacher delivery
+              speed: 0.82               // Measured, clear educational pace for children
+            }
           };
-          if (nextText) body.next_text = nextText;
+
           const response = await fetch(ELEVENLABS_ENDPOINT, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVENLABS_API_KEY },
             body: JSON.stringify(body)
           });
+
           if (!response.ok) {
             if (response.status === 401 || response.status === 403) elevenLabsBlocked = true;
             throw new Error(`ElevenLabs request failed (${response.status}).`);
@@ -3319,23 +3402,33 @@
           audioUrl = URL.createObjectURL(await response.blob());
           ELEVENLABS_AUDIO_CACHE.set(cacheKey, audioUrl);
         }
+
+        stopAllAudio();
+
         if (options.cardElement) options.cardElement.classList.add('playing');
         const audio = new Audio(audioUrl);
+        activeSpeechAudio = audio;
+
         let finished = false;
-        const failOnce = () => {
+        const cleanupAndFinish = () => {
           if (finished) return;
           finished = true;
-          if (options.cardElement) options.cardElement.classList.remove('playing');
-          onFailure();
-        };
-        audio.onended = () => {
-          if (finished) return;
-          finished = true;
+          if (activeSpeechAudio === audio) activeSpeechAudio = null;
           if (options.cardElement) options.cardElement.classList.remove('playing');
           onFinish();
         };
-        audio.onerror = failOnce;
-        audio.play().catch(failOnce);
+
+        const cleanupAndFail = () => {
+          if (finished) return;
+          finished = true;
+          if (activeSpeechAudio === audio) activeSpeechAudio = null;
+          if (options.cardElement) options.cardElement.classList.remove('playing');
+          onFailure();
+        };
+
+        audio.onended = cleanupAndFinish;
+        audio.onerror = cleanupAndFail;
+        audio.play().catch(cleanupAndFail);
       } catch (error) {
         console.warn('ElevenLabs read-aloud unavailable; using the approved fallback.', error);
         onFailure();
@@ -3343,6 +3436,7 @@
     }
 
     function speakBrowserText(text, onFinish) {
+      stopAllAudio();
       const finish = typeof onFinish === 'function' ? onFinish : () => {};
       if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
         finish();
@@ -3353,8 +3447,8 @@
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-GB';
-      utterance.rate = 0.88;
-      utterance.pitch = 1.02;
+      utterance.rate = 0.82;
+      utterance.pitch = 1.0;
       const britishVoice = window.speechSynthesis.getVoices().find(voice => /^en-GB/i.test(voice.lang));
       if (britishVoice) utterance.voice = britishVoice;
       utterance.onend = finish;

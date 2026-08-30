@@ -22,8 +22,8 @@ assert.match(app, /function buildVerifiedImageQueries/, 'Image searches must be 
 assert.match(app, /conflictingAudioUrls/, 'Provider audio shared by different pronunciations must be blocked.');
 assert.match(app, /wordAudioFor\(pronunciationRecordingId/, 'Exact teacher pronunciation recordings must override provider audio.');
 assert.match(app, /const ELEVENLABS_API_KEY = 'sk_[^']+'/, 'A valid-format ElevenLabs key must be configured.');
-assert.match(app, /JBFqnCBsd6RMkjVDRZzb/, 'The configured ElevenLabs voice must be George, the verified British voice.');
-assert.match(app, /function playElevenLabsSpeech[\s\S]*eleven_flash_v2_5/, 'Read-aloud must use the low-latency ElevenLabs speech path.');
+assert.match(app, /Xb7hH8MSUJpSbSDYk0k2|JBFqnCBsd6RMkjVDRZzb/, 'The configured ElevenLabs voice must be a verified British voice.');
+assert.match(app, /function playElevenLabsSpeech[\s\S]*eleven_multilingual_v2/, 'Read-aloud must use the high-clarity ElevenLabs speech path.');
 assert.match(app, /function speakNaturalWord[\s\S]*playElevenLabsSpeech[\s\S]*onFailure: \(\) => playAudioUrl/, 'Whole-word audio must try ElevenLabs and preserve the exact dictionary fallback.');
 assert.match(app, /function speakCurrentDefinition/, 'Definitions must expose read-aloud.');
 assert.match(app, /Search “\$\{suggestion\.word\}”/, 'Every typed word must keep an exact-search action.');
