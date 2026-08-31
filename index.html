@@ -3316,6 +3316,17 @@
           if (!seen.has(key)) { seen.add(key); senses.push(sense); }
         });
       });
+
+      // In primary school phonics & grammar, colours are taught primarily as Describing Words (Adjectives).
+      // Prioritize the adjective sense so colours (purple, orange, yellow, etc.) show as Adjectives first.
+      const PRIMARY_COLOR_WORDS = new Set(['purple', 'orange', 'yellow', 'pink', 'violet', 'cyan', 'magenta', 'turquoise', 'scarlet', 'crimson', 'indigo', 'lavender', 'gold', 'silver', 'brown', 'grey', 'gray']);
+      if (PRIMARY_COLOR_WORDS.has(word.toLowerCase())) {
+        senses.sort((a, b) => {
+          if (a.pos === 'adjective' && b.pos !== 'adjective') return -1;
+          if (b.pos === 'adjective' && a.pos !== 'adjective') return 1;
+          return 0;
+        });
+      }
       const audioPronunciations = new Map();
       senses.forEach(sense => (sense.pronunciations || []).forEach(pronunciation => {
         if (!pronunciation.audioUrl) return;
