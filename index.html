@@ -3310,7 +3310,7 @@
 
       const senses = [];
       const seen = new Set();
-      entries.filter(entry => isAcceptedDictionaryEntry(entry, word)).forEach(entry => {
+            entries.filter(entry => isAcceptedDictionaryEntry(entry, word)).forEach(entry => {
         merriamEntryToSenses(entry, word).forEach(sense => {
           const key = `${sense.pos}|${sense.def}|${sense.pronunciation}`;
           if (!seen.has(key)) { seen.add(key); senses.push(sense); }
@@ -3318,15 +3318,33 @@
       });
 
       // In primary school phonics & grammar, colours are taught primarily as Describing Words (Adjectives).
-      // Prioritize the adjective sense so colours (purple, orange, yellow, etc.) show as Adjectives first.
+      // If the dictionary only indexed a noun definition (like purple/orange), synthesize the companion adjective sense.
       const PRIMARY_COLOR_WORDS = new Set(['purple', 'orange', 'yellow', 'pink', 'violet', 'cyan', 'magenta', 'turquoise', 'scarlet', 'crimson', 'indigo', 'lavender', 'gold', 'silver', 'brown', 'grey', 'gray']);
       if (PRIMARY_COLOR_WORDS.has(word.toLowerCase())) {
-        senses.sort((a, b) => {
-          if (a.pos === 'adjective' && b.pos !== 'adjective') return -1;
-          if (b.pos === 'adjective' && a.pos !== 'adjective') return 1;
-          return 0;
-        });
+        const hasAdj = senses.some(s => s.pos === 'adjective');
+        if (!hasAdj && senses.length > 0) {
+          const baseSense = senses[0];
+          const adjDef = `Of the colour ${word.toLowerCase()} : having or showing a ${word.toLowerCase()} colour`;
+          const adjSense = {
+            pos: 'adjective',
+            def: adjDef,
+            example: baseSense.example || `a ${word.toLowerCase()} flower`,
+            exampleEasy: baseSense.exampleEasy || `a ${word.toLowerCase()} flower`,
+            pronunciation: baseSense.pronunciation,
+            audioUrl: baseSense.audioUrl,
+            pronunciations: baseSense.pronunciations || [],
+            puzzle: null
+          };
+          senses.unshift(adjSense);
+        } else {
+          senses.sort((a, b) => {
+            if (a.pos === 'adjective' && b.pos !== 'adjective') return -1;
+            if (b.pos === 'adjective' && a.pos !== 'adjective') return 1;
+            return 0;
+          });
+        }
       }
+
       const audioPronunciations = new Map();
       senses.forEach(sense => (sense.pronunciations || []).forEach(pronunciation => {
         if (!pronunciation.audioUrl) return;
@@ -3493,6 +3511,8 @@
       const skeletonCard = document.getElementById('skeletonCard');
       const trickyAlertCard = document.getElementById('trickyAlertCard');
 
+      const welcomeGuideCard = document.getElementById('welcomeGuideCard');
+      if (welcomeGuideCard) welcomeGuideCard.style.display = 'none';
       trickyAlertCard.style.display = 'none';
       workspaceCard.style.display = 'none';
       skeletonCard.style.display = 'flex';
