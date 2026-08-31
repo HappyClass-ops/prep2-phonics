@@ -28,6 +28,22 @@ const fallEntry = {
   def: [{ sseq: [[['sense', { sn: '1', dt: [['text', '{bc}to come or go down freely by the force of gravity'], ['vis', [{ t: 'An apple {it}fell{/it} from the tree.' }]]] }]]] }]
 };
 
+const jumpEntry = {
+  meta: { id: 'jump:1', stems: ['jump', 'jumps', 'jumped', 'jumping'] },
+  hwi: { hw: 'jump', prs: [{ mw: 'ˈjəmp', sound: { audio: 'jump0001' } }] },
+  ins: [{ if: 'jumped' }, { if: 'jump*ing' }, { if: 'jumps' }],
+  fl: 'verb',
+  shortdef: [
+    'to spring into the air',
+    'to pass over something by jumping',
+    'to make a sudden movement',
+    'an act of jumping',
+    'a sudden movement',
+    'a sharp increase'
+  ],
+  def: [{ sseq: [[['sense', { sn: '1', dt: [['text', '{bc}to spring into the air'], ['vis', [{ t: 'The frog {it}jumped{/it} over the log.' }]]] }]]] }]
+};
+
 const entries = {
   dog: [{ meta: { id: 'dog', stems: ['dog', 'dogs'] }, hwi: { hw: 'dog', prs: [{ mw: 'ˈdȯg', sound: { audio: 'dog00001' } }] }, fl: 'noun', shortdef: ['an animal often kept as a pet'] }],
   haughty: [{
@@ -94,6 +110,9 @@ const entries = {
     }
   ],
   fall: [fallEntry],
+  jump: [jumpEntry],
+  jumped: [jumpEntry],
+  jumping: [jumpEntry],
   fell: [
     fallEntry,
     {
@@ -183,10 +202,10 @@ async function run() {
     await search(page, 'cat');
     const meaningButtons = await page.locator('#dictSensesContainer .sense-pill-btn').allTextContents();
     const visibleText = await page.locator('#dictWorkspaceCard').innerText();
-    assert.equal(meaningButtons.length, 2, `cat should expose two exact-entry meanings, received: ${meaningButtons.join(', ')}`);
+    assert.equal(meaningButtons.length, 1, `cat should keep only its one alternative outside the selected main meaning, received: ${meaningButtons.join(', ')}`);
     assert.equal(await page.locator('#dictSensesContainer').isVisible(), false, 'alternative meanings must be collapsed by default');
-    assert.match(await page.locator('#btnToggleMeanings').innerText(), /Other meanings \(1\)/i);
-    assert.match(meaningButtons[0], /small animal|soft fur|pet/i, 'meaning tabs should identify the meaning, not merely say Noun 1');
+    assert.match(await page.locator('#btnToggleMeanings').innerText(), /See other meanings \(1\)/i);
+    assert.match(meaningButtons[0], /animal family|lions|tigers/i, 'the alternative tab should identify its meaning rather than repeat the selected main meaning');
     assert.doesNotMatch(visibleText, /allow or permit|saber-toothed/i);
     assert.match(await page.locator('#resMeaningText').innerText(), /^A small animal with soft fur/i, 'the elementary short definition should be preferred over raw technical sense text');
     const imageUrl = new URL(await page.locator('#btnGoogleSafeSearch').getAttribute('href'));
@@ -207,29 +226,55 @@ async function run() {
 
     await search(page, 'fall');
     assert.equal(await page.locator('#dictSensesContainer').isVisible(), false, 'seven meanings must not confront the child at once');
-    assert.match(await page.locator('#btnToggleMeanings').innerText(), /Other meanings \(6\)/i);
+    assert.match(await page.locator('#btnToggleMeanings').innerText(), /See other meanings \(6\)/i);
     assert.match(await page.locator('#resMeaningText').innerText(), /force of gravity/i, 'the main Merriam meaning should be selected automatically');
     await page.locator('#btnToggleMeanings').click();
     assert.equal(await page.locator('#dictSensesContainer').isVisible(), true, 'other meanings should remain available on request');
-    assert.equal(await page.locator('#dictSensesContainer .sense-pill-btn').count(), 7);
+    assert.match(await page.locator('#otherMeaningsPrompt').innerText(), /Not what you were looking for\? Try another meaning\./i);
+    assert.equal(await page.locator('#dictSensesContainer .sense-pill-btn').count(), 6, 'the selected main meaning must not be repeated among other meanings');
     await page.locator('#btnToggleMeanings').click();
 
+    assert.equal(await page.locator('#wordFamilyDetails').isVisible(), false, 'the Time Machine must stay compact until requested');
+    await page.locator('#btnToggleWordFamily').click();
     await page.getByRole('button', { name: /Yesterday \(Past\): fell/i }).click();
     await page.waitForFunction(() => document.querySelector('#resWordTitle')?.textContent === 'fell');
-    assert.equal(await page.locator('#wordFormLessonBanner').isVisible(), true);
-    assert.match(await page.locator('#wordFormLessonText').innerText(), /^Fell is the past tense of fall\.$/i);
-    assert.match(await page.locator('#resMeaningText').innerText(), /^Fell is the past tense of fall\.$/i);
+    assert.equal(await page.locator('#wordFamilyContext').isVisible(), true);
+    assert.match(await page.locator('#wordFamilyContextText').innerText(), /^Fell is the past tense of fall\.$/i);
+    assert.match(await page.locator('#resMeaningText').innerText(), /force of gravity/i, 'the dictionary definition must remain the definition');
     assert.equal(await page.locator('#dictSensesContainer').isVisible(), false, 'unrelated fell meanings must stay collapsed during family practice');
     assert.match(await page.locator('#btnReturnToFamilyBase').innerText(), /Back to fall/i);
     await page.locator('#btnReturnToFamilyBase').click();
     await page.waitForFunction(() => document.querySelector('#resWordTitle')?.textContent === 'fall');
-    assert.equal(await page.locator('#wordFormLessonBanner').isVisible(), false);
+    assert.equal(await page.locator('#wordFamilyContext').isVisible(), false);
 
     await search(page, 'fell');
-    assert.match(await page.locator('#resMeaningText').innerText(), /^Fell is the past tense of fall\.$/i, 'a directly searched school inflection should still lead with its form relationship');
+    assert.match(await page.locator('#resMeaningText').innerText(), /^To cut down a tree/i, 'a direct search must prefer its exact headword instead of opening a word-family lesson');
+    assert.equal(await page.locator('#wordFamilyContext').isVisible(), false);
+    assert.equal(await page.locator('#wordFamilyDetails').isVisible(), false);
     assert.equal(await page.locator('#dictSensesContainer').isVisible(), false);
-    assert.match(await page.locator('#btnToggleMeanings').innerText(), /Other meanings/i);
+    assert.match(await page.locator('#btnToggleMeanings').innerText(), /See other meanings/i);
     console.log('PASS: primary meanings are calm and word-family forms preserve their learning context');
+
+    await search(page, 'jump');
+    assert.equal(await page.locator('#wordFamilyContext').isVisible(), false, 'a direct base-word search must never say it is another form of itself');
+    assert.doesNotMatch(await page.locator('#dictWorkspaceCard').innerText(), /Jump is another form of jump/i);
+    assert.equal(await page.locator('#wordFamilyDetails').isVisible(), false, 'the Time Machine must start collapsed');
+    assert.match(await page.locator('#btnToggleWordFamily').innerText(), /See other forms of jump/i);
+    await page.locator('#btnToggleWordFamily').click();
+    assert.equal(await page.locator('#wordFamilyDetails').isVisible(), true);
+    assert.equal(await page.locator('#grammarRuleBadge').isVisible(), false, 'a family-wide +ed badge must not appear to describe jumping');
+    assert.match(await page.getByRole('button', { name: /Yesterday \(Past\): jumped/i }).innerText(), /add -ed/i);
+    await page.getByRole('button', { name: /Right Now \(-ing\): jumping/i }).click();
+    await page.waitForFunction(() => document.querySelector('#resWordTitle')?.textContent === 'jumping');
+    assert.match(await page.locator('#wordFamilyContextText').innerText(), /^Jumping shows that jump is happening now\.$/i);
+    assert.equal(await page.locator('#wordFamilyDetails').isVisible(), true, 'guided Time Machine navigation should stay expanded');
+    assert.match(await page.locator('#resMeaningText').innerText(), /^To spring into the air/i);
+
+    await search(page, 'jumped');
+    assert.equal(await page.locator('#wordFamilyContext').isVisible(), false, 'typing jumped directly must remain a normal dictionary search');
+    assert.equal(await page.locator('#wordFamilyDetails').isVisible(), false);
+    assert.match(await page.locator('#resMeaningText').innerText(), /^To spring into the air/i);
+    console.log('PASS: the Time Machine is compact, rule labels are form-specific, and direct searches stay normal');
 
     await search(page, 'cat');
     await page.getByRole('button', { name: 'Read Definition' }).click();
@@ -293,7 +338,7 @@ async function run() {
 
     await search(page, 'tear');
     await page.locator('#btnToggleMeanings').click();
-    await page.locator('#dictSensesContainer .sense-pill-btn').nth(1).click();
+    await page.locator('#dictSensesContainer .sense-pill-btn').first().click();
     assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').filter({ hasText: 'ear' }).getAttribute('data-sound-id'), 'air-tri');
     assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), false, 'ElevenLabs should replace one provider file shared by two pronunciations');
     console.log('PASS: homograph audio collisions cannot teach the wrong whole-word pronunciation');
@@ -389,6 +434,16 @@ async function run() {
     assert.equal(mobileStage.canScrollWhenNeeded, true, 'long words must be touch-scrollable when they do not fit');
     assert.equal(mobileStage.lastReachable, true, 'the final phoneme must be reachable by scrolling');
     console.log('PASS: long words remain fully reachable on a 360px phone');
+
+    await search(page, 'jump');
+    const familyToggleBox = await page.locator('#btnToggleWordFamily').boundingBox();
+    assert.ok(familyToggleBox && familyToggleBox.height >= 44, 'the collapsed Time Machine control must remain easy to tap on a phone');
+    await page.locator('#btnToggleWordFamily').click();
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth), true, 'expanded word forms must not create phone page overflow');
+    await page.setViewportSize({ width: 667, height: 375 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth === document.documentElement.clientWidth), true, 'the Time Machine must also fit a phone in landscape');
+    console.log('PASS: the compact Time Machine remains accessible in phone portrait and landscape');
+
     assert.deepEqual(pageErrors, [], `the pupil app raised browser errors: ${pageErrors.join(' | ')}`);
     console.log('PASS: the 30-word phonics set is complete, playable, and applies suffix voicing rules');
   } finally {

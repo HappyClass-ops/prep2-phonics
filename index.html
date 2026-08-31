@@ -649,6 +649,7 @@
     }
 
     .btn-toggle-meanings,
+    .btn-toggle-family,
     .btn-return-family {
       min-height: 44px;
       border: 1px solid var(--color-hairline-strong);
@@ -663,6 +664,7 @@
     }
 
     .btn-toggle-meanings:hover,
+    .btn-toggle-family:hover,
     .btn-return-family:hover {
       border-color: var(--color-primary);
       color: var(--color-primary);
@@ -678,22 +680,29 @@
 
     .word-job-tabs[hidden] { display: none; }
 
-    .word-form-lesson-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 28px;
-      background: var(--color-tint-lavender);
-      border-bottom: 1px solid var(--color-hairline);
-      color: var(--color-ink);
-      font-size: 0.92rem;
-      font-weight: 750;
-      line-height: 1.4;
-      flex-wrap: wrap;
+    .other-meanings-panel {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px solid #c7d2fe;
+      border-radius: 12px;
+      background: #f5f3ff;
     }
 
-    .word-form-lesson-banner[hidden] { display: none; }
+    .other-meanings-panel[hidden],
+    .word-family-details[hidden],
+    .word-family-context[hidden],
+    .word-family-prompt[hidden],
+    .btn-return-family[hidden],
+    .grammar-rule-badge[hidden] { display: none; }
+
+    .other-meanings-prompt {
+      margin: 0;
+      color: var(--color-charcoal);
+      font-size: 0.88rem;
+      font-weight: 750;
+      line-height: 1.4;
+    }
 
     .sense-pill-btn.job-verb { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
     .sense-pill-btn.job-noun { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
@@ -721,10 +730,53 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 9px;
+      gap: 12px;
       flex-wrap: wrap;
     }
+
+    .word-family-heading-copy {
+      display: flex;
+      flex: 1 1 240px;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .word-family-prompt {
+      color: var(--color-charcoal);
+      font-size: 0.88rem;
+      font-weight: 650;
+    }
+
+    .word-family-context {
+      color: var(--color-primary-dark);
+      font-size: 0.92rem;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .word-family-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-toggle-family {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .btn-toggle-family svg {
+      width: 16px;
+      height: 16px;
+      transition: transform .16s ease;
+    }
+
+    .btn-toggle-family[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+    .word-family-details { margin-top: 10px; }
 
     .word-family-title {
       font-size: 0.78rem;
@@ -798,6 +850,14 @@
     }
 
     .word-form-word { font-size: 1.02rem; font-weight: 850; line-height: 1.1; }
+    .word-form-note {
+      display: block;
+      margin-top: 5px;
+      color: var(--color-primary-dark);
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+    .word-form-card.active .word-form-note { color: #e0e7ff; }
     .viewing-badge {
       display: inline-flex;
       padding: 2px 5px;
@@ -1841,6 +1901,9 @@
     body.dark-theme .sense-pill-btn.job-adjective { background: #3d3211; border-color: #725d13; color: #fde68a; }
     body.dark-theme .sense-pill-btn.active { background: #f8fafc; border-color: #f8fafc; color: #111827; }
     body.dark-theme .word-family-panel { background: var(--color-surface); }
+    body.dark-theme .other-meanings-panel { background: #252238; border-color: #514b75; }
+    body.dark-theme .word-family-context { color: #c4b5fd; }
+    body.dark-theme .word-form-note { color: #c4b5fd; }
     body.dark-theme .word-form-card { background: var(--color-surface-soft); border-color: var(--color-hairline-strong); color: var(--color-ink); }
     body.dark-theme .word-form-card.active { background: #27272a; border-color: #a78bfa; color: #fff; }
     body.dark-theme .word-form-card.active .word-form-label { color: #d4d4d8; }
@@ -2498,18 +2561,16 @@
           <div class="meaning-summary-row">
             <div class="meaning-summary-copy">
               <span class="senses-label">Main meaning</span>
-              <span class="meaning-count-note" id="meaningCountNote">Chosen for you</span>
+              <span class="meaning-count-note" id="meaningCountNote">Shown below</span>
             </div>
-            <button class="btn-toggle-meanings" id="btnToggleMeanings" type="button" aria-expanded="false" aria-controls="dictSensesContainer" onclick="toggleMeanings()">
-              <span id="btnToggleMeaningsText">Other meanings</span>
+            <button class="btn-toggle-meanings" id="btnToggleMeanings" type="button" aria-expanded="false" aria-controls="otherMeaningsPanel" onclick="toggleMeanings()">
+              <span id="btnToggleMeaningsText">See other meanings</span>
             </button>
           </div>
-          <div class="word-job-tabs" id="dictSensesContainer" role="tablist" aria-label="Other meanings" hidden></div>
-        </div>
-
-        <div class="word-form-lesson-banner" id="wordFormLessonBanner" role="status" hidden>
-          <span id="wordFormLessonText"></span>
-          <button class="btn-return-family" id="btnReturnToFamilyBase" type="button" onclick="returnToWordFamilyBase()">Back to base word</button>
+          <div class="other-meanings-panel" id="otherMeaningsPanel" hidden>
+            <p class="other-meanings-prompt" id="otherMeaningsPrompt">Not what you were looking for? Try another meaning.</p>
+            <div class="word-job-tabs" id="dictSensesContainer" role="tablist" aria-label="Other meanings"></div>
+          </div>
         </div>
 
         <div class="dict-senses-bar" id="dictPronunciationsBar" style="display: none;">
@@ -2544,11 +2605,26 @@
         <!-- Interactive word forms, tenses, plurals and comparisons -->
         <section class="word-family-panel" id="wordFamilyPanel" aria-live="polite" aria-label="Related word forms">
           <div class="word-family-heading">
-            <span class="word-family-title" id="wordFamilyTitle">Word Time Machine</span>
-            <span class="grammar-rule-badge regular" id="grammarRuleBadge"></span>
+            <div class="word-family-heading-copy">
+              <span class="word-family-title" id="wordFamilyTitle">Word Time Machine</span>
+              <span class="word-family-prompt" id="wordFamilyPrompt">See other forms of this word.</span>
+              <div class="word-family-context" id="wordFamilyContext" role="status" hidden>
+                <span id="wordFamilyContextText"></span>
+              </div>
+            </div>
+            <div class="word-family-controls">
+              <button class="btn-toggle-family" id="btnToggleWordFamily" type="button" aria-expanded="false" aria-controls="wordFamilyDetails" onclick="toggleWordFamily()">
+                <span id="btnToggleWordFamilyText">See other forms</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <button class="btn-return-family" id="btnReturnToFamilyBase" type="button" onclick="returnToWordFamilyBase()" hidden>Back to base word</button>
+            </div>
           </div>
-          <div class="word-family-scroll" id="wordFamilyCards"></div>
-          <div class="grammar-tip" id="grammarRuleTip"></div>
+          <div class="word-family-details" id="wordFamilyDetails" hidden>
+            <div class="word-family-scroll" id="wordFamilyCards"></div>
+            <span class="grammar-rule-badge regular" id="grammarRuleBadge" hidden></span>
+            <div class="grammar-tip" id="grammarRuleTip"></div>
+          </div>
         </section>
 
         <!-- Sound Buttons Segmentation Stage -->
@@ -3081,6 +3157,18 @@
       return `This word follows the pattern: add -ed for yesterday and -ing for right now.`;
     }
 
+    function regularVerbFormNotes(forms) {
+      const past = forms.rule === 'silent-e' ? 'add -d'
+        : forms.rule === 'double' ? 'double the last letter, then add -ed'
+          : forms.rule === 'y-to-i' ? 'change y to i, then add -ed'
+            : 'add -ed';
+      const ing = forms.rule === 'silent-e' ? 'drop e, then add -ing'
+        : forms.rule === 'double' ? 'double the last letter, then add -ing'
+          : 'add -ing';
+      const third = forms.rule === 'y-to-i' ? 'change y to i, then add -es' : 'add -s';
+      return { past, ing, third };
+    }
+
     function grammarModelFor(word, sense) {
       const searched = normaliseDictionaryForm(word);
       const job = wordJobForPos(sense && sense.pos);
@@ -3149,14 +3237,15 @@
       if (job === 'verb' && sense.grammar && sense.grammar.headword) {
         const forms = regularVerbForms(sense.grammar.headword);
         if (!forms) return null;
+        const notes = regularVerbFormNotes(forms);
         return {
-          job, title: 'Word Time Machine', badge: '+ed Rule Follower', badgeClass: 'regular',
+          job, title: 'Word Time Machine', badge: '', badgeClass: 'regular',
           tip: grammarTipForRegularVerb(forms),
           forms: [
             { label: 'Today (Base)', word: forms.base },
-            { label: 'Yesterday (Past)', word: forms.past },
-            { label: 'Right Now (-ing)', word: forms.ing },
-            { label: 'He / She / It', word: forms.third }
+            { label: 'Yesterday (Past)', word: forms.past, note: notes.past },
+            { label: 'Right Now (-ing)', word: forms.ing, note: notes.ing },
+            { label: 'He / She / It', word: forms.third, note: notes.third }
           ]
         };
       }
@@ -3209,14 +3298,26 @@
 
     function openWordFamilyForm(form, model) {
       const baseWord = model.forms[0].word;
+      if (normaliseDictionaryForm(form.word) === normaliseDictionaryForm(baseWord)) {
+        setAndLookup(baseWord, model.job);
+        return;
+      }
+      const message = wordFormRelationshipMessage(form, baseWord);
+      if (!message) return;
       const context = {
         baseWord,
         formWord: form.word,
         formLabel: form.label,
         job: model.job,
-        message: wordFormRelationshipMessage(form, baseWord)
+        message
       };
       setAndLookup(form.word, model.job, context);
+    }
+
+    function toggleWordFamily() {
+      wordFamilyExpanded = !wordFamilyExpanded;
+      const sense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
+      if (sense) renderWordFamily(sense);
     }
 
     function renderWordFamily(sense) {
@@ -3229,28 +3330,47 @@
         return;
       }
 
+      const baseWord = model.forms[0].word;
       document.getElementById('wordFamilyTitle').textContent = model.title;
+      const prompt = document.getElementById('wordFamilyPrompt');
+      const context = document.getElementById('wordFamilyContext');
+      const contextText = document.getElementById('wordFamilyContextText');
+      const returnButton = document.getElementById('btnReturnToFamilyBase');
+      prompt.textContent = 'See other forms of ' + baseWord + '.';
+      prompt.hidden = Boolean(activeWordFormContext);
+      context.hidden = !activeWordFormContext;
+      contextText.textContent = activeWordFormContext ? activeWordFormContext.message : '';
+      returnButton.hidden = !activeWordFormContext;
+      returnButton.textContent = activeWordFormContext ? 'Back to ' + activeWordFormContext.baseWord : 'Back to base word';
+
+      const toggle = document.getElementById('btnToggleWordFamily');
+      toggle.setAttribute('aria-expanded', wordFamilyExpanded ? 'true' : 'false');
+      document.getElementById('btnToggleWordFamilyText').textContent = wordFamilyExpanded
+        ? 'Hide word forms'
+        : 'See other forms of ' + baseWord;
+      document.getElementById('wordFamilyDetails').hidden = !wordFamilyExpanded;
+
       const badge = document.getElementById('grammarRuleBadge');
-      badge.className = `grammar-rule-badge ${model.badgeClass}`;
+      badge.className = 'grammar-rule-badge ' + model.badgeClass;
       badge.textContent = model.badge;
+      badge.hidden = !model.badge;
       document.getElementById('grammarRuleTip').textContent = model.tip;
       const cards = document.getElementById('wordFamilyCards');
       cards.innerHTML = '';
       model.forms.forEach(form => {
-        const isActive = form.word === currentSearchWord;
+        const isActive = normaliseDictionaryForm(form.word) === normaliseDictionaryForm(currentSearchWord);
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = `word-form-card${isActive ? ' active' : ''}`;
+        button.className = 'word-form-card' + (isActive ? ' active' : '');
         button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        button.setAttribute('aria-label', `${form.label}: ${form.word}${isActive ? ', currently viewing' : ''}`);
-        button.innerHTML = `<span class="word-form-label"></span><span class="word-form-row"><span class="word-form-word"></span>${isActive ? '<span class="viewing-badge">Viewing</span>' : ''}</span>`;
+        button.setAttribute('aria-label', form.label + ': ' + form.word + (isActive ? ', currently viewing' : ''));
+        button.innerHTML = '<span class="word-form-label"></span><span class="word-form-row"><span class="word-form-word"></span>' + (isActive ? '<span class="viewing-badge">Viewing</span>' : '') + '</span><span class="word-form-note"></span>';
         button.querySelector('.word-form-label').textContent = form.label;
         button.querySelector('.word-form-word').textContent = form.word;
-        if (!isActive) {
-          button.onclick = () => activeWordFormContext && form.word === activeWordFormContext.baseWord
-            ? returnToWordFamilyBase()
-            : openWordFamilyForm(form, model);
-        }
+        const note = button.querySelector('.word-form-note');
+        note.textContent = form.note || '';
+        note.hidden = !form.note;
+        if (!isActive) button.onclick = () => openWordFamilyForm(form, model);
         cards.appendChild(button);
       });
       panel.dataset.grammarType = model.job;
@@ -3693,6 +3813,7 @@
     let pendingWordFormContext = null;
     let activeWordFormContext = null;
     let meaningsExpanded = false;
+    let wordFamilyExpanded = false;
 
     wordAudioLoadPromise.then(() => {
       if (currentWordSenses.length) applyActiveSenseData(currentActiveSenseIdx);
@@ -4065,6 +4186,7 @@
       pendingWordFormContext = null;
       activeWordFormContext = null;
       meaningsExpanded = false;
+      wordFamilyExpanded = Boolean(requestedWordFormContext);
 
       if (activeLookupController) activeLookupController.abort();
       activeLookupController = new AbortController();
@@ -4115,9 +4237,14 @@
       if (verifiedFormContext) {
         activeWordFormContext = verifiedFormContext;
         currentActiveSenseIdx = verifiedFormContext.senseIndex;
-      } else if (preferredWordJob) {
-        const preferredIndex = currentWordSenses.findIndex(sense => wordJobForPos(sense.pos) === preferredWordJob);
-        if (preferredIndex >= 0) currentActiveSenseIdx = preferredIndex;
+      } else {
+        const exactHeadwordIndex = currentWordSenses.findIndex(sense => normaliseDictionaryForm(sense.grammar && sense.grammar.headword) === normaliseDictionaryForm(word));
+        if (exactHeadwordIndex >= 0) currentActiveSenseIdx = exactHeadwordIndex;
+        if (preferredWordJob) {
+          const preferredIndex = currentWordSenses.findIndex(sense => wordJobForPos(sense.pos) === preferredWordJob
+            && (exactHeadwordIndex < 0 || normaliseDictionaryForm(sense.grammar && sense.grammar.headword) === normaliseDictionaryForm(word)));
+          if (preferredIndex >= 0) currentActiveSenseIdx = preferredIndex;
+        }
       }
 
       document.getElementById('resWordTitle').innerText = word;
@@ -4154,8 +4281,8 @@
       document.getElementById('btnSayWholeWord').disabled = true;
       document.getElementById('btnSayWholeWord').title = 'No exact dictionary recording is available for this form.';
       document.getElementById('dictSensesBar').style.display = 'none';
-      document.getElementById('wordFormLessonBanner').hidden = true;
       activeWordFormContext = null;
+      wordFamilyExpanded = false;
       document.getElementById('dictPronunciationsBar').style.display = 'none';
       document.getElementById('btnGoogleSafeSearch').style.display = 'none';
       const wordFamilyPanel = document.getElementById('wordFamilyPanel');
@@ -4167,52 +4294,26 @@
     }
 
     function findVerifiedWordFormContext(word, senses, requestedContext = null) {
+      if (!requestedContext) return null;
       const searched = normaliseDictionaryForm(word);
+      const base = normaliseDictionaryForm(requestedContext.baseWord);
+      if (!searched || searched === base) return null;
       for (let senseIndex = 0; senseIndex < senses.length; senseIndex++) {
         const sense = senses[senseIndex];
         const grammar = sense.grammar || {};
         const headword = normaliseDictionaryForm(grammar.headword);
         const accepted = [...(grammar.inflections || []), ...(grammar.stems || [])].map(normaliseDictionaryForm);
         if (!accepted.includes(searched)) continue;
-
-        if (requestedContext) {
-          const base = normaliseDictionaryForm(requestedContext.baseWord);
-          if (wordJobForPos(sense.pos) !== requestedContext.job) continue;
-          if (headword !== base && !accepted.includes(base)) continue;
-          return { ...requestedContext, senseIndex };
-        }
-
-        if (!headword || headword === searched) continue;
-        const model = grammarModelFor(word, sense);
-        if (!model) continue;
-        const form = model.forms.find(item => normaliseDictionaryForm(item.word) === searched);
-        const baseWord = model.forms[0] && model.forms[0].word;
-        if (!form || !baseWord || normaliseDictionaryForm(baseWord) !== headword) continue;
-        return {
-          baseWord,
-          formWord: form.word,
-          formLabel: form.label,
-          job: model.job,
-          message: wordFormRelationshipMessage(form, baseWord),
-          senseIndex
-        };
+        if (wordJobForPos(sense.pos) !== requestedContext.job) continue;
+        if (headword !== base && !accepted.includes(base)) continue;
+        return { ...requestedContext, senseIndex };
       }
       return null;
     }
 
-    function renderWordFormLessonBanner() {
-      const banner = document.getElementById('wordFormLessonBanner');
-      if (!activeWordFormContext) {
-        banner.hidden = true;
-        return;
-      }
-      document.getElementById('wordFormLessonText').textContent = activeWordFormContext.message;
-      document.getElementById('btnReturnToFamilyBase').textContent = 'Back to ' + activeWordFormContext.baseWord;
-      banner.hidden = false;
-    }
-
     function renderSensesBar() {
       const bar = document.getElementById('dictSensesBar');
+      const panel = document.getElementById('otherMeaningsPanel');
       const container = document.getElementById('dictSensesContainer');
       const toggle = document.getElementById('btnToggleMeanings');
       const toggleText = document.getElementById('btnToggleMeaningsText');
@@ -4220,30 +4321,34 @@
 
       if (currentWordSenses.length <= 1) {
         bar.style.display = 'none';
-        container.hidden = true;
+        panel.hidden = true;
         return;
       }
 
+      const alternatives = currentWordSenses
+        .map((sense, senseIndex) => ({ sense, senseIndex }))
+        .filter(item => item.senseIndex !== currentActiveSenseIdx);
       bar.style.display = 'flex';
-      document.getElementById('meaningCountNote').textContent = activeWordFormContext ? 'Kept in its word family' : 'Chosen for you';
-      toggleText.textContent = 'Other meanings (' + (currentWordSenses.length - 1) + ')';
+      document.getElementById('meaningCountNote').textContent = 'Shown below';
+      toggleText.textContent = meaningsExpanded ? 'Hide other meanings' : 'See other meanings (' + alternatives.length + ')';
       toggle.setAttribute('aria-expanded', meaningsExpanded ? 'true' : 'false');
-      container.hidden = !meaningsExpanded;
+      panel.hidden = !meaningsExpanded;
 
-      currentWordSenses.forEach((sense, senseIndex) => {
+      alternatives.forEach((item, alternativeIndex) => {
+        const sense = item.sense;
+        const senseIndex = item.senseIndex;
         const job = wordJobForPos(sense.pos);
         const ui = WORD_JOB_UI[job] || { label: getWordClassDetails(sense.pos).name, css: 'job-other' };
         const className = getWordClassDetails(sense.pos).name.toLowerCase();
         const definitionLabel = String(sense.def || ui.label).replace(/\s+/g, ' ').trim();
         const shortLabel = definitionLabel.length > 48 ? definitionLabel.slice(0, 45).trimEnd() + '...' : definitionLabel;
         const btn = document.createElement('button');
-        const isActive = senseIndex === currentActiveSenseIdx;
-        btn.className = 'sense-pill-btn ' + ui.css + (isActive ? ' active' : '');
+        btn.className = 'sense-pill-btn ' + ui.css;
         btn.type = 'button';
         btn.setAttribute('role', 'tab');
-        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        btn.setAttribute('aria-label', 'Meaning ' + (senseIndex + 1) + ', ' + className + ': ' + definitionLabel);
-        btn.innerText = (senseIndex + 1) + '. ' + shortLabel + ' (' + className + ')';
+        btn.setAttribute('aria-selected', 'false');
+        btn.setAttribute('aria-label', 'Other meaning ' + (alternativeIndex + 1) + ', ' + className + ': ' + definitionLabel);
+        btn.innerText = (alternativeIndex + 1) + '. ' + shortLabel + ' (' + className + ')';
         btn.onclick = () => selectSense(senseIndex);
         container.appendChild(btn);
       });
@@ -4259,7 +4364,7 @@
       currentPronunciationIndex = 0;
       activeWordFormContext = null;
       meaningsExpanded = false;
-      renderWordFormLessonBanner();
+      wordFamilyExpanded = false;
       renderSensesBar();
       applyActiveSenseData(idx);
     }
@@ -4381,9 +4486,7 @@
       posBadge.innerText = wc.name;
       document.getElementById('resPosChildTip').innerText = wc.tip;
 
-      renderWordFormLessonBanner();
-      const sourceDefinition = activeWordFormContext ? activeWordFormContext.message : sense.def;
-      const defStr = sourceDefinition.charAt(0).toUpperCase() + sourceDefinition.slice(1);
+      const defStr = sense.def.charAt(0).toUpperCase() + sense.def.slice(1);
       document.getElementById('resMeaningText').innerText = defStr;
       const hasExample = Boolean(sense.example);
       document.getElementById('dictionaryExampleSection').style.display = hasExample ? 'block' : 'none';
@@ -4391,7 +4494,7 @@
       const sentenceButton = document.getElementById('btnSentenceBuilder');
       sentenceButton.disabled = false;
       sentenceButton.title = hasExample ? 'Rebuild this trusted dictionary example' : 'Example Builder needs a dictionary example for this meaning.';
-      document.getElementById('resVisualTitle').innerText = activeWordFormContext ? 'Word form' : (sense.title || wc.name);
+      document.getElementById('resVisualTitle').innerText = sense.title || wc.name;
       document.getElementById('resVisualDesc').innerText = defStr;
       renderWordFamily(sense);
 
@@ -4445,7 +4548,7 @@
 
     function speakCurrentDefinition() {
       const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
-      const definition = activeWordFormContext ? activeWordFormContext.message : (activeSense ? activeSense.def : '');
+      const definition = activeSense ? activeSense.def : '';
       if (!definition) {
         showToast('This word does not have a trusted definition to read.');
         return;

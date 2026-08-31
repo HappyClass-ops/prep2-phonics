@@ -31,10 +31,12 @@ assert.doesNotMatch(app, /Different Picture Idea|btnLevelEasy|btnLevelHard/, 'Mi
 assert.doesNotMatch(app, /currentWordAudioUrl|PRIMARY_CURATED_DB/, 'Audio and meanings must not come from stale global or offline dictionary state.');
 assert.doesNotMatch(app, /I can see the word/, 'The pupil app must not fabricate a generic sentence when the provider has no example.');
 assert.doesNotMatch(app, /setAndLookup\('farted'\)|"farmer","fart","farted","farting","fast"/, 'Suggestions must not advertise the unsupported fart word family.');
-assert.match(app, /currentWordSenses\.forEach\(\(sense, senseIndex\)/, 'Every accepted dictionary meaning must receive its own selectable tab.');
-assert.match(app, /id="btnToggleMeanings"[\s\S]*?id="dictSensesContainer"[\s\S]*?hidden/, 'Alternative meanings must be progressively disclosed instead of confronting the child at once.');
-assert.match(app, /function findVerifiedWordFormContext[\s\S]*?grammar\.inflections[\s\S]*?grammar\.stems/, 'Word-form lessons must be verified from provider grammar data.');
-assert.match(app, /activeWordFormContext \? activeWordFormContext\.message : sense\.def/, 'A verified word form must lead with its relationship to the base word.');
+assert.match(app, /\.filter\(item => item\.senseIndex !== currentActiveSenseIdx\)/, 'The selected main meaning must not be repeated among alternative meanings.');
+assert.match(app, /id="btnToggleMeanings"[\s\S]*?id="otherMeaningsPanel" hidden[\s\S]*?Not what you were looking for\? Try another meaning\./, 'Alternative meanings must use a calm, progressively disclosed help box.');
+assert.match(app, /function findVerifiedWordFormContext[\s\S]*?if \(!requestedContext\) return null;[\s\S]*?grammar\.inflections[\s\S]*?grammar\.stems/, 'Only explicit Time Machine navigation may open a verified word-form lesson.');
+assert.match(app, /function openWordFamilyForm[\s\S]*?form\.word[\s\S]*?baseWord[\s\S]*?setAndLookup\(baseWord, model\.job\)/, 'A base word must return to a normal search instead of becoming another form of itself.');
+assert.match(app, /id="wordFamilyDetails" hidden[\s\S]*?id="grammarRuleBadge" hidden/, 'The Time Machine and its rule information must begin collapsed.');
+assert.match(app, /word: forms\.past, note: notes\.past[\s\S]*?word: forms\.ing, note: notes\.ing/, 'Regular spelling guidance must be attached to the relevant form rather than the whole family.');
 assert.match(app, /\.sound-buttons-container \{ padding: 18px 12px; min-width: 0; \}/, 'The real sound-button container must receive mobile spacing.');
 assert.match(app, /\.sound-buttons-row \{[\s\S]*?width: max-content;[\s\S]*?align-self: flex-start;/, 'Long phoneme rows must start at the reachable edge of their mobile scroll area.');
 const decorativeEmoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
