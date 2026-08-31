@@ -166,14 +166,14 @@ async function run() {
       play() { if (this.onended) setTimeout(() => this.onended(), 0); return Promise.resolve(); }
     };
   });
-  await page.route('**/api/v3/references/sd2/json/**', async route => {
-    const word = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).toLowerCase();
+  await page.route('https://prep2-phonics-api.goldenhappyaku.workers.dev/api/dictionary**', async route => {
+    const word = new URL(route.request().url()).searchParams.get('word').toLowerCase();
     if (word === 'slow') await new Promise(resolve => setTimeout(resolve, 250));
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(entries[word] || []) });
   });
-  await page.route('https://api.elevenlabs.io/v1/text-to-speech/**', async route => {
+  await page.route('https://prep2-phonics-api.goldenhappyaku.workers.dev/api/speech', async route => {
     elevenRequests.push(JSON.parse(route.request().postData() || '{}'));
-    if (elevenMode === 'failure') await route.fulfill({ status: 401, contentType: 'application/json', body: '{"detail":"invalid_api_key"}' });
+    if (elevenMode === 'failure') await route.fulfill({ status: 502, contentType: 'application/json', body: '{"error":"voice unavailable"}' });
     else await route.fulfill({ status: 200, contentType: 'audio/mpeg', body: Buffer.from('FAKE_MP3') });
   });
 

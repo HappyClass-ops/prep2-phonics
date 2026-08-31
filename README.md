@@ -9,9 +9,17 @@ Interactive phonics dictionary and pupil learning app with authentic teacher voi
 ## Dictionary data
 
 The pupil dictionary looks up entries live from Merriam-Webster's Elementary
-Dictionary API. The app shows provider-supplied meanings, word classes,
+Dictionary API through the `prep2-phonics-api` Cloudflare Worker. The app shows provider-supplied meanings, word classes,
 examples, pronunciations, and audio; it does not ship or fall back to a local
 historical dictionary, guessed root word, or generated definition.
+
+The browser contains no Merriam-Webster or ElevenLabs credentials. Cloudflare
+stores both as encrypted Worker secrets, validates requests, and permits browser
+requests only from the published GitHub Pages origin or local development.
+Deploy the proxy with `npx wrangler deploy`; the required secret names are
+declared in `wrangler.toml` and their values must be added with
+`npx wrangler secret put MERRIAM_WEBSTER_API_KEY` and
+`npx wrangler secret put ELEVENLABS_API_KEY`.
 
 Returned entries are accepted only when the searched spelling is present in
 the provider's headword, stems, or inflection records. The app prefers the
@@ -36,7 +44,7 @@ definition preview so pupils can choose by meaning rather than labels such as
 
 ## Read-aloud
 
-ElevenLabs' George voice provides British English read-aloud for whole words,
+ElevenLabs' British voice provides English read-aloud for whole words,
 tricky words, definitions, dictionary examples, and successfully completed
 Example Builder puzzles. Whole-word requests include the selected meaning as
 silent context so homographs can be pronounced for the active sense. Teacher

@@ -3819,14 +3819,11 @@
       if (currentWordSenses.length) applyActiveSenseData(currentActiveSenseIdx);
     });
 
-    // The dictionary is deliberately live and provider-led: there is no local
-    // definition database, no historical fallback, and no guessed root word.
-    // The key is public by design for this non-commercial GitHub Pages app.
-    const MERRIAM_WEBSTER_API_KEY = 'a7c26507-43bf-4771-a653-8efa33e99fb7';
-    const MERRIAM_WEBSTER_ENDPOINT = 'https://dictionaryapi.com/api/v3/references/sd2/json/';
-    const ELEVENLABS_API_KEY = 'sk_8f469fefb6298ecdb465d6426fe9b09fc31c108e0d842013';
-    const ELEVENLABS_VOICE_ID = 'Xb7hH8MSUJpSbSDYk0k2'; // Alice — Clear British English Educator
-    const ELEVENLABS_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?output_format=mp3_44100_128`;
+    // Provider keys live only in the Cloudflare Worker. The pupil app receives
+    // dictionary JSON and speech audio without ever receiving either secret.
+    const API_PROXY_BASE = 'https://prep2-phonics-api.goldenhappyaku.workers.dev';
+    const MERRIAM_WEBSTER_ENDPOINT = API_PROXY_BASE + '/api/dictionary';
+    const ELEVENLABS_ENDPOINT = API_PROXY_BASE + '/api/speech';
     const ELEVENLABS_AUDIO_CACHE = new Map();
     let elevenLabsBlocked = false;
     const DICTIONARY_LOOKUP_CACHE = new Map();
@@ -3980,7 +3977,7 @@
 
     async function resolveDictionaryWord(word, options = {}) {
       if (DICTIONARY_LOOKUP_CACHE.has(word)) return DICTIONARY_LOOKUP_CACHE.get(word);
-      const url = `${MERRIAM_WEBSTER_ENDPOINT}${encodeURIComponent(word)}?key=${encodeURIComponent(MERRIAM_WEBSTER_API_KEY)}`;
+      const url = MERRIAM_WEBSTER_ENDPOINT + '?word=' + encodeURIComponent(word);
       const response = await fetch(url, { cache: 'no-store', signal: options.signal });
       if (!response.ok) throw new Error(`Dictionary lookup failed (${response.status}).`);
       const entries = await response.json();
@@ -4503,7 +4500,7 @@
       renderSoundButtons(currentParsedResult);
       const wholeWordButton = document.getElementById('btnSayWholeWord');
       const teacherWordAudio = wordAudioFor(pronunciationRecordingId(currentSearchWord, pronunciation.mw));
-      wholeWordButton.disabled = !(teacherWordAudio || pronunciation.audioUrl || ELEVENLABS_API_KEY);
+      wholeWordButton.disabled = !(teacherWordAudio || pronunciation.audioUrl || API_PROXY_BASE);
       wholeWordButton.title = teacherWordAudio
         ? 'Hear the teacher-recorded pronunciation'
         : pronunciation.audioUrl
@@ -4788,26 +4785,15 @@
 
       // Normalization: Ensure clean terminal punctuation so the neural model completes the full phoneme decay without clipping the final consonant.
       const normalizedSpeechText = /[.!?]$/.test(rawText) ? rawText : rawText + '.';
-      const cacheKey = `v3_${ELEVENLABS_VOICE_ID}_${normalizedSpeechText}`;
+      const cacheKey = 'v4_cloudflare_' + normalizedSpeechText;
 
       try {
         let audioUrl = ELEVENLABS_AUDIO_CACHE.get(cacheKey);
         if (!audioUrl) {
-          const body = {
-            text: normalizedSpeechText,
-            model_id: 'eleven_multilingual_v2', // Studio-quality neural acoustic model
-            voice_settings: {
-              stability: 0.85,          // Eliminates syllable bleeding and tail chatter
-              similarity_boost: 0.85,   // High clarity
-              style: 0.0,               // Clean, neutral teacher delivery
-              speed: 0.82               // Measured, clear educational pace for children
-            }
-          };
-
           const response = await fetch(ELEVENLABS_ENDPOINT, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVENLABS_API_KEY },
-            body: JSON.stringify(body)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: normalizedSpeechText })
           });
 
           if (!response.ok) {

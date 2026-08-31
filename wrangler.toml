@@ -1,0 +1,12 @@
+name = "prep2-phonics-api"
+main = "cloudflare/worker.mjs"
+compatibility_date = "2026-08-31"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ALLOWED_ORIGIN = "https://happyclass-ops.github.io"
+ELEVENLABS_VOICE_ID = "Xb7hH8MSUJpSbSDYk0k2"
+
+[secrets]
+required = ["MERRIAM_WEBSTER_API_KEY", "ELEVENLABS_API_KEY"]

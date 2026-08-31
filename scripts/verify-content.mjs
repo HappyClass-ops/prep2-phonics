@@ -11,6 +11,7 @@ const wordPack = JSON.parse(fs.readFileSync('little_wandle_word_voice_pack.json'
 assert.ok(Array.isArray(wordPack.clips), 'The publishable teacher word voice pack must have a clips array.');
 
 const app = fs.readFileSync('index.html', 'utf8');
+const worker = fs.readFileSync('cloudflare/worker.mjs', 'utf8');
 const bundleMatch = app.match(/const AUDIO_BUNDLE = (.*?);\s*const AUDIO_CACHE/s);
 assert.ok(bundleMatch, 'The pupil app must contain its published audio bundle.');
 const embedded = JSON.parse(bundleMatch[1]);
@@ -21,9 +22,12 @@ assert.match(app, /function applyDictionaryPronunciation/, 'Selected dictionary 
 assert.match(app, /function buildVerifiedImageQueries/, 'Image searches must be built from the selected verified sense.');
 assert.match(app, /conflictingAudioUrls/, 'Provider audio shared by different pronunciations must be blocked.');
 assert.match(app, /wordAudioFor\(pronunciationRecordingId/, 'Exact teacher pronunciation recordings must override provider audio.');
-assert.match(app, /const ELEVENLABS_API_KEY = 'sk_[^']+'/, 'A valid-format ElevenLabs key must be configured.');
-assert.match(app, /Xb7hH8MSUJpSbSDYk0k2|JBFqnCBsd6RMkjVDRZzb/, 'The configured ElevenLabs voice must be a verified British voice.');
-assert.match(app, /function playElevenLabsSpeech[\s\S]*eleven_multilingual_v2/, 'Read-aloud must use the high-clarity ElevenLabs speech path.');
+assert.match(app, /const API_PROXY_BASE = 'https:\/\/prep2-phonics-api\.goldenhappyaku\.workers\.dev'/, 'The pupil app must use the deployed Cloudflare API proxy.');
+assert.doesNotMatch(app, /MERRIAM_WEBSTER_API_KEY|ELEVENLABS_API_KEY|xi-api-key|api\/v3\/references\/sd2|api\.elevenlabs\.io/, 'Provider keys and direct provider endpoints must not ship to pupils.');
+assert.match(worker, /env\.MERRIAM_WEBSTER_API_KEY[\s\S]*env\.ELEVENLABS_API_KEY/, 'Cloudflare must read both provider keys from encrypted Worker secrets.');
+assert.match(worker, /Xb7hH8MSUJpSbSDYk0k2|env\.ELEVENLABS_VOICE_ID/, 'The Worker must use the configured British voice.');
+assert.match(worker, /eleven_multilingual_v2[\s\S]*stability: 0\.85[\s\S]*speed: 0\.82/, 'The Worker must own the high-clarity speech settings.');
+assert.match(app, /function playElevenLabsSpeech[\s\S]*fetch\(ELEVENLABS_ENDPOINT[\s\S]*JSON\.stringify\(\{ text: normalizedSpeechText \}\)/, 'Read-aloud must request speech through Cloudflare without a browser key.');
 assert.match(app, /function speakNaturalWord[\s\S]*playElevenLabsSpeech[\s\S]*onFailure: \(\) => playAudioUrl/, 'Whole-word audio must try ElevenLabs and preserve the exact dictionary fallback.');
 assert.match(app, /function speakCurrentDefinition/, 'Definitions must expose read-aloud.');
 assert.match(app, /Search “\$\{suggestion\.word\}”/, 'Every typed word must keep an exact-search action.');
