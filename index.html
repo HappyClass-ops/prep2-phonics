@@ -607,6 +607,143 @@
       box-shadow: var(--shadow-subtle);
     }
 
+    /* COMPACT WORD-JOB TABS + WORD FAMILY TIME MACHINE */
+    .dict-senses-bar.word-job-bar {
+      padding-block: 10px;
+    }
+
+    .word-job-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sense-pill-btn.job-verb { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
+    .sense-pill-btn.job-noun { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+    .sense-pill-btn.job-adjective { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+    .sense-pill-btn.job-other { background: var(--color-canvas); color: var(--color-charcoal); }
+    .sense-pill-btn.job-verb.active,
+    .sense-pill-btn.job-noun.active,
+    .sense-pill-btn.job-adjective.active,
+    .sense-pill-btn.job-other.active {
+      background: #27272a;
+      border-color: #27272a;
+      color: #fff;
+    }
+
+    .word-family-panel {
+      display: none;
+      padding: 14px 28px 12px;
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-hairline);
+    }
+
+    .word-family-panel.visible { display: block; }
+
+    .word-family-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 9px;
+      flex-wrap: wrap;
+    }
+
+    .word-family-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--color-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.055em;
+    }
+
+    .grammar-rule-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .grammar-rule-badge.irregular { background: #faf5ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+    .grammar-rule-badge.regular { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .grammar-rule-badge.magic { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+    .grammar-rule-badge.special { background: #fffbeb; color: #a16207; border: 1px solid #fde68a; }
+
+    .word-family-scroll {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(132px, 1fr);
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 2px 7px;
+      scrollbar-width: thin;
+      scroll-snap-type: x proximity;
+    }
+
+    .word-form-card {
+      min-height: 66px;
+      padding: 9px 11px;
+      border: 1px solid var(--color-hairline-strong);
+      border-radius: 10px;
+      background: var(--color-canvas);
+      color: var(--color-charcoal);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      scroll-snap-align: start;
+      transition: transform .16s ease, border-color .16s ease, background-color .16s ease;
+    }
+
+    .word-form-card:hover { transform: translateY(-1px); border-color: var(--color-primary); }
+    .word-form-card:focus-visible { outline: 3px solid #818cf8; outline-offset: 2px; }
+    .word-form-card.active { background: #27272a; border-color: #27272a; color: #fff; }
+
+    .word-form-label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.7rem;
+      font-weight: 750;
+      color: var(--color-slate);
+      white-space: nowrap;
+    }
+
+    .word-form-card.active .word-form-label { color: #d4d4d8; }
+
+    .word-form-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .word-form-word { font-size: 1.02rem; font-weight: 850; line-height: 1.1; }
+    .viewing-badge {
+      display: inline-flex;
+      padding: 2px 5px;
+      border-radius: 999px;
+      background: #fff;
+      color: #27272a;
+      font-size: 0.62rem;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .grammar-tip {
+      margin-top: 7px;
+      padding: 7px 9px;
+      border-radius: 8px;
+      background: var(--color-surface-soft);
+      color: var(--color-charcoal);
+      font-size: 0.82rem;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
     /* VISUAL CONTEXT & NOTION "WANT TO SEE A PICTURE" LINK */
     .dict-visual-banner {
       background: var(--color-surface-soft);
@@ -1598,6 +1735,19 @@
       background: var(--color-surface-soft);
       color: var(--color-ink);
     }
+    body.dark-theme .sense-pill-btn.job-verb { background: #12382c; border-color: #176b51; color: #a7f3d0; }
+    body.dark-theme .sense-pill-btn.job-noun { background: #172c4d; border-color: #28539a; color: #bfdbfe; }
+    body.dark-theme .sense-pill-btn.job-adjective { background: #3d3211; border-color: #725d13; color: #fde68a; }
+    body.dark-theme .sense-pill-btn.active { background: #f8fafc; border-color: #f8fafc; color: #111827; }
+    body.dark-theme .word-family-panel { background: var(--color-surface); }
+    body.dark-theme .word-form-card { background: var(--color-surface-soft); border-color: var(--color-hairline-strong); color: var(--color-ink); }
+    body.dark-theme .word-form-card.active { background: #27272a; border-color: #a78bfa; color: #fff; }
+    body.dark-theme .word-form-card.active .word-form-label { color: #d4d4d8; }
+    body.dark-theme .grammar-tip { background: #172033; color: #e2e8f0; }
+    body.dark-theme .grammar-rule-badge.irregular { background: #30203f; color: #e9d5ff; border-color: #6b3b8c; }
+    body.dark-theme .grammar-rule-badge.regular { background: #12382c; color: #a7f3d0; border-color: #176b51; }
+    body.dark-theme .grammar-rule-badge.magic { background: #3c2619; color: #fed7aa; border-color: #7c4427; }
+    body.dark-theme .grammar-rule-badge.special { background: #3d3211; color: #fde68a; border-color: #725d13; }
     body.dark-theme .badge-ipa-mono {
       background: var(--color-surface-soft);
       border-color: var(--color-hairline);
@@ -1996,6 +2146,19 @@
       background: var(--color-primary-hover);
     }
 
+    @media (max-width: 680px) {
+      .dict-senses-bar,
+      .word-family-panel { padding-inline: 16px; }
+      .word-family-scroll { grid-auto-columns: minmax(126px, 76%); }
+      .word-family-heading { align-items: flex-start; }
+      .sense-pill-btn { min-height: 40px; padding-inline: 11px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .word-form-card { transition: none; }
+      .word-form-card:hover { transform: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -2235,9 +2398,9 @@
         </div>
 
         <!-- MULTI-SENSE / HOMONYMS MEANINGS TABS -->
-        <div class="dict-senses-bar" id="dictSensesBar" style="display: none;">
-          <span class="senses-label">Meanings:</span>
-          <div id="dictSensesContainer" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+        <div class="dict-senses-bar word-job-bar" id="dictSensesBar" style="display: none;">
+          <span class="senses-label">Word jobs:</span>
+          <div class="word-job-tabs" id="dictSensesContainer" role="tablist" aria-label="Choose this word's job"></div>
         </div>
         <div class="dict-senses-bar" id="dictPronunciationsBar" style="display: none;">
           <span class="senses-label">Pronunciations:</span>
@@ -2267,6 +2430,16 @@
             </a>
           </div>
         </div>
+
+        <!-- Interactive word forms, tenses, plurals and comparisons -->
+        <section class="word-family-panel" id="wordFamilyPanel" aria-live="polite" aria-label="Related word forms">
+          <div class="word-family-heading">
+            <span class="word-family-title" id="wordFamilyTitle">Word Time Machine</span>
+            <span class="grammar-rule-badge regular" id="grammarRuleBadge"></span>
+          </div>
+          <div class="word-family-scroll" id="wordFamilyCards"></div>
+          <div class="grammar-tip" id="grammarRuleTip"></div>
+        </section>
 
         <!-- Sound Buttons Segmentation Stage -->
         <div class="sound-buttons-container">
@@ -2717,6 +2890,232 @@
       return { name: 'WORD', cssClass: 'pos-noun', tip: '• A word used in English' };
     }
 
+    function wordJobForPos(pos) {
+      const p = String(pos || '').toLowerCase();
+      if (p.includes('verb') && !p.includes('adverb')) return 'verb';
+      if (p.includes('noun')) return 'noun';
+      if (p.includes('adj')) return 'adjective';
+      if (p.includes('adv')) return 'adverb';
+      return p || 'word';
+    }
+
+    const WORD_JOB_UI = {
+      verb: { icon: '🏃', label: 'Action', css: 'job-verb' },
+      noun: { icon: '📦', label: 'Thing', css: 'job-noun' },
+      adjective: { icon: '✨', label: 'Describing', css: 'job-adjective' },
+      adverb: { icon: '💨', label: 'How / When', css: 'job-other' },
+      word: { icon: '🔤', label: 'Word', css: 'job-other' }
+    };
+
+    const IRREGULAR_VERB_FAMILIES = [
+      ['eat', 'ate', 'eating', 'eats'], ['go', 'went', 'going', 'goes'],
+      ['catch', 'caught', 'catching', 'catches'], ['run', 'ran', 'running', 'runs'],
+      ['sing', 'sang', 'singing', 'sings'], ['sit', 'sat', 'sitting', 'sits'],
+      ['give', 'gave', 'giving', 'gives'], ['come', 'came', 'coming', 'comes'],
+      ['see', 'saw', 'seeing', 'sees'], ['say', 'said', 'saying', 'says'],
+      ['make', 'made', 'making', 'makes'], ['take', 'took', 'taking', 'takes'],
+      ['get', 'got', 'getting', 'gets'], ['find', 'found', 'finding', 'finds'],
+      ['grow', 'grew', 'growing', 'grows'], ['know', 'knew', 'knowing', 'knows'],
+      ['begin', 'began', 'beginning', 'begins'], ['drink', 'drank', 'drinking', 'drinks'],
+      ['swim', 'swam', 'swimming', 'swims'], ['write', 'wrote', 'writing', 'writes'],
+      ['drive', 'drove', 'driving', 'drives'], ['ride', 'rode', 'riding', 'rides'],
+      ['fly', 'flew', 'flying', 'flies'], ['fall', 'fell', 'falling', 'falls'],
+      ['read', 'read', 'reading', 'reads'], ['cut', 'cut', 'cutting', 'cuts'],
+      ['put', 'put', 'putting', 'puts'], ['hit', 'hit', 'hitting', 'hits'],
+      ['hurt', 'hurt', 'hurting', 'hurts'], ['let', 'let', 'letting', 'lets'],
+      ['shut', 'shut', 'shutting', 'shuts'], ['do', 'did', 'doing', 'does'],
+      ['have', 'had', 'having', 'has']
+    ].map(([base, past, ing, third]) => ({ base, past, ing, third }));
+
+    const IRREGULAR_PLURAL_FAMILIES = [
+      ['child', 'children'], ['person', 'people'], ['mouse', 'mice'],
+      ['foot', 'feet'], ['tooth', 'teeth'], ['man', 'men'], ['woman', 'women']
+    ].map(([singular, plural]) => ({ singular, plural }));
+
+    const IRREGULAR_ADJECTIVE_FAMILIES = [
+      ['good', 'better', 'best'], ['bad', 'worse', 'worst']
+    ].map(([base, comparative, superlative]) => ({ base, comparative, superlative }));
+
+    const VERB_RIBBON_BLOCKLIST = new Set([
+      'red', 'bed', 'king', 'wing', 'string', 'wicked', 'naked', 'hundred', 'sacred', 'ragged'
+    ]);
+
+    function familyContaining(families, word, keys) {
+      return families.find(family => keys.some(key => family[key] === word));
+    }
+
+    function regularVerbForms(base) {
+      if (!/^[a-z]+$/.test(base)) return null;
+      const consonantY = /[^aeiou]y$/.test(base);
+      const silentE = /e$/.test(base) && !/ee$/.test(base);
+      const cvc = /[aeiou][^aeiouwxy]$/.test(base) && base.length <= 5;
+      const finalLetter = base.slice(-1);
+      const past = consonantY ? `${base.slice(0, -1)}ied` : silentE ? `${base}d` : cvc ? `${base}${finalLetter}ed` : `${base}ed`;
+      const ing = silentE ? `${base.slice(0, -1)}ing` : cvc ? `${base}${finalLetter}ing` : `${base}ing`;
+      const third = consonantY ? `${base.slice(0, -1)}ies` : /(s|x|z|ch|sh|o)$/.test(base) ? `${base}es` : `${base}s`;
+      return { base, past, ing, third, rule: consonantY ? 'y-to-i' : silentE ? 'silent-e' : cvc ? 'double' : 'add-ed' };
+    }
+
+    function regularNounForms(base) {
+      if (!/^[a-z]+$/.test(base)) return null;
+      const plural = /[^aeiou]y$/.test(base)
+        ? `${base.slice(0, -1)}ies`
+        : /(s|x|z|ch|sh)$/.test(base) ? `${base}es` : `${base}s`;
+      return { singular: base, plural };
+    }
+
+    function grammarTipForRegularVerb(forms) {
+      if (forms.rule === 'silent-e') return `💡 Drop the 'e' before adding -ed or -ing! (${forms.base} ➔ ${forms.past} / ${forms.ing})`;
+      if (forms.rule === 'double') return `💡 Double the final letter for short vowel words! (${forms.base} ➔ ${forms.past} / ${forms.ing})`;
+      if (forms.rule === 'y-to-i') return `💡 Change 'y' to 'i' before adding -ed or -es! (${forms.base} ➔ ${forms.past} / ${forms.third})`;
+      return `💡 This word follows the pattern: add -ed for yesterday and -ing for right now.`;
+    }
+
+    function grammarModelFor(word, sense) {
+      const searched = normaliseDictionaryForm(word);
+      const job = wordJobForPos(sense && sense.pos);
+      if (job === 'verb' && VERB_RIBBON_BLOCKLIST.has(searched)) return null;
+      const adjectiveFamily = familyContaining(IRREGULAR_ADJECTIVE_FAMILIES, searched, ['base', 'comparative', 'superlative']);
+      if (job === 'adjective' && adjectiveFamily) {
+        return {
+          job, title: 'Comparison Ladder', badge: '⭐ Special Comparison', badgeClass: 'special',
+          tip: `⭐ ${adjectiveFamily.base}, ${adjectiveFamily.comparative}, and ${adjectiveFamily.superlative} are a special comparison family.`,
+          forms: [
+            { label: '✨ Base', word: adjectiveFamily.base },
+            { label: '↔️ Comparing 2', word: adjectiveFamily.comparative },
+            { label: '🏆 Comparing All', word: adjectiveFamily.superlative }
+          ]
+        };
+      }
+
+      const pluralFamily = familyContaining(IRREGULAR_PLURAL_FAMILIES, searched, ['singular', 'plural']);
+      if (job === 'noun' && pluralFamily) {
+        return {
+          job, title: 'One or More?', badge: '✨ Magic Plural', badgeClass: 'magic',
+          tip: `✨ ${pluralFamily.plural} is the special plural of ${pluralFamily.singular} — we do not just add -s.`,
+          forms: [
+            { label: '👤 One (Singular)', word: pluralFamily.singular },
+            { label: '👥 More Than One (Plural)', word: pluralFamily.plural }
+          ]
+        };
+      }
+
+      const irregularVerb = familyContaining(IRREGULAR_VERB_FAMILIES, searched, ['base', 'past', 'ing', 'third']);
+      if (job === 'verb' && irregularVerb) {
+        return {
+          job, title: 'Word Time Machine', badge: '⚡ Rule Breaker! (Irregular Verb)', badgeClass: 'irregular',
+          tip: `⚡ Remember: We say '${irregularVerb.past}' for yesterday, never '${irregularVerb.base}ed'!`,
+          forms: [
+            { label: '⏰ Today (Base)', word: irregularVerb.base },
+            { label: '🔙 Yesterday (Past)', word: irregularVerb.past },
+            { label: '⏳ Right Now (-ing)', word: irregularVerb.ing },
+            { label: '👤 He / She / It', word: irregularVerb.third }
+          ]
+        };
+      }
+
+      // Merriam-Webster's inflection table safely identifies further irregular verbs
+      // without ever stripping a suffix from the child's searched word.
+      if (job === 'verb' && sense.grammar && sense.grammar.headword) {
+        const regular = regularVerbForms(sense.grammar.headword);
+        const dictionaryForms = sense.grammar.inflections || [];
+        const dictionaryIng = dictionaryForms.find(form => form.endsWith('ing'));
+        const dictionaryPast = dictionaryForms.find(form => form !== sense.grammar.headword && !form.endsWith('ing') && form !== regular?.third);
+        if (regular && dictionaryPast && dictionaryPast !== regular.past) {
+          return {
+            job, title: 'Word Time Machine', badge: '⚡ Rule Breaker! (Irregular Verb)', badgeClass: 'irregular',
+            tip: `⚡ Remember: We say '${dictionaryPast}' for yesterday, never '${regular.past}'!`,
+            forms: [
+              { label: '⏰ Today (Base)', word: regular.base },
+              { label: '🔙 Yesterday (Past)', word: dictionaryPast },
+              { label: '⏳ Right Now (-ing)', word: dictionaryIng || regular.ing },
+              { label: '👤 He / She / It', word: regular.third }
+            ]
+          };
+        }
+      }
+
+      // Regular forms are generated only from a dictionary-confirmed headword for this exact verb entry.
+      if (job === 'verb' && sense.grammar && sense.grammar.headword) {
+        const forms = regularVerbForms(sense.grammar.headword);
+        if (!forms) return null;
+        return {
+          job, title: 'Word Time Machine', badge: '🛡️ +ed Rule Follower', badgeClass: 'regular',
+          tip: grammarTipForRegularVerb(forms),
+          forms: [
+            { label: '⏰ Today (Base)', word: forms.base },
+            { label: '🔙 Yesterday (Past)', word: forms.past },
+            { label: '⏳ Right Now (-ing)', word: forms.ing },
+            { label: '👤 He / She / It', word: forms.third }
+          ]
+        };
+      }
+
+      if (job === 'noun' && sense.grammar && sense.grammar.headword) {
+        const forms = regularNounForms(sense.grammar.headword);
+        if (!forms) return null;
+        return {
+          job, title: 'One or More?', badge: '🧩 Plural Pattern', badgeClass: 'regular',
+          tip: `💡 Use '${forms.singular}' for one and '${forms.plural}' for more than one.`,
+          forms: [
+            { label: '👤 One (Singular)', word: forms.singular },
+            { label: '👥 More Than One (Plural)', word: forms.plural }
+          ]
+        };
+      }
+
+      if (job === 'adjective' && sense.grammar && (sense.grammar.inflections || []).length >= 2) {
+        const comparisonForms = sense.grammar.inflections.filter(form => /^[a-z]+$/.test(form)).slice(0, 2);
+        if (comparisonForms.length === 2) {
+          return {
+            job, title: 'Comparison Ladder', badge: '📏 Comparison Pattern', badgeClass: 'regular',
+            tip: `💡 Use ${comparisonForms[0]} to compare two and ${comparisonForms[1]} to compare a whole group.`,
+            forms: [
+              { label: '✨ Base', word: sense.grammar.headword },
+              { label: '↔️ Comparing 2', word: comparisonForms[0] },
+              { label: '🏆 Comparing All', word: comparisonForms[1] }
+            ]
+          };
+        }
+      }
+      return null;
+    }
+
+    function renderWordFamily(sense) {
+      const panel = document.getElementById('wordFamilyPanel');
+      const model = grammarModelFor(currentSearchWord, sense);
+      if (!model) {
+        panel.classList.remove('visible');
+        panel.style.display = 'none';
+        panel.dataset.grammarType = '';
+        return;
+      }
+
+      document.getElementById('wordFamilyTitle').textContent = model.title;
+      const badge = document.getElementById('grammarRuleBadge');
+      badge.className = `grammar-rule-badge ${model.badgeClass}`;
+      badge.textContent = model.badge;
+      document.getElementById('grammarRuleTip').textContent = model.tip;
+      const cards = document.getElementById('wordFamilyCards');
+      cards.innerHTML = '';
+      model.forms.forEach(form => {
+        const isActive = form.word === currentSearchWord;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `word-form-card${isActive ? ' active' : ''}`;
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        button.setAttribute('aria-label', `${form.label}: ${form.word}${isActive ? ', currently viewing' : ''}`);
+        button.innerHTML = `<span class="word-form-label"></span><span class="word-form-row"><span class="word-form-word"></span>${isActive ? '<span class="viewing-badge">Viewing</span>' : ''}</span>`;
+        button.querySelector('.word-form-label').textContent = form.label;
+        button.querySelector('.word-form-word').textContent = form.word;
+        if (!isActive) button.onclick = () => setAndLookup(form.word, model.job);
+        cards.appendChild(button);
+      });
+      panel.dataset.grammarType = model.job;
+      panel.style.display = 'block';
+      panel.classList.add('visible');
+    }
+
     const CORE_LEXICON = ["about","after","again","air","all","almost","along","also","always","animal","another","any","apple","around","ask","away","baby","back","bad","ball","bark","bat","be","beach","bear","beautiful","because","bed","been","before","began","bell","best","better","big","bird","black","blue","boat","book","both","bottle","bounce","box","boxes","boy","brave","bread","bridge","bright","brother","brown","build","burn","bus","busy","butterfly","button","by","cake","call","came","camp","can","candle","car","care","careful","carry","cat","catch","caterpillar","chair","chalk","change","cheer","cheese","chest","chew","chicken","child","children","chin","chip","chirp","chocolate","city","clap","class","classroom","clean","clear","clever","climb","clock","close","cloth","cloud","clown","clue","coat","cold","colour","come","cook","cookie","cool","corn","could","count","country","cover","cow","crawl","cried","cross","crown","cry","cube","cup","cut","cute","dad","damsel","dance","danger","dark","day","deep","delicious","desk","desperately","did","dinner","dinosaur","dirt","dish","do","doctor","dog","doll","dolphin","donkey","door","down","dragon","draw","dream","dress","drink","drip","drive","drop","drum","dry","duck","each","ear","early","earth","east","easy","eat","egg","eight","elephant","eleven","end","enormous","even","every","eye","face","fair","fall","family","far","farm","farmer","fart","farted","farting","fast","fat","father","feather","feed","feel","feet","few","field","fight","fill","find","fine","finger","finish","fire","first","fish","five","flag","flash","flat","floating","floor","flower","fly","food","foot","football","for","forest","fork","form","found","four","fox","friend","frightened","frog","from","front","fruit","full","fun","funny","game","garden","gas","gate","gave","get","giant","girl","give","glad","glass","glove","glow","glue","go","goat","gold","good","goodbye","got","grass","great","green","grew","ground","grow","had","hair","half","hall","hand","hang","happy","hard","has","hat","have","he","head","hear","heart","heavy","help","helpful","hen","her","here","high","hill","him","his","hit","hold","hole","holiday","home","hop","hopped","horn","horse","hot","house","how","hug","huge","hungry","hunt","hurry","hurt","ice","if","important","in","inside","into","is","island","it","its","jacket","jam","jar","jeans","jelly","job","join","joke","joy","juice","jump","jumped","jumping","jungle","just","keep","key","kick","kicked","kicking","kid","kind","king","kiss","kitchen","kite","kitten","knee","knife","knight","knock","know","ladder","lady","lake","lamp","land","landed","large","last","late","laugh","lay","leaf","learn","leave","leaves","left","leg","lesson","let","letter","light","like","line","lion","listen","little","live","lock","long","look","loud","loudly","love","low","lunch","made","magic","make","man","many","map","march","mark","market","match","may","me","meal","mean","meant","meat","meet","men","mice","middle","might","milk","mind","minute","miss","mistake","mix","money","monkey","monster","month","moon","more","morning","most","mother","mountain","mouse","mouth","move","much","mud","music","must","my","name","near","neat","neck","need","nest","never","new","next","nice","night","nine","no","noise","noisy","noon","north","nose","not","note","now","number","nurse","nut","oak","ocean","off","often","oil","old","on","once","one","only","open","or","orange","other","our","out","outside","over","owl","own","pack","page","paint","pair","pan","paper","park","part","party","pass","past","path","paw","pay","pea","peace","peach","pear","pen","pencil","people","pet","phone","photo","piano","pick","picture","pie","piece","pig","pile","pillow","pilot","pin","pink","pipe","pirate","place","plain","plan","plane","planet","plant","plate","play","played","playground","please","pocket","point","police","pond","pool","poor","pop","pork","post","pot","potato","pour","power","present","pretty","prince","princess","prize","proud","puddle","puff","pull","puppy","pure","purple","push","put","puzzle","queen","quick","quickly","quiet","quietly","rabbit","race","radio","rain","rainbow","raise","ran","reach","read","ready","real","red","rescue","rest","ribbon","rice","rich","ride","right","ring","river","road","roar","robot","rock","rocket","roof","room","root","rope","rose","rough","round","row","rub","rubber","rug","ruler","run","running","rush","sad","safe","safely","said","sail","salt","same","sand","sang","sat","sauce","save","saw","say","says","scare","scared","school","science","scissors","scooter","sea","seal","search","season","seat","second","secret","see","seed","seem","seen","send","seven","sew","shadow","shake","shall","shape","share","shark","sharp","she","sheep","sheet","shelf","shell","shine","shiny","ship","shirt","shoe","shoot","shop","short","should","shout","show","shut","shy","sick","side","sight","sign","silver","simple","sing","sink","sister","sit","six","size","skate","skeleton","skin","skirt","sky","sleep","slide","slow","slowly","small","smart","smell","smile","smoke","snail","snake","snow","snowman","so","soap","sock","soft","softly","soil","some","someone","something","sometimes","son","song","soon","sound","soup","sour","south","space","spark","sparkle","speak","special","speed","spell","spend","spider","spill","spin","splash","split","spoil","spoon","sport","spot","spring","square","squash","squeak","squirrel","stage","stairs","stamp","stand","star","stare","start","station","stay","steam","step","stick","still","stone","stop","store","storm","story","straight","strange","straw","strawberry","stream","street","string","strong","student","stumble","subway","such","sudden","sugar","suit","summer","sun","super","supper","sure","surprise","swallow","swan","swap","sweet","swim","swimming","swing","talk","talked"];
     let activeDropdownIndex = -1;
     let currentSuggestions = [];
@@ -3148,6 +3547,7 @@
     let currentPronunciationIndex = 0;
     let activeLookupController = null;
     let lookupRequestId = 0;
+    let pendingPreferredWordJob = '';
 
     wordAudioLoadPromise.then(() => {
       if (currentWordSenses.length) applyActiveSenseData(currentActiveSenseIdx);
@@ -3204,6 +3604,9 @@
 
     function isAcceptedDictionaryEntry(entry, searchedWord) {
       if (!entry || typeof entry !== 'object') return false;
+      const rawHeadword = String(entry.hwi && entry.hwi.hw || '');
+      const rawId = String(entry.meta && entry.meta.id || '');
+      if (rawHeadword.startsWith('-') || rawId.startsWith('-')) return false;
       const query = normaliseDictionaryForm(searchedWord);
       const acceptedForms = [
         ...((entry.meta && Array.isArray(entry.meta.stems)) ? entry.meta.stems : []),
@@ -3267,8 +3670,20 @@
       return records;
     }
 
+    function merriamGrammarForEntry(entry) {
+      const headword = normaliseDictionaryForm(entry && entry.hwi && entry.hwi.hw);
+      const inflections = (Array.isArray(entry && entry.ins) ? entry.ins : [])
+        .map(inflection => normaliseDictionaryForm(inflection && inflection.if))
+        .filter(Boolean);
+      const stems = (entry && entry.meta && Array.isArray(entry.meta.stems) ? entry.meta.stems : [])
+        .map(normaliseDictionaryForm)
+        .filter(Boolean);
+      return { headword, inflections, stems };
+    }
+
     function merriamEntryToSenses(entry, word) {
       const pos = entry.fl || 'word';
+      const grammar = merriamGrammarForEntry(entry);
       const pronunciations = merriamPronunciationsForForm(entry, word);
       const pronunciation = pronunciations[0] || { mw: '', audioUrl: '' };
       const structuredSenses = extractMerriamSenses(entry);
@@ -3291,6 +3706,7 @@
           pronunciation: pronunciation.mw,
           audioUrl: pronunciation.audioUrl,
           pronunciations,
+          grammar,
           puzzle: null
         };
       }).filter(sense => sense.def);
@@ -3333,6 +3749,7 @@
             pronunciation: baseSense.pronunciation,
             audioUrl: baseSense.audioUrl,
             pronunciations: baseSense.pronunciations || [],
+            grammar: { headword: word.toLowerCase(), inflections: [], stems: [word.toLowerCase()] },
             puzzle: null
           };
           senses.unshift(adjSense);
@@ -3497,6 +3914,8 @@
         showToast('Please search for one word using letters only.');
         return;
       }
+      const preferredWordJob = pendingPreferredWordJob;
+      pendingPreferredWordJob = '';
 
       if (activeLookupController) activeLookupController.abort();
       activeLookupController = new AbortController();
@@ -3543,6 +3962,10 @@
 
       const ipaStr = resolved.ipa || '';
       currentWordSenses = resolved.senses;
+      if (preferredWordJob) {
+        const preferredIndex = currentWordSenses.findIndex(sense => wordJobForPos(sense.pos) === preferredWordJob);
+        if (preferredIndex >= 0) currentActiveSenseIdx = preferredIndex;
+      }
 
       document.getElementById('resWordTitle').innerText = word;
       document.getElementById('resIpaBadge').innerText = ipaStr;
@@ -3557,7 +3980,7 @@
       }
 
       renderSensesBar();
-      applyActiveSenseData(0);
+      applyActiveSenseData(currentActiveSenseIdx);
 
       skeletonCard.style.display = 'none';
       workspaceCard.style.display = 'flex';
@@ -3580,6 +4003,10 @@
       document.getElementById('dictSensesBar').style.display = 'none';
       document.getElementById('dictPronunciationsBar').style.display = 'none';
       document.getElementById('btnGoogleSafeSearch').style.display = 'none';
+      const wordFamilyPanel = document.getElementById('wordFamilyPanel');
+      wordFamilyPanel.classList.remove('visible');
+      wordFamilyPanel.style.display = 'none';
+      wordFamilyPanel.dataset.grammarType = '';
       currentParsedResult = parseWordToPhonemes(word);
       renderSoundButtons(currentParsedResult);
     }
@@ -3589,19 +4016,28 @@
       const container = document.getElementById('dictSensesContainer');
       container.innerHTML = "";
 
-      if (currentWordSenses.length <= 1) {
+      const jobGroups = [];
+      currentWordSenses.forEach((sense, senseIndex) => {
+        const job = wordJobForPos(sense.pos);
+        if (!jobGroups.some(group => group.job === job)) jobGroups.push({ job, senseIndex });
+      });
+      if (jobGroups.length <= 1) {
         bar.style.display = 'none';
         return;
       }
 
       bar.style.display = 'flex';
-      currentWordSenses.forEach((s, idx) => {
+      jobGroups.forEach((group, tabIndex) => {
+        const ui = WORD_JOB_UI[group.job] || { icon: '🔤', label: getWordClassDetails(currentWordSenses[group.senseIndex].pos).name, css: 'job-other' };
         const btn = document.createElement('button');
-        btn.className = `sense-pill-btn ${idx === currentActiveSenseIdx ? 'active' : ''}`;
-        const wordClass = getWordClassDetails(s.pos).name.charAt(0) + getWordClassDetails(s.pos).name.slice(1).toLowerCase();
-        const definitionPreview = s.def.length > 42 ? `${s.def.slice(0, 39).trim()}…` : s.def;
-        btn.innerText = `${idx + 1}. ${wordClass} — ${definitionPreview}`;
-        btn.onclick = () => selectSense(idx);
+        const isActive = wordJobForPos(currentWordSenses[currentActiveSenseIdx].pos) === group.job;
+        btn.className = `sense-pill-btn ${ui.css}${isActive ? ' active' : ''}`;
+        btn.type = 'button';
+        btn.setAttribute('role', 'tab');
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        const className = group.job === 'adjective' ? 'Adjective' : group.job === 'verb' ? 'Verb' : group.job === 'noun' ? 'Noun' : getWordClassDetails(currentWordSenses[group.senseIndex].pos).name;
+        btn.innerText = `${ui.icon} ${tabIndex + 1}. ${ui.label} (${className})`;
+        btn.onclick = () => selectSense(group.senseIndex);
         container.appendChild(btn);
       });
     }
@@ -3609,9 +4045,7 @@
     function selectSense(idx) {
       currentActiveSenseIdx = idx;
       currentPronunciationIndex = 0;
-      document.querySelectorAll('#dictSensesContainer .sense-pill-btn').forEach((button, index) => {
-        button.classList.toggle('active', index === idx);
-      });
+      renderSensesBar();
       applyActiveSenseData(idx);
     }
 
@@ -3737,6 +4171,7 @@
       sentenceButton.title = hasExample ? 'Rebuild this trusted dictionary example' : 'Example Builder needs a dictionary example for this meaning.';
       document.getElementById('resVisualTitle').innerText = sense.title || wc.name;
       document.getElementById('resVisualDesc').innerText = defStr;
+      renderWordFamily(sense);
 
       recordWordInHistory(currentSearchWord, sense.pos);
       currentParsedResult = applyDictionaryPronunciation(parseWordToPhonemes(currentSearchWord), pronunciation.mw);
@@ -3803,7 +4238,8 @@
       if (altInfo && altInfo.match) setAndLookup(altInfo.match);
     }
 
-    function setAndLookup(w) {
+    function setAndLookup(w, preferredWordJob = '') {
+      pendingPreferredWordJob = preferredWordJob;
       document.getElementById('wordSearchInput').value = w;
       document.getElementById('autocompleteDropdown').style.display = 'none';
       lookupWord();
