@@ -12,6 +12,9 @@ assert.ok(Array.isArray(wordPack.clips), 'The publishable teacher word voice pac
 
 const app = fs.readFileSync('index.html', 'utf8');
 const worker = fs.readFileSync('cloudflare/worker.mjs', 'utf8');
+assert.match(app, /<div class="brand-title">Visual Dictionary<\/div>/, 'The pupil header must use the Visual Dictionary identity.');
+assert.match(app, /assets\/visual-dictionary-logo\.png/, 'The original Visual Dictionary logo must be published with the pupil app.');
+assert.match(app, /Definitions, examples and pronunciations from[\s\S]*Merriam-Webster's Elementary Dictionary[\s\S]*Whole-word and read-aloud voice by[\s\S]*ElevenLabs[\s\S]*Merriam-Webster audio is used when the voice service is unavailable/, 'Content and audio providers must be credited accurately.');
 const bundleMatch = app.match(/const AUDIO_BUNDLE = (.*?);\s*const AUDIO_CACHE/s);
 assert.ok(bundleMatch, 'The pupil app must contain its published audio bundle.');
 const embedded = JSON.parse(bundleMatch[1]);
@@ -49,7 +52,9 @@ const studio = fs.readFileSync('studio.html', 'utf8');
 assert.match(studio, /s\.needsUpdate && \(!stem \|\| !stem\.hasAudio\)/, 'The studio must only flag clips that are actually missing.');
 assert.match(studio, /const TRICKY_WORD_RECORDINGS = \[[^\]]+\]/, 'The studio must expose tricky-word recording targets.');
 assert.match(studio, /function exportWordVoicePack/, 'The studio must export a publishable word voice pack.');
-assert.match(studio, /this browser only[\s\S]*send that JSON file/, 'The studio must explain local-only use versus publishing for every pupil.');
+assert.match(studio, /this browser only[\s\S]*Export Sound Pack[\s\S]*Export Word Voice Pack[\s\S]*send the downloaded JSON file/, 'The studio must explain local-only use versus publishing for every pupil.');
+assert.match(studio, /\.sound-actions-row \{[\s\S]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/, 'Studio sound actions must use a non-clipping two-column grid.');
+assert.match(studio, /<span>Download WAV<\/span>/, 'The WAV download control must have a clear label.');
 assert.doesNotMatch(studio, decorativeEmoji, 'Teacher Studio must not contain decorative emoji.');
 assert.equal(studio, fs.readFileSync('studio/index.html', 'utf8'), 'Both Teacher Studio routes must remain identical.');
 console.log('Content checks passed: calm primary meanings, verified word forms and suggestions, emoji-free interfaces, mobile phoneme reachability, safe audio, and publishable teacher recordings.');

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prep 2 Teacher Phonics Master Recording Studio</title>
+  <title>Visual Dictionary Teacher Sound Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -75,12 +75,19 @@
     .brand-icon {
       width: 38px;
       height: 38px;
-      background: #e0e7ff;
-      border-radius: var(--radius-md);
+      background: transparent;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--color-primary);
+      flex: 0 0 auto;
+    }
+
+    .brand-logo-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
     }
 
     .brand-title {
@@ -590,16 +597,22 @@
 
     /* ACTIONS ROW */
     .sound-actions-row {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 6px;
       margin-top: auto;
       padding-top: 8px;
       border-top: 1px solid var(--color-hairline);
     }
 
+    .sound-actions-row > :last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
     .btn-act {
-      flex: 1;
+      width: 100%;
+      min-width: 0;
+      min-height: 36px;
       padding: 6px 10px;
       border-radius: var(--radius-sm);
       font-size: 0.8rem;
@@ -1032,16 +1045,11 @@
   <header>
     <a class="brand-group" data-app-root-link href="../">
       <div class="brand-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-          <line x1="12" y1="19" x2="12" y2="23"></line>
-          <line x1="8" y1="23" x2="16" y2="23"></line>
-        </svg>
+        <img class="brand-logo-image" data-app-logo alt="">
       </div>
       <div>
         <div class="brand-title">Teacher Sound Recording Studio</div>
-        <div class="brand-sub">Little Wandle Master Audio Pack &amp; Suffix Engine</div>
+        <div class="brand-sub">Visual Dictionary Audio Pack &amp; Suffix Engine</div>
       </div>
     </a>
 
@@ -1139,7 +1147,7 @@
         </button>
       </div>
       <div class="publish-note" role="note">
-        <strong>What “Use on This Browser” means:</strong> recordings become available to the Student App in this browser only. This app has no backend, so to publish recordings for every pupil, export the Word Voice Pack and send that JSON file for upload to GitHub.
+        <strong>Saving versus publishing:</strong> Record or Upload saves the new audio in this browser immediately. “Use on This Browser” makes it available to the Student App on this browser only. To publish for every pupil, use Export Sound Pack for phonemes or Export Word Voice Pack for whole words, then send the downloaded JSON file for the GitHub update.
       </div>
       <div class="sounds-grid" id="wordRecordingsGrid"></div>
     </section>
@@ -2587,6 +2595,7 @@
       const appRoot = window.location.pathname.endsWith('/studio/') ? '../' : './';
       try {
         document.querySelectorAll('[data-app-root-link]').forEach(link => { link.href = appRoot; });
+        document.querySelectorAll('[data-app-logo]').forEach(image => { image.src = appRoot + 'assets/visual-dictionary-logo.png'; });
         const res = await fetch(appRoot + 'little_wandle_master_voice_pack_v3.json', { cache: 'no-cache' });
         if (res.ok) {
           const data = await res.json();
@@ -2747,7 +2756,7 @@
 
             <button class="btn-act btn-download-wav" onclick="downloadSoundStem('${s.id}')" title="Download Audio" ${!hasAudio ? 'disabled style="opacity:0.45;"' : ''}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:13px;height:13px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span>WAV</span>
+              <span>Download WAV</span>
             </button>
           </div>
         `;
@@ -3350,7 +3359,7 @@
       });
 
       const exportObj = {
-        name: "Prep 2 Little Wandle Master Sound Pack",
+        name: "Visual Dictionary Master Sound Pack",
         version: "3.0-teacher-custom",
         exportedAt: new Date().toISOString(),
         totalClips: exportClips.length,

@@ -180,6 +180,9 @@ async function run() {
   try {
     await page.goto(`http://127.0.0.1:${address.port}/`, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(100);
+    assert.equal(await page.locator('header .brand-title').innerText(), 'Visual Dictionary');
+    assert.match(await page.locator('header .brand-logo-image').getAttribute('src'), /assets\/visual-dictionary-logo\.png$/);
+    assert.doesNotMatch(await page.locator('header').innerText(), /Little Wandle|Prep 2 Phonics Assistant/i);
     assert.equal(await page.locator('#wordSearchInput').inputValue(), '', 'Word Finder should open with an empty search field');
     assert.equal(await page.locator('#dictWorkspaceCard').isVisible(), false, 'Word Finder should not show stale word content before a search');
     assert.equal(await page.getByText('Different Picture Idea', { exact: true }).count(), 0, 'the misleading alternate picture control must be removed');
@@ -200,6 +203,9 @@ async function run() {
     console.log('PASS: Word Finder opens in a clean start state');
 
     await search(page, 'cat');
+    assert.match(await page.locator('.dictionary-credits').innerText(), /Definitions, examples and pronunciations from Merriam-Webster's Elementary Dictionary/i);
+    assert.match(await page.locator('.dictionary-credits').innerText(), /Whole-word and read-aloud voice by ElevenLabs/i);
+    assert.match(await page.locator('.dictionary-credits').innerText(), /Merriam-Webster audio is used when the voice service is unavailable/i);
     const meaningButtons = await page.locator('#dictSensesContainer .sense-pill-btn').allTextContents();
     const visibleText = await page.locator('#dictWorkspaceCard').innerText();
     assert.equal(meaningButtons.length, 1, `cat should keep only its one alternative outside the selected main meaning, received: ${meaningButtons.join(', ')}`);

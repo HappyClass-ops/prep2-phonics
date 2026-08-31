@@ -1,4 +1,4 @@
-# Prep 2 Little Wandle Phonics & Visual Dictionary
+# Visual Dictionary
 
 Interactive phonics dictionary and pupil learning app with authentic teacher voice recordings.
 

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="app-version" content="2026.08.31.1">
-  <title>Prep 2 Little Wandle Phonics &amp; Visual Dictionary</title>
+  <meta name="app-version" content="2026.09.01.1">
+  <title>Visual Dictionary</title>
+  <link rel="icon" type="image/png" href="assets/visual-dictionary-logo.png">
   
   <!-- Typography: Inter + Nunito Display + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,14 +117,21 @@
     }
 
     .brand-badge-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--color-charcoal);
-      border-radius: var(--radius-md);
+      width: 42px;
+      height: 42px;
+      background: transparent;
+      border-radius: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      flex: 0 0 auto;
+    }
+
+    .brand-logo-image {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
     }
 
     .brand-title {
@@ -1225,6 +1233,66 @@
       color: white !important;
     }
 
+    .dictionary-credits {
+      margin-top: 4px;
+      padding-top: 14px;
+      border-top: 1px solid var(--color-hairline);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--color-slate);
+      font-size: 0.76rem;
+      line-height: 1.45;
+    }
+
+    .provider-credit {
+      flex: 1 1 310px;
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 10px 12px;
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+    }
+
+    .provider-credit a {
+      color: var(--color-charcoal);
+      font-weight: 700;
+    }
+
+    .provider-mark {
+      flex: 0 0 auto;
+      min-width: 31px;
+      height: 31px;
+      padding: 0 6px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-charcoal);
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .provider-mark-eleven {
+      gap: 3px;
+      background: #111111;
+      padding-inline: 8px;
+    }
+
+    .provider-mark-eleven::before,
+    .provider-mark-eleven::after {
+      content: "";
+      width: 3px;
+      height: 17px;
+      border-radius: 2px;
+      background: #ffffff;
+    }
+
     /* ================= MODALS ================= */
     .game-modal-backdrop {
       position: fixed;
@@ -1751,7 +1819,7 @@
 
     @media (max-width: 640px) {
       header { padding: 10px 12px; gap: 10px; }
-      .brand-badge-icon { width: 32px; height: 32px; }
+      .brand-badge-icon { width: 38px; height: 38px; }
       .brand-title { font-size: 0.95rem; }
       .brand-sub { display: none; }
       .nav-tabs { gap: 4px; }
@@ -2331,14 +2399,10 @@
   <header>
     <div class="brand-group" role="button" tabindex="0" aria-label="Open Word Finder" onclick="switchTab('dictionary')" onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); switchTab('dictionary'); }">
       <div class="brand-badge-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-        </svg>
+        <img class="brand-logo-image" src="assets/visual-dictionary-logo.png" alt="">
       </div>
       <div>
-        <div class="brand-title">Prep 2 Phonics Assistant</div>
-        <div class="brand-sub">Little Wandle Sound Engine &amp; Visual Dictionary</div>
+        <div class="brand-title">Visual Dictionary</div>
       </div>
     </div>
 
@@ -2511,7 +2575,7 @@
               <div class="feature-card">
                 <div class="feature-text">
                   <strong>Sound Buttons</strong>
-                  <span>Tap dots &amp; dashes to blend authentic Little Wandle teacher sounds</span>
+                  <span>Tap dots &amp; dashes to blend teacher-recorded phonics sounds</span>
                 </div>
               </div>
               <div class="feature-card">
@@ -2674,9 +2738,15 @@
             </button>
           </div>
           </div>
-          <div style="margin-top: 16px; color: #6b7280; font-size: 0.76rem;">
-            Definitions, examples, pronunciations and whole-word audio from
-            <a href="https://www.merriam-webster.com/" target="_blank" rel="noopener noreferrer" style="color: inherit; font-weight: 700;">Merriam-Webster's Elementary Dictionary</a>.
+          <div class="dictionary-credits" aria-label="Dictionary and audio sources">
+            <div class="provider-credit">
+              <span class="provider-mark" aria-hidden="true">MW</span>
+              <span>Definitions, examples and pronunciations from <a href="https://www.merriam-webster.com/" target="_blank" rel="noopener noreferrer">Merriam-Webster's Elementary Dictionary</a>.</span>
+            </div>
+            <div class="provider-credit">
+              <span class="provider-mark provider-mark-eleven" aria-hidden="true"></span>
+              <span>Whole-word and read-aloud voice by <a href="https://elevenlabs.io/" target="_blank" rel="noopener noreferrer">ElevenLabs</a>. Merriam-Webster audio is used when the voice service is unavailable.</span>
+            </div>
           </div>
         </div>
 
