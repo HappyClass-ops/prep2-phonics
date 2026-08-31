@@ -7,6 +7,27 @@ const { chromium } = require('playwright');
 const projectRoot = path.resolve(__dirname, '..');
 const chromePath = process.env.CHROME_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
+const fallEntry = {
+  meta: { id: 'fall:1', stems: ['fall', 'falls', 'falling', 'fell', 'fallen'] },
+  hwi: { hw: 'fall', prs: [{ mw: 'ˈfȯl', sound: { audio: 'fall0001' } }] },
+  ins: [
+    { if: 'fell', prs: [{ mw: 'ˈfel', sound: { audio: 'fell0001' } }] },
+    { if: 'fall*ing' },
+    { if: 'falls' }
+  ],
+  fl: 'verb',
+  shortdef: [
+    'to come or go down freely by the force of gravity',
+    'to come as if by falling',
+    'to become lower in degree or value',
+    'the act of going down',
+    'autumn',
+    'a thing that falls',
+    'the season between summer and winter'
+  ],
+  def: [{ sseq: [[['sense', { sn: '1', dt: [['text', '{bc}to come or go down freely by the force of gravity'], ['vis', [{ t: 'An apple {it}fell{/it} from the tree.' }]]] }]]] }]
+};
+
 const entries = {
   dog: [{ meta: { id: 'dog', stems: ['dog', 'dogs'] }, hwi: { hw: 'dog', prs: [{ mw: 'ˈdȯg', sound: { audio: 'dog00001' } }] }, fl: 'noun', shortdef: ['an animal often kept as a pet'] }],
   haughty: [{
@@ -70,6 +91,15 @@ const entries = {
       hwi: { hw: 'read', prs: [{ mw: 'ˈrēd', sound: { audio: 'read0001' } }] },
       ins: [{ if: 'read', prs: [{ mw: 'ˈred' }] }],
       fl: 'verb', shortdef: ['to look at and understand written words']
+    }
+  ],
+  fall: [fallEntry],
+  fell: [
+    fallEntry,
+    {
+      meta: { id: 'fell:1', stems: ['fell', 'felled', 'felling'] },
+      hwi: { hw: 'fell', prs: [{ mw: 'ˈfel', sound: { audio: 'fell0002' } }] },
+      fl: 'verb', shortdef: ['to cut down a tree']
     }
   ],
   catt: ['cat', 'catch'],
@@ -154,6 +184,8 @@ async function run() {
     const meaningButtons = await page.locator('#dictSensesContainer .sense-pill-btn').allTextContents();
     const visibleText = await page.locator('#dictWorkspaceCard').innerText();
     assert.equal(meaningButtons.length, 2, `cat should expose two exact-entry meanings, received: ${meaningButtons.join(', ')}`);
+    assert.equal(await page.locator('#dictSensesContainer').isVisible(), false, 'alternative meanings must be collapsed by default');
+    assert.match(await page.locator('#btnToggleMeanings').innerText(), /Other meanings \(1\)/i);
     assert.match(meaningButtons[0], /small animal|soft fur|pet/i, 'meaning tabs should identify the meaning, not merely say Noun 1');
     assert.doesNotMatch(visibleText, /allow or permit|saber-toothed/i);
     assert.match(await page.locator('#resMeaningText').innerText(), /^A small animal with soft fur/i, 'the elementary short definition should be preferred over raw technical sense text');
@@ -173,6 +205,33 @@ async function run() {
     assert.match(catBlendUrls.at(-1) || '', /^blob:/, `cat blending did not end with ElevenLabs whole-word audio: ${catBlendUrls.at(-1)}`);
     console.log('PASS: a search displays only exact meanings and blending ends with contextual ElevenLabs audio');
 
+    await search(page, 'fall');
+    assert.equal(await page.locator('#dictSensesContainer').isVisible(), false, 'seven meanings must not confront the child at once');
+    assert.match(await page.locator('#btnToggleMeanings').innerText(), /Other meanings \(6\)/i);
+    assert.match(await page.locator('#resMeaningText').innerText(), /force of gravity/i, 'the main Merriam meaning should be selected automatically');
+    await page.locator('#btnToggleMeanings').click();
+    assert.equal(await page.locator('#dictSensesContainer').isVisible(), true, 'other meanings should remain available on request');
+    assert.equal(await page.locator('#dictSensesContainer .sense-pill-btn').count(), 7);
+    await page.locator('#btnToggleMeanings').click();
+
+    await page.getByRole('button', { name: /Yesterday \(Past\): fell/i }).click();
+    await page.waitForFunction(() => document.querySelector('#resWordTitle')?.textContent === 'fell');
+    assert.equal(await page.locator('#wordFormLessonBanner').isVisible(), true);
+    assert.match(await page.locator('#wordFormLessonText').innerText(), /^Fell is the past tense of fall\.$/i);
+    assert.match(await page.locator('#resMeaningText').innerText(), /^Fell is the past tense of fall\.$/i);
+    assert.equal(await page.locator('#dictSensesContainer').isVisible(), false, 'unrelated fell meanings must stay collapsed during family practice');
+    assert.match(await page.locator('#btnReturnToFamilyBase').innerText(), /Back to fall/i);
+    await page.locator('#btnReturnToFamilyBase').click();
+    await page.waitForFunction(() => document.querySelector('#resWordTitle')?.textContent === 'fall');
+    assert.equal(await page.locator('#wordFormLessonBanner').isVisible(), false);
+
+    await search(page, 'fell');
+    assert.match(await page.locator('#resMeaningText').innerText(), /^Fell is the past tense of fall\.$/i, 'a directly searched school inflection should still lead with its form relationship');
+    assert.equal(await page.locator('#dictSensesContainer').isVisible(), false);
+    assert.match(await page.locator('#btnToggleMeanings').innerText(), /Other meanings/i);
+    console.log('PASS: primary meanings are calm and word-family forms preserve their learning context');
+
+    await search(page, 'cat');
     await page.getByRole('button', { name: 'Read Definition' }).click();
     await page.waitForTimeout(20);
     assert.match(elevenRequests.at(-1).text, /^A small animal with soft fur/i);
@@ -233,6 +292,7 @@ async function run() {
     console.log('PASS: selecting a heteronym pronunciation updates phonics and remains available through contextual ElevenLabs audio');
 
     await search(page, 'tear');
+    await page.locator('#btnToggleMeanings').click();
     await page.locator('#dictSensesContainer .sense-pill-btn').nth(1).click();
     assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').filter({ hasText: 'ear' }).getAttribute('data-sound-id'), 'air-tri');
     assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), false, 'ElevenLabs should replace one provider file shared by two pronunciations');

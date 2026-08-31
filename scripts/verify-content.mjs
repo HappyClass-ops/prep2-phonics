@@ -32,6 +32,9 @@ assert.doesNotMatch(app, /currentWordAudioUrl|PRIMARY_CURATED_DB/, 'Audio and me
 assert.doesNotMatch(app, /I can see the word/, 'The pupil app must not fabricate a generic sentence when the provider has no example.');
 assert.doesNotMatch(app, /setAndLookup\('farted'\)|"farmer","fart","farted","farting","fast"/, 'Suggestions must not advertise the unsupported fart word family.');
 assert.match(app, /currentWordSenses\.forEach\(\(sense, senseIndex\)/, 'Every accepted dictionary meaning must receive its own selectable tab.');
+assert.match(app, /id="btnToggleMeanings"[\s\S]*?id="dictSensesContainer"[\s\S]*?hidden/, 'Alternative meanings must be progressively disclosed instead of confronting the child at once.');
+assert.match(app, /function findVerifiedWordFormContext[\s\S]*?grammar\.inflections[\s\S]*?grammar\.stems/, 'Word-form lessons must be verified from provider grammar data.');
+assert.match(app, /activeWordFormContext \? activeWordFormContext\.message : sense\.def/, 'A verified word form must lead with its relationship to the base word.');
 assert.match(app, /\.sound-buttons-container \{ padding: 18px 12px; min-width: 0; \}/, 'The real sound-button container must receive mobile spacing.');
 assert.match(app, /\.sound-buttons-row \{[\s\S]*?width: max-content;[\s\S]*?align-self: flex-start;/, 'Long phoneme rows must start at the reachable edge of their mobile scroll area.');
 const decorativeEmoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
@@ -43,4 +46,4 @@ assert.match(studio, /function exportWordVoicePack/, 'The studio must export a p
 assert.match(studio, /this browser only[\s\S]*send that JSON file/, 'The studio must explain local-only use versus publishing for every pupil.');
 assert.doesNotMatch(studio, decorativeEmoji, 'Teacher Studio must not contain decorative emoji.');
 assert.equal(studio, fs.readFileSync('studio/index.html', 'utf8'), 'Both Teacher Studio routes must remain identical.');
-console.log('Content checks passed: exact meanings, verified suggestions, emoji-free interfaces, mobile phoneme reachability, safe audio, and publishable teacher recordings.');
+console.log('Content checks passed: calm primary meanings, verified word forms and suggestions, emoji-free interfaces, mobile phoneme reachability, safe audio, and publishable teacher recordings.');
