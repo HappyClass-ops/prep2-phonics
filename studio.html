@@ -978,7 +978,7 @@
       <div class="booth-card-body">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="sound-ipa-badge" id="boothIpaBadge">/d/</span>
-          <span class="sound-status-badge status-update-needed" id="boothStatusBadge">⚠️ Needs Re-recording</span>
+          <span class="sound-status-badge status-update-needed" id="boothStatusBadge">Needs Re-recording</span>
         </div>
 
         <div class="booth-grapheme-big" id="boothGrapheme">-ed (/d/)</div>
@@ -1048,7 +1048,7 @@
     <div class="header-actions">
       <button class="btn-head btn-head-rose" onclick="openRecordingBooth()" title="Rapid Spacebar Push-to-Talk Mode">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
-        <span>🎙️ Spacebar Booth</span>
+        <span>Spacebar Booth</span>
       </button>
       <button class="btn-head btn-head-secondary" onclick="exportSoundPackJson()" title="Download updated master pack for GitHub deployment">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -1081,7 +1081,7 @@
         <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
           <button class="btn-head btn-head-rose" style="font-size: 0.92rem; padding: 9px 16px;" onclick="openRecordingBooth()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
-            <span>🎙️ Start Rapid Spacebar Booth</span>
+            <span>Start Rapid Spacebar Booth</span>
           </button>
         </div>
       </div>
@@ -1103,7 +1103,7 @@
       <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
         <input type="text" class="search-filter-input" id="searchFilterInput" placeholder="Search sounds (e.g. ed, ing, split, or)..." oninput="handleSearchFilter(this.value)">
         <div class="category-tabs" id="categoryTabs">
-          <button class="cat-tab-btn tab-alert" onclick="filterCategory('needs-update')" id="tabNeedsUpdate">⚠️ Needs Re-record (26)</button>
+          <button class="cat-tab-btn tab-alert" onclick="filterCategory('needs-update')" id="tabNeedsUpdate">Needs Re-record (26)</button>
           <button class="cat-tab-btn active" onclick="filterCategory('all')">All (76)</button>
           <button class="cat-tab-btn" onclick="filterCategory('Suffixes')">Suffixes (15)</button>
           <button class="cat-tab-btn" onclick="filterCategory('Prefixes')">Prefixes (5)</button>
@@ -2657,7 +2657,7 @@
 
       const tabAlert = document.getElementById('tabNeedsUpdate');
       if (tabAlert) {
-        tabAlert.innerText = '⚠️ Needs Re-record (' + needsUpdateCount + ')';
+        tabAlert.innerText = 'Needs Re-record (' + needsUpdateCount + ')';
         tabAlert.style.display = needsUpdateCount > 0 ? 'inline-block' : 'none';
       }
     }
@@ -2698,9 +2698,9 @@
 
         let statusBadge = '';
         if (isNeedsUpdate) {
-          statusBadge = '<span class="sound-status-badge status-update-needed">⚠️ Needs Re-record</span>';
+          statusBadge = '<span class="sound-status-badge status-update-needed">Needs Re-record</span>';
         } else if (hasAudio) {
-          statusBadge = '<span class="sound-status-badge status-teacher">✅ Ready</span>';
+          statusBadge = '<span class="sound-status-badge status-teacher">Ready</span>';
         } else {
           statusBadge = '<span class="sound-status-badge status-empty">Empty</span>';
         }
@@ -2773,7 +2773,7 @@
               <div class="sound-grapheme-big">${target.word}</div>
               ${target.pronunciation ? `<span class="sound-ipa-badge">/${target.pronunciation}/</span>` : ''}
             </div>
-            <span class="sound-status-badge ${hasAudio ? 'status-teacher' : 'status-empty'}">${hasAudio ? '✅ Ready' : 'Empty'}</span>
+            <span class="sound-status-badge ${hasAudio ? 'status-teacher' : 'status-empty'}">${hasAudio ? 'Ready' : 'Empty'}</span>
           </div>
           <div class="sound-body-meta">
             <div class="sound-catchphrase">${target.context}</div>
@@ -2847,10 +2847,10 @@
       const stem = AUDIO_STEMS_MAP.get(sound.id);
       if (sound.needsUpdate && (!stem || !stem.hasAudio)) {
         statusBadge.className = 'sound-status-badge status-update-needed';
-        statusBadge.innerText = '⚠️ Needs Re-recording';
+        statusBadge.innerText = 'Needs Re-recording';
       } else {
         statusBadge.className = 'sound-status-badge status-teacher';
-        statusBadge.innerText = '✅ Recorded';
+        statusBadge.innerText = 'Recorded';
       }
 
       const exRow = document.getElementById('boothExamplesRow');
@@ -2888,12 +2888,12 @@
 
       if (state === 'recording') {
         ind.className = 'booth-status-indicator booth-status-rec';
-        ind.innerHTML = '<span>🔴 <strong>RECORDING...</strong> (Speak now, release spacebar when done)</span>';
+        ind.innerHTML = '<span><strong>RECORDING...</strong> (Speak now, release spacebar when done)</span>';
         recBtn.classList.add('recording');
         txtBtn.innerText = 'Recording... (Release to Save)';
       } else if (state === 'saved') {
         ind.className = 'booth-status-indicator booth-status-saved';
-        ind.innerHTML = '<span>✅ <strong>Saved &amp; Normalized!</strong> (Press → or Enter for next)</span>';
+        ind.innerHTML = '<span><strong>Saved &amp; Normalized!</strong> (Press the right arrow key or Enter for next)</span>';
         recBtn.classList.remove('recording');
         txtBtn.innerText = 'Hold SPACEBAR to Re-record';
       } else {

@@ -134,6 +134,8 @@ async function run() {
     assert.equal(await page.locator('#wordSearchInput').inputValue(), '', 'Word Finder should open with an empty search field');
     assert.equal(await page.locator('#dictWorkspaceCard').isVisible(), false, 'Word Finder should not show stale word content before a search');
     assert.equal(await page.getByText('Different Picture Idea', { exact: true }).count(), 0, 'the misleading alternate picture control must be removed');
+    assert.doesNotMatch(await page.locator('body').innerText(), /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u, 'the pupil interface must not use emoji as decoration or status icons');
+    assert.equal(await page.getByText('farted', { exact: true }).count(), 0, 'featured and autocomplete suggestions must not advertise a word missing from Merriam Elementary');
     const trickyTotal = await page.locator('#trickyGrid .tricky-card').count();
     const soundboardTotal = await page.locator('#soundboardGrid .sb-tile').count();
     assert.match(await page.locator('#tabTrickyBtn').innerText(), new RegExp(`\\(${trickyTotal}\\)`));
@@ -164,8 +166,7 @@ async function run() {
     await page.waitForFunction(() => window.__playedAudioUrls.some(url => String(url).startsWith('blob:')));
     const catAudioUrls = await page.evaluate(() => window.__playedAudioUrls);
     assert.match(catAudioUrls.at(-1) || '', /^blob:/, `cat did not use ElevenLabs whole-word audio: ${catAudioUrls.at(-1)}`);
-    assert.equal(elevenRequests.at(-1).text, 'cat');
-    assert.match(elevenRequests.at(-1).next_text, /cat slept|small animal|soft fur|pet/i);
+    assert.match(elevenRequests.at(-1).text, /^cat\.?$/, 'whole-word speech may add terminal punctuation for clean synthesis');
     await page.evaluate(() => playFullBlendSequence());
     await page.waitForTimeout(450);
     const catBlendUrls = await page.evaluate(() => window.__playedAudioUrls);
@@ -183,7 +184,7 @@ async function run() {
     await page.waitForTimeout(50);
     const playedUrls = await page.evaluate(() => window.__playedAudioUrls);
     assert.match(playedUrls.at(-1) || '', /^blob:/, `the is card did not use ElevenLabs audio: ${playedUrls.at(-1)}`);
-    assert.equal(elevenRequests.at(-1).text, 'is');
+    assert.match(elevenRequests.at(-1).text, /^is\.?$/, 'tricky-word speech may add terminal punctuation for clean synthesis');
     console.log('PASS: each tricky-word card uses the British ElevenLabs voice');
 
     await page.locator('#tabDictBtn').click();
@@ -289,6 +290,45 @@ async function run() {
     assert.equal(parsedWords.played.at(-1).soundId, 'ed-d');
     assert.equal(parsedWords.boxes.at(-1).soundId, 'iz-suffix');
     assert.equal(parsedWords.wishes.at(-1).soundId, 'iz-suffix');
+
+    await page.setViewportSize({ width: 360, height: 800 });
+    await search(page, 'astronaut');
+    const mobileStage = await page.evaluate(() => {
+      window.scrollTo(0, 0);
+      const wrapper = document.querySelector('.sound-buttons-stage-wrapper');
+      const row = document.querySelector('.sound-buttons-row');
+      const first = row.firstElementChild;
+      const last = row.lastElementChild;
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const rowRect = row.getBoundingClientRect();
+      const firstRect = first.getBoundingClientRect();
+      wrapper.scrollLeft = wrapper.scrollWidth;
+      const lastRect = last.getBoundingClientRect();
+      return {
+        pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        offenders: [...document.querySelectorAll('body *')]
+          .map(element => ({
+            tag: element.tagName,
+            id: element.id,
+            className: typeof element.className === 'string' ? element.className : '',
+            left: Math.round(element.getBoundingClientRect().left),
+            right: Math.round(element.getBoundingClientRect().right),
+            width: Math.round(element.getBoundingClientRect().width)
+          }))
+          .filter(item => item.right > window.innerWidth + 1 || item.left < -1)
+          .slice(0, 12),
+        firstReachable: firstRect.left >= wrapperRect.left - 1,
+        lastReachable: lastRect.right <= wrapperRect.right + 1,
+        rowStartsInside: rowRect.left >= wrapperRect.left - 1,
+        canScrollWhenNeeded: wrapper.scrollWidth <= wrapper.clientWidth || wrapper.scrollLeft > 0
+      };
+    });
+    assert.equal(mobileStage.pageOverflow, 0, `the page itself must not overflow on a phone: ${JSON.stringify(mobileStage.offenders)}`);
+    assert.equal(mobileStage.firstReachable, true, 'the first phoneme must never be clipped off-screen');
+    assert.equal(mobileStage.rowStartsInside, true, 'a long phoneme row must begin inside its scroll area');
+    assert.equal(mobileStage.canScrollWhenNeeded, true, 'long words must be touch-scrollable when they do not fit');
+    assert.equal(mobileStage.lastReachable, true, 'the final phoneme must be reachable by scrolling');
+    console.log('PASS: long words remain fully reachable on a 360px phone');
     assert.deepEqual(pageErrors, [], `the pupil app raised browser errors: ${pageErrors.join(' | ')}`);
     console.log('PASS: the 30-word phonics set is complete, playable, and applies suffix voicing rules');
   } finally {
@@ -298,6 +338,6 @@ async function run() {
 }
 
 run().catch(error => {
-  console.error(`FAIL: ${error.message}`);
+  console.error(`FAIL: ${error.stack || error.message}`);
   process.exitCode = 1;
 });

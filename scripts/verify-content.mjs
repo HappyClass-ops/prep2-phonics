@@ -30,10 +30,17 @@ assert.match(app, /Search “\$\{suggestion\.word\}”/, 'Every typed word must 
 assert.doesNotMatch(app, /Different Picture Idea|btnLevelEasy|btnLevelHard/, 'Misleading picture shuffling and duplicate puzzle levels must stay removed.');
 assert.doesNotMatch(app, /currentWordAudioUrl|PRIMARY_CURATED_DB/, 'Audio and meanings must not come from stale global or offline dictionary state.');
 assert.doesNotMatch(app, /I can see the word/, 'The pupil app must not fabricate a generic sentence when the provider has no example.');
+assert.doesNotMatch(app, /setAndLookup\('farted'\)|"farmer","fart","farted","farting","fast"/, 'Suggestions must not advertise the unsupported fart word family.');
+assert.match(app, /currentWordSenses\.forEach\(\(sense, senseIndex\)/, 'Every accepted dictionary meaning must receive its own selectable tab.');
+assert.match(app, /\.sound-buttons-container \{ padding: 18px 12px; min-width: 0; \}/, 'The real sound-button container must receive mobile spacing.');
+assert.match(app, /\.sound-buttons-row \{[\s\S]*?width: max-content;[\s\S]*?align-self: flex-start;/, 'Long phoneme rows must start at the reachable edge of their mobile scroll area.');
+const decorativeEmoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
+assert.doesNotMatch(app, decorativeEmoji, 'The pupil interface must not contain decorative emoji.');
 const studio = fs.readFileSync('studio.html', 'utf8');
 assert.match(studio, /s\.needsUpdate && \(!stem \|\| !stem\.hasAudio\)/, 'The studio must only flag clips that are actually missing.');
 assert.match(studio, /const TRICKY_WORD_RECORDINGS = \[[^\]]+\]/, 'The studio must expose tricky-word recording targets.');
 assert.match(studio, /function exportWordVoicePack/, 'The studio must export a publishable word voice pack.');
 assert.match(studio, /this browser only[\s\S]*send that JSON file/, 'The studio must explain local-only use versus publishing for every pupil.');
+assert.doesNotMatch(studio, decorativeEmoji, 'Teacher Studio must not contain decorative emoji.');
 assert.equal(studio, fs.readFileSync('studio/index.html', 'utf8'), 'Both Teacher Studio routes must remain identical.');
-console.log('Content checks passed: exact dictionary ownership, ElevenLabs with safe audio fallback, responsive Example Builder, complete search, and publishable teacher recordings.');
+console.log('Content checks passed: exact meanings, verified suggestions, emoji-free interfaces, mobile phoneme reachability, safe audio, and publishable teacher recordings.');

@@ -140,6 +140,14 @@
       font-weight: 500;
     }
 
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
     /* NAV TABS */
     .nav-tabs {
       display: flex;
@@ -202,6 +210,8 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .search-hero-box {
@@ -213,6 +223,7 @@
       width: 100%;
       margin: 0 auto;
       position: relative;
+      min-width: 0;
     }
 
     .search-input-wrapper {
@@ -358,6 +369,9 @@
       justify-content: center;
       gap: 6px;
       flex-wrap: wrap;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
     }
 
     .quick-chip {
@@ -832,6 +846,7 @@
       border-radius: var(--radius-lg);
       padding: 20px 24px 24px;
       box-shadow: var(--shadow-subtle);
+      min-width: 0;
     }
 
     .sound-buttons-row {
@@ -842,6 +857,7 @@
       min-height: 95px;
       width: 100%;
       position: relative;
+      min-width: 0;
     }
 
     .phoneme-unit {
@@ -1321,7 +1337,7 @@
       gap: 8px;
     }
 
-    /* 🎙️ RECORDING BOOTH */
+    /* RECORDING BOOTH */
     .studio-card-body {
       display: flex;
       flex-direction: column;
@@ -1590,8 +1606,15 @@
         flex-wrap: wrap;
       }
 
-      .nav-tabs {
+      .header-controls {
         width: 100%;
+      }
+
+      .nav-tabs {
+        flex: 1 1 100%;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
         overflow-x: auto;
         scrollbar-width: thin;
       }
@@ -1621,10 +1644,25 @@
       .dict-page-header { padding: 18px 16px 14px; }
       .word-main-title { font-size: clamp(2rem, 12vw, 2.6rem); overflow-wrap: anywhere; }
       .dict-summary-row { padding: 16px; }
-      .sound-buttons-section { padding: 18px 12px; }
-      .sound-buttons-stage-wrapper { padding: 18px 10px; overflow-x: auto; align-items: flex-start; }
-      .sound-buttons-row { min-width: max-content; align-self: center; }
-      .action-buttons-row { width: 100%; }
+      .sound-buttons-container { padding: 18px 12px; min-width: 0; }
+      .sound-buttons-stage-wrapper {
+        padding: 18px 10px;
+        overflow-x: auto;
+        align-items: stretch;
+        overscroll-behavior-inline: contain;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x pan-y;
+        scrollbar-width: thin;
+      }
+      .sound-buttons-row {
+        width: max-content;
+        min-width: 100%;
+        align-self: flex-start;
+        gap: clamp(6px, 2.2vw, 12px);
+      }
+      .phoneme-unit { flex: 0 0 auto; padding-inline: clamp(2px, 1vw, 5px); }
+      .phoneme-letters { font-size: clamp(1.85rem, 9vw, 2.4rem); }
+      .blend-actions-row { width: 100%; }
       .btn-act { min-height: 44px; flex: 1 1 calc(50% - 8px); justify-content: center; }
       .definition-section { padding: 20px 16px; }
       .example-quote-box { padding: 16px; }
@@ -2179,7 +2217,7 @@
     </div>
 
     <!-- MAIN NAV TABS -->
-    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <div class="header-controls">
       <nav class="nav-tabs" aria-label="Learning tools">
       <button class="nav-tab-btn active" id="tabDictBtn" onclick="switchTab('dictionary')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -2209,7 +2247,6 @@
         </button>
 
         <button class="btn-header-tool" id="btnThemeToggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode" title="Toggle Dark/Light Mode">
-          <span id="themeToggleIcon">🌙</span>
           <span id="themeToggleText">Dark</span>
         </button>
       </div>
@@ -2246,7 +2283,6 @@
           <button class="quick-chip" onclick="setAndLookup('talked')">talked</button>
           <button class="quick-chip" onclick="setAndLookup('trip')">trip</button>
           <button class="quick-chip" onclick="setAndLookup('fall')">fall</button>
-          <button class="quick-chip" onclick="setAndLookup('farted')">farted</button>
           <button class="quick-chip" onclick="setAndLookup('jumped')">jumped</button>
           <button class="quick-chip" onclick="setAndLookup('boxes')">boxes</button>
           <button class="quick-chip" onclick="setAndLookup('quickly')">quickly</button>
@@ -2308,7 +2344,7 @@
           <!-- Category Starter Word Grids -->
           <div class="welcome-starters-section">
             <div class="starter-category">
-              <div class="starter-cat-label">🌟 Popular Words to Try:</div>
+              <div class="starter-cat-label">Popular Words to Try:</div>
               <div class="starter-chips-wrap">
                 <button class="starter-chip" onclick="setAndLookup('talked')">
                   <span class="chip-word">talked</span>
@@ -2347,21 +2383,18 @@
 
             <div class="welcome-features-grid">
               <div class="feature-card">
-                <div class="feature-icon">🔴</div>
                 <div class="feature-text">
                   <strong>Sound Buttons</strong>
                   <span>Tap dots &amp; dashes to blend authentic Little Wandle teacher sounds</span>
                 </div>
               </div>
               <div class="feature-card">
-                <div class="feature-icon">🎙️</div>
                 <div class="feature-text">
                   <strong>British Voice</strong>
                   <span>Hear clear educator pronunciation with high-clarity British speech</span>
                 </div>
               </div>
               <div class="feature-card">
-                <div class="feature-icon">🧩</div>
                 <div class="feature-text">
                   <strong>Example Builder</strong>
                   <span>Drag and tap puzzle tiles to rebuild real sentence examples</span>
@@ -2900,11 +2933,11 @@
     }
 
     const WORD_JOB_UI = {
-      verb: { icon: '🏃', label: 'Action', css: 'job-verb' },
-      noun: { icon: '📦', label: 'Thing', css: 'job-noun' },
-      adjective: { icon: '✨', label: 'Describing', css: 'job-adjective' },
-      adverb: { icon: '💨', label: 'How / When', css: 'job-other' },
-      word: { icon: '🔤', label: 'Word', css: 'job-other' }
+      verb: { label: 'Action', css: 'job-verb' },
+      noun: { label: 'Thing', css: 'job-noun' },
+      adjective: { label: 'Describing', css: 'job-adjective' },
+      adverb: { label: 'How / When', css: 'job-other' },
+      word: { label: 'Word', css: 'job-other' }
     };
 
     const IRREGULAR_VERB_FAMILIES = [
@@ -2965,10 +2998,10 @@
     }
 
     function grammarTipForRegularVerb(forms) {
-      if (forms.rule === 'silent-e') return `💡 Drop the 'e' before adding -ed or -ing! (${forms.base} ➔ ${forms.past} / ${forms.ing})`;
-      if (forms.rule === 'double') return `💡 Double the final letter for short vowel words! (${forms.base} ➔ ${forms.past} / ${forms.ing})`;
-      if (forms.rule === 'y-to-i') return `💡 Change 'y' to 'i' before adding -ed or -es! (${forms.base} ➔ ${forms.past} / ${forms.third})`;
-      return `💡 This word follows the pattern: add -ed for yesterday and -ing for right now.`;
+      if (forms.rule === 'silent-e') return `Drop the 'e' before adding -ed or -ing: ${forms.base} becomes ${forms.past} / ${forms.ing}.`;
+      if (forms.rule === 'double') return `Double the final letter for short vowel words: ${forms.base} becomes ${forms.past} / ${forms.ing}.`;
+      if (forms.rule === 'y-to-i') return `Change 'y' to 'i' before adding -ed or -es: ${forms.base} becomes ${forms.past} / ${forms.third}.`;
+      return `This word follows the pattern: add -ed for yesterday and -ing for right now.`;
     }
 
     function grammarModelFor(word, sense) {
@@ -2978,12 +3011,12 @@
       const adjectiveFamily = familyContaining(IRREGULAR_ADJECTIVE_FAMILIES, searched, ['base', 'comparative', 'superlative']);
       if (job === 'adjective' && adjectiveFamily) {
         return {
-          job, title: 'Comparison Ladder', badge: '⭐ Special Comparison', badgeClass: 'special',
-          tip: `⭐ ${adjectiveFamily.base}, ${adjectiveFamily.comparative}, and ${adjectiveFamily.superlative} are a special comparison family.`,
+          job, title: 'Comparison Ladder', badge: 'Special Comparison', badgeClass: 'special',
+          tip: `${adjectiveFamily.base}, ${adjectiveFamily.comparative}, and ${adjectiveFamily.superlative} are a special comparison family.`,
           forms: [
-            { label: '✨ Base', word: adjectiveFamily.base },
-            { label: '↔️ Comparing 2', word: adjectiveFamily.comparative },
-            { label: '🏆 Comparing All', word: adjectiveFamily.superlative }
+            { label: 'Base', word: adjectiveFamily.base },
+            { label: 'Comparing 2', word: adjectiveFamily.comparative },
+            { label: 'Comparing All', word: adjectiveFamily.superlative }
           ]
         };
       }
@@ -2991,11 +3024,11 @@
       const pluralFamily = familyContaining(IRREGULAR_PLURAL_FAMILIES, searched, ['singular', 'plural']);
       if (job === 'noun' && pluralFamily) {
         return {
-          job, title: 'One or More?', badge: '✨ Magic Plural', badgeClass: 'magic',
-          tip: `✨ ${pluralFamily.plural} is the special plural of ${pluralFamily.singular} — we do not just add -s.`,
+          job, title: 'One or More?', badge: 'Special Plural', badgeClass: 'magic',
+          tip: `${pluralFamily.plural} is the special plural of ${pluralFamily.singular} — we do not just add -s.`,
           forms: [
-            { label: '👤 One (Singular)', word: pluralFamily.singular },
-            { label: '👥 More Than One (Plural)', word: pluralFamily.plural }
+            { label: 'One (Singular)', word: pluralFamily.singular },
+            { label: 'More Than One (Plural)', word: pluralFamily.plural }
           ]
         };
       }
@@ -3003,13 +3036,13 @@
       const irregularVerb = familyContaining(IRREGULAR_VERB_FAMILIES, searched, ['base', 'past', 'ing', 'third']);
       if (job === 'verb' && irregularVerb) {
         return {
-          job, title: 'Word Time Machine', badge: '⚡ Rule Breaker! (Irregular Verb)', badgeClass: 'irregular',
-          tip: `⚡ Remember: We say '${irregularVerb.past}' for yesterday, never '${irregularVerb.base}ed'!`,
+          job, title: 'Word Time Machine', badge: 'Rule Breaker (Irregular Verb)', badgeClass: 'irregular',
+          tip: `Remember: We say '${irregularVerb.past}' for yesterday, never '${irregularVerb.base}ed'!`,
           forms: [
-            { label: '⏰ Today (Base)', word: irregularVerb.base },
-            { label: '🔙 Yesterday (Past)', word: irregularVerb.past },
-            { label: '⏳ Right Now (-ing)', word: irregularVerb.ing },
-            { label: '👤 He / She / It', word: irregularVerb.third }
+            { label: 'Today (Base)', word: irregularVerb.base },
+            { label: 'Yesterday (Past)', word: irregularVerb.past },
+            { label: 'Right Now (-ing)', word: irregularVerb.ing },
+            { label: 'He / She / It', word: irregularVerb.third }
           ]
         };
       }
@@ -3023,13 +3056,13 @@
         const dictionaryPast = dictionaryForms.find(form => form !== sense.grammar.headword && !form.endsWith('ing') && form !== regular?.third);
         if (regular && dictionaryPast && dictionaryPast !== regular.past) {
           return {
-            job, title: 'Word Time Machine', badge: '⚡ Rule Breaker! (Irregular Verb)', badgeClass: 'irregular',
-            tip: `⚡ Remember: We say '${dictionaryPast}' for yesterday, never '${regular.past}'!`,
+            job, title: 'Word Time Machine', badge: 'Rule Breaker (Irregular Verb)', badgeClass: 'irregular',
+            tip: `Remember: We say '${dictionaryPast}' for yesterday, never '${regular.past}'!`,
             forms: [
-              { label: '⏰ Today (Base)', word: regular.base },
-              { label: '🔙 Yesterday (Past)', word: dictionaryPast },
-              { label: '⏳ Right Now (-ing)', word: dictionaryIng || regular.ing },
-              { label: '👤 He / She / It', word: regular.third }
+              { label: 'Today (Base)', word: regular.base },
+              { label: 'Yesterday (Past)', word: dictionaryPast },
+              { label: 'Right Now (-ing)', word: dictionaryIng || regular.ing },
+              { label: 'He / She / It', word: regular.third }
             ]
           };
         }
@@ -3040,13 +3073,13 @@
         const forms = regularVerbForms(sense.grammar.headword);
         if (!forms) return null;
         return {
-          job, title: 'Word Time Machine', badge: '🛡️ +ed Rule Follower', badgeClass: 'regular',
+          job, title: 'Word Time Machine', badge: '+ed Rule Follower', badgeClass: 'regular',
           tip: grammarTipForRegularVerb(forms),
           forms: [
-            { label: '⏰ Today (Base)', word: forms.base },
-            { label: '🔙 Yesterday (Past)', word: forms.past },
-            { label: '⏳ Right Now (-ing)', word: forms.ing },
-            { label: '👤 He / She / It', word: forms.third }
+            { label: 'Today (Base)', word: forms.base },
+            { label: 'Yesterday (Past)', word: forms.past },
+            { label: 'Right Now (-ing)', word: forms.ing },
+            { label: 'He / She / It', word: forms.third }
           ]
         };
       }
@@ -3055,11 +3088,11 @@
         const forms = regularNounForms(sense.grammar.headword);
         if (!forms) return null;
         return {
-          job, title: 'One or More?', badge: '🧩 Plural Pattern', badgeClass: 'regular',
-          tip: `💡 Use '${forms.singular}' for one and '${forms.plural}' for more than one.`,
+          job, title: 'One or More?', badge: 'Plural Pattern', badgeClass: 'regular',
+          tip: `Use '${forms.singular}' for one and '${forms.plural}' for more than one.`,
           forms: [
-            { label: '👤 One (Singular)', word: forms.singular },
-            { label: '👥 More Than One (Plural)', word: forms.plural }
+            { label: 'One (Singular)', word: forms.singular },
+            { label: 'More Than One (Plural)', word: forms.plural }
           ]
         };
       }
@@ -3068,12 +3101,12 @@
         const comparisonForms = sense.grammar.inflections.filter(form => /^[a-z]+$/.test(form)).slice(0, 2);
         if (comparisonForms.length === 2) {
           return {
-            job, title: 'Comparison Ladder', badge: '📏 Comparison Pattern', badgeClass: 'regular',
-            tip: `💡 Use ${comparisonForms[0]} to compare two and ${comparisonForms[1]} to compare a whole group.`,
+            job, title: 'Comparison Ladder', badge: 'Comparison Pattern', badgeClass: 'regular',
+            tip: `Use ${comparisonForms[0]} to compare two and ${comparisonForms[1]} to compare a whole group.`,
             forms: [
-              { label: '✨ Base', word: sense.grammar.headword },
-              { label: '↔️ Comparing 2', word: comparisonForms[0] },
-              { label: '🏆 Comparing All', word: comparisonForms[1] }
+              { label: 'Base', word: sense.grammar.headword },
+              { label: 'Comparing 2', word: comparisonForms[0] },
+              { label: 'Comparing All', word: comparisonForms[1] }
             ]
           };
         }
@@ -3116,7 +3149,7 @@
       panel.classList.add('visible');
     }
 
-    const CORE_LEXICON = ["about","after","again","air","all","almost","along","also","always","animal","another","any","apple","around","ask","away","baby","back","bad","ball","bark","bat","be","beach","bear","beautiful","because","bed","been","before","began","bell","best","better","big","bird","black","blue","boat","book","both","bottle","bounce","box","boxes","boy","brave","bread","bridge","bright","brother","brown","build","burn","bus","busy","butterfly","button","by","cake","call","came","camp","can","candle","car","care","careful","carry","cat","catch","caterpillar","chair","chalk","change","cheer","cheese","chest","chew","chicken","child","children","chin","chip","chirp","chocolate","city","clap","class","classroom","clean","clear","clever","climb","clock","close","cloth","cloud","clown","clue","coat","cold","colour","come","cook","cookie","cool","corn","could","count","country","cover","cow","crawl","cried","cross","crown","cry","cube","cup","cut","cute","dad","damsel","dance","danger","dark","day","deep","delicious","desk","desperately","did","dinner","dinosaur","dirt","dish","do","doctor","dog","doll","dolphin","donkey","door","down","dragon","draw","dream","dress","drink","drip","drive","drop","drum","dry","duck","each","ear","early","earth","east","easy","eat","egg","eight","elephant","eleven","end","enormous","even","every","eye","face","fair","fall","family","far","farm","farmer","fart","farted","farting","fast","fat","father","feather","feed","feel","feet","few","field","fight","fill","find","fine","finger","finish","fire","first","fish","five","flag","flash","flat","floating","floor","flower","fly","food","foot","football","for","forest","fork","form","found","four","fox","friend","frightened","frog","from","front","fruit","full","fun","funny","game","garden","gas","gate","gave","get","giant","girl","give","glad","glass","glove","glow","glue","go","goat","gold","good","goodbye","got","grass","great","green","grew","ground","grow","had","hair","half","hall","hand","hang","happy","hard","has","hat","have","he","head","hear","heart","heavy","help","helpful","hen","her","here","high","hill","him","his","hit","hold","hole","holiday","home","hop","hopped","horn","horse","hot","house","how","hug","huge","hungry","hunt","hurry","hurt","ice","if","important","in","inside","into","is","island","it","its","jacket","jam","jar","jeans","jelly","job","join","joke","joy","juice","jump","jumped","jumping","jungle","just","keep","key","kick","kicked","kicking","kid","kind","king","kiss","kitchen","kite","kitten","knee","knife","knight","knock","know","ladder","lady","lake","lamp","land","landed","large","last","late","laugh","lay","leaf","learn","leave","leaves","left","leg","lesson","let","letter","light","like","line","lion","listen","little","live","lock","long","look","loud","loudly","love","low","lunch","made","magic","make","man","many","map","march","mark","market","match","may","me","meal","mean","meant","meat","meet","men","mice","middle","might","milk","mind","minute","miss","mistake","mix","money","monkey","monster","month","moon","more","morning","most","mother","mountain","mouse","mouth","move","much","mud","music","must","my","name","near","neat","neck","need","nest","never","new","next","nice","night","nine","no","noise","noisy","noon","north","nose","not","note","now","number","nurse","nut","oak","ocean","off","often","oil","old","on","once","one","only","open","or","orange","other","our","out","outside","over","owl","own","pack","page","paint","pair","pan","paper","park","part","party","pass","past","path","paw","pay","pea","peace","peach","pear","pen","pencil","people","pet","phone","photo","piano","pick","picture","pie","piece","pig","pile","pillow","pilot","pin","pink","pipe","pirate","place","plain","plan","plane","planet","plant","plate","play","played","playground","please","pocket","point","police","pond","pool","poor","pop","pork","post","pot","potato","pour","power","present","pretty","prince","princess","prize","proud","puddle","puff","pull","puppy","pure","purple","push","put","puzzle","queen","quick","quickly","quiet","quietly","rabbit","race","radio","rain","rainbow","raise","ran","reach","read","ready","real","red","rescue","rest","ribbon","rice","rich","ride","right","ring","river","road","roar","robot","rock","rocket","roof","room","root","rope","rose","rough","round","row","rub","rubber","rug","ruler","run","running","rush","sad","safe","safely","said","sail","salt","same","sand","sang","sat","sauce","save","saw","say","says","scare","scared","school","science","scissors","scooter","sea","seal","search","season","seat","second","secret","see","seed","seem","seen","send","seven","sew","shadow","shake","shall","shape","share","shark","sharp","she","sheep","sheet","shelf","shell","shine","shiny","ship","shirt","shoe","shoot","shop","short","should","shout","show","shut","shy","sick","side","sight","sign","silver","simple","sing","sink","sister","sit","six","size","skate","skeleton","skin","skirt","sky","sleep","slide","slow","slowly","small","smart","smell","smile","smoke","snail","snake","snow","snowman","so","soap","sock","soft","softly","soil","some","someone","something","sometimes","son","song","soon","sound","soup","sour","south","space","spark","sparkle","speak","special","speed","spell","spend","spider","spill","spin","splash","split","spoil","spoon","sport","spot","spring","square","squash","squeak","squirrel","stage","stairs","stamp","stand","star","stare","start","station","stay","steam","step","stick","still","stone","stop","store","storm","story","straight","strange","straw","strawberry","stream","street","string","strong","student","stumble","subway","such","sudden","sugar","suit","summer","sun","super","supper","sure","surprise","swallow","swan","swap","sweet","swim","swimming","swing","talk","talked"];
+    const CORE_LEXICON = ["about","after","again","air","all","almost","along","also","always","animal","another","any","apple","around","ask","away","baby","back","bad","ball","bark","bat","be","beach","bear","beautiful","because","bed","been","before","began","bell","best","better","big","bird","black","blue","boat","book","both","bottle","bounce","box","boxes","boy","brave","bread","bridge","bright","brother","brown","build","burn","bus","busy","butterfly","button","by","cake","call","came","camp","can","candle","car","care","careful","carry","cat","catch","caterpillar","chair","chalk","change","cheer","cheese","chest","chew","chicken","child","children","chin","chip","chirp","chocolate","city","clap","class","classroom","clean","clear","clever","climb","clock","close","cloth","cloud","clown","clue","coat","cold","colour","come","cook","cookie","cool","corn","could","count","country","cover","cow","crawl","cried","cross","crown","cry","cube","cup","cut","cute","dad","damsel","dance","danger","dark","day","deep","delicious","desk","desperately","did","dinner","dinosaur","dirt","dish","do","doctor","dog","doll","dolphin","donkey","door","down","dragon","draw","dream","dress","drink","drip","drive","drop","drum","dry","duck","each","ear","early","earth","east","easy","eat","egg","eight","elephant","eleven","end","enormous","even","every","eye","face","fair","fall","family","far","farm","farmer","fast","fat","father","feather","feed","feel","feet","few","field","fight","fill","find","fine","finger","finish","fire","first","fish","five","flag","flash","flat","floating","floor","flower","fly","food","foot","football","for","forest","fork","form","found","four","fox","friend","frightened","frog","from","front","fruit","full","fun","funny","game","garden","gas","gate","gave","get","giant","girl","give","glad","glass","glove","glow","glue","go","goat","gold","good","goodbye","got","grass","great","green","grew","ground","grow","had","hair","half","hall","hand","hang","happy","hard","has","hat","have","he","head","hear","heart","heavy","help","helpful","hen","her","here","high","hill","him","his","hit","hold","hole","holiday","home","hop","hopped","horn","horse","hot","house","how","hug","huge","hungry","hunt","hurry","hurt","ice","if","important","in","inside","into","is","island","it","its","jacket","jam","jar","jeans","jelly","job","join","joke","joy","juice","jump","jumped","jumping","jungle","just","keep","key","kick","kicked","kicking","kid","kind","king","kiss","kitchen","kite","kitten","knee","knife","knight","knock","know","ladder","lady","lake","lamp","land","landed","large","last","late","laugh","lay","leaf","learn","leave","leaves","left","leg","lesson","let","letter","light","like","line","lion","listen","little","live","lock","long","look","loud","loudly","love","low","lunch","made","magic","make","man","many","map","march","mark","market","match","may","me","meal","mean","meant","meat","meet","men","mice","middle","might","milk","mind","minute","miss","mistake","mix","money","monkey","monster","month","moon","more","morning","most","mother","mountain","mouse","mouth","move","much","mud","music","must","my","name","near","neat","neck","need","nest","never","new","next","nice","night","nine","no","noise","noisy","noon","north","nose","not","note","now","number","nurse","nut","oak","ocean","off","often","oil","old","on","once","one","only","open","or","orange","other","our","out","outside","over","owl","own","pack","page","paint","pair","pan","paper","park","part","party","pass","past","path","paw","pay","pea","peace","peach","pear","pen","pencil","people","pet","phone","photo","piano","pick","picture","pie","piece","pig","pile","pillow","pilot","pin","pink","pipe","pirate","place","plain","plan","plane","planet","plant","plate","play","played","playground","please","pocket","point","police","pond","pool","poor","pop","pork","post","pot","potato","pour","power","present","pretty","prince","princess","prize","proud","puddle","puff","pull","puppy","pure","purple","push","put","puzzle","queen","quick","quickly","quiet","quietly","rabbit","race","radio","rain","rainbow","raise","ran","reach","read","ready","real","red","rescue","rest","ribbon","rice","rich","ride","right","ring","river","road","roar","robot","rock","rocket","roof","room","root","rope","rose","rough","round","row","rub","rubber","rug","ruler","run","running","rush","sad","safe","safely","said","sail","salt","same","sand","sang","sat","sauce","save","saw","say","says","scare","scared","school","science","scissors","scooter","sea","seal","search","season","seat","second","secret","see","seed","seem","seen","send","seven","sew","shadow","shake","shall","shape","share","shark","sharp","she","sheep","sheet","shelf","shell","shine","shiny","ship","shirt","shoe","shoot","shop","short","should","shout","show","shut","shy","sick","side","sight","sign","silver","simple","sing","sink","sister","sit","six","size","skate","skeleton","skin","skirt","sky","sleep","slide","slow","slowly","small","smart","smell","smile","smoke","snail","snake","snow","snowman","so","soap","sock","soft","softly","soil","some","someone","something","sometimes","son","song","soon","sound","soup","sour","south","space","spark","sparkle","speak","special","speed","spell","spend","spider","spill","spin","splash","split","spoil","spoon","sport","spot","spring","square","squash","squeak","squirrel","stage","stairs","stamp","stand","star","stare","start","station","stay","steam","step","stick","still","stone","stop","store","storm","story","straight","strange","straw","strawberry","stream","street","string","strong","student","stumble","subway","such","sudden","sugar","suit","summer","sun","super","supper","sure","surprise","swallow","swan","swap","sweet","swim","swimming","swing","talk","talked"];
     let activeDropdownIndex = -1;
     let currentSuggestions = [];
 
@@ -4016,28 +4049,27 @@
       const container = document.getElementById('dictSensesContainer');
       container.innerHTML = "";
 
-      const jobGroups = [];
-      currentWordSenses.forEach((sense, senseIndex) => {
-        const job = wordJobForPos(sense.pos);
-        if (!jobGroups.some(group => group.job === job)) jobGroups.push({ job, senseIndex });
-      });
-      if (jobGroups.length <= 1) {
+      if (currentWordSenses.length <= 1) {
         bar.style.display = 'none';
         return;
       }
 
       bar.style.display = 'flex';
-      jobGroups.forEach((group, tabIndex) => {
-        const ui = WORD_JOB_UI[group.job] || { icon: '🔤', label: getWordClassDetails(currentWordSenses[group.senseIndex].pos).name, css: 'job-other' };
+      currentWordSenses.forEach((sense, senseIndex) => {
+        const job = wordJobForPos(sense.pos);
+        const ui = WORD_JOB_UI[job] || { label: getWordClassDetails(sense.pos).name, css: 'job-other' };
+        const className = getWordClassDetails(sense.pos).name.toLowerCase();
+        const definitionLabel = String(sense.def || ui.label).replace(/\s+/g, ' ').trim();
+        const shortLabel = definitionLabel.length > 48 ? definitionLabel.slice(0, 45).trimEnd() + '...' : definitionLabel;
         const btn = document.createElement('button');
-        const isActive = wordJobForPos(currentWordSenses[currentActiveSenseIdx].pos) === group.job;
+        const isActive = senseIndex === currentActiveSenseIdx;
         btn.className = `sense-pill-btn ${ui.css}${isActive ? ' active' : ''}`;
         btn.type = 'button';
         btn.setAttribute('role', 'tab');
         btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        const className = group.job === 'adjective' ? 'Adjective' : group.job === 'verb' ? 'Verb' : group.job === 'noun' ? 'Noun' : getWordClassDetails(currentWordSenses[group.senseIndex].pos).name;
-        btn.innerText = `${ui.icon} ${tabIndex + 1}. ${ui.label} (${className})`;
-        btn.onclick = () => selectSense(group.senseIndex);
+        btn.setAttribute('aria-label', `Meaning ${senseIndex + 1}, ${className}: ${definitionLabel}`);
+        btn.innerText = `${senseIndex + 1}. ${shortLabel} (${className})`;
+        btn.onclick = () => selectSense(senseIndex);
         container.appendChild(btn);
       });
     }
@@ -4966,9 +4998,7 @@
 
     function applyTheme(isDark) {
       document.body.classList.toggle('dark-theme', isDark);
-      const icon = document.getElementById('themeToggleIcon');
       const text = document.getElementById('themeToggleText');
-      if (icon) icon.innerText = isDark ? '☀️' : '🌙';
       if (text) text.innerText = isDark ? 'Light' : 'Dark';
     }
 
