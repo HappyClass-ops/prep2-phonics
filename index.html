@@ -1524,6 +1524,478 @@
       transition: opacity .18s ease;
     }
     .app-toast.visible { opacity: 1; }
+  
+    /* ================= DARK MODE THEME TOKENS ================= */
+    body.dark-theme {
+      --color-canvas: #0b1120;
+      --color-surface: #1e293b;
+      --color-surface-soft: #243042;
+      --color-hairline: #334155;
+      --color-hairline-soft: #1e293b;
+      --color-hairline-strong: #475569;
+      --color-ink: #f8fafc;
+      --color-charcoal: #e2e8f0;
+      --color-slate: #94a3b8;
+      --color-steel: #cbd5e1;
+      --color-stone: #64748b;
+      --color-muted: #475569;
+      --color-primary-subtle: #242254;
+      --color-tint-peach: #2d2422;
+      --color-tint-rose: #312028;
+      --color-tint-mint: #1a2e24;
+      --color-tint-lavender: #25223d;
+      --color-tint-sky: #192b3c;
+      --color-tint-yellow: #322d1a;
+      --color-tint-gray: #1e293b;
+      --shadow-subtle: rgba(0, 0, 0, 0.25) 0px 1px 2px 0px;
+      --shadow-card: rgba(0, 0, 0, 0.4) 0px 4px 12px 0px;
+      --shadow-modal: rgba(0, 0, 0, 0.6) 0px 24px 48px -8px;
+    }
+
+    body.dark-theme .search-bar-wrap {
+      background: var(--color-surface);
+      border-color: var(--color-hairline);
+    }
+    body.dark-theme .search-input {
+      color: var(--color-ink);
+    }
+    body.dark-theme .btn-search-clear {
+      color: var(--color-slate);
+    }
+    body.dark-theme .btn-search-clear:hover {
+      background: var(--color-surface-soft);
+      color: var(--color-ink);
+    }
+    body.dark-theme .autocomplete-dropdown {
+      background: var(--color-surface);
+      border-color: var(--color-hairline);
+    }
+    body.dark-theme .autocomplete-item:hover,
+    body.dark-theme .autocomplete-item.active {
+      background: var(--color-surface-soft);
+    }
+    body.dark-theme .phonics-stage-card {
+      background: var(--color-surface-soft);
+      border-color: var(--color-hairline);
+    }
+    body.dark-theme .phoneme-letters-display {
+      color: var(--color-ink);
+    }
+    body.dark-theme .dict-visual-banner {
+      background: var(--color-surface);
+      border-color: var(--color-hairline);
+    }
+    body.dark-theme .dict-example-box {
+      background: var(--color-surface);
+      border-color: var(--color-hairline);
+    }
+    body.dark-theme .sense-pill-btn {
+      background: var(--color-surface);
+      border-color: var(--color-hairline);
+      color: var(--color-charcoal);
+    }
+    body.dark-theme .sense-pill-btn:hover {
+      background: var(--color-surface-soft);
+      color: var(--color-ink);
+    }
+    body.dark-theme .badge-ipa-mono {
+      background: var(--color-surface-soft);
+      border-color: var(--color-hairline);
+      color: var(--color-charcoal);
+    }
+
+    /* HEADER TOOL BUTTONS */
+    .header-tools-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-header-tool {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-full);
+      color: var(--color-charcoal);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .btn-header-tool:hover {
+      background: var(--color-surface-soft);
+      border-color: var(--color-hairline-strong);
+      color: var(--color-ink);
+      transform: translateY(-1px);
+    }
+    .btn-header-tool svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+    .history-badge-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* ================= WELCOME GUIDE HERO CARD ================= */
+    .welcome-guide-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-xl);
+      padding: 36px 28px 40px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .welcome-arrow-guide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .animated-arrow-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary-subtle);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 8px rgba(86, 69, 212, 0.2);
+      animation: bounceUp 1.8s infinite ease-in-out;
+    }
+    .animated-arrow-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+    @keyframes bounceUp {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .arrow-hint-text {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .welcome-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      color: var(--color-slate);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .welcome-badge svg {
+      width: 14px;
+      height: 14px;
+      color: var(--color-primary);
+    }
+    .welcome-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 900;
+      color: var(--color-ink);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .welcome-sub {
+      font-size: clamp(0.95rem, 2vw, 1.05rem);
+      color: var(--color-slate);
+      max-width: 600px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .welcome-starters-section {
+      width: 100%;
+      max-width: 780px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .starter-category {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+    .starter-cat-label {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+    .starter-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .starter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .starter-chip:hover {
+      background: var(--color-primary-subtle);
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(86, 69, 212, 0.15);
+    }
+    .starter-chip .chip-word {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--color-ink);
+    }
+    .starter-chip .chip-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: var(--radius-xs);
+      background: rgba(0, 0, 0, 0.05);
+      color: var(--color-slate);
+    }
+    body.dark-theme .starter-chip .chip-tag {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--color-steel);
+    }
+
+    .welcome-features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 6px;
+      text-align: left;
+    }
+    .feature-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+    }
+    .feature-icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .feature-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .feature-text strong {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-ink);
+    }
+    .feature-text span {
+      font-size: 0.75rem;
+      color: var(--color-slate);
+      line-height: 1.35;
+    }
+
+    /* ================= RECENT WORDS DRAWER / MODAL ================= */
+    .history-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+      animation: fadeIn 0.2s ease-out;
+    }
+    .history-drawer-window {
+      background: var(--color-canvas);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 580px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-modal);
+      overflow: hidden;
+      animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes scaleUp {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .history-drawer-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--color-hairline);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .history-drawer-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .history-drawer-title {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--color-ink);
+    }
+    .btn-clear-history {
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-error);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-xs);
+      transition: background 0.15s ease;
+    }
+    .btn-clear-history:hover {
+      background: var(--color-error-bg);
+    }
+    .history-drawer-body {
+      padding: 18px 22px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .history-empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--color-slate);
+      font-size: 0.9rem;
+    }
+    .history-empty-state svg {
+      width: 44px;
+      height: 44px;
+      color: var(--color-stone);
+      margin-bottom: 10px;
+    }
+    .history-word-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .history-word-card:hover {
+      background: var(--color-primary-subtle);
+      border-color: var(--color-primary);
+      transform: translateX(3px);
+    }
+    .history-word-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .history-word-text {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-ink);
+    }
+    .history-word-pos {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-soft);
+      color: var(--color-slate);
+    }
+    .history-word-time {
+      font-size: 0.75rem;
+      color: var(--color-stone);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .history-drawer-footer {
+      padding: 14px 22px;
+      border-top: 1px solid var(--color-hairline);
+      background: var(--color-surface);
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-back-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      background: var(--color-charcoal);
+      border: none;
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-back-main:hover {
+      background: var(--color-ink);
+      transform: translateY(-1px);
+    }
+    body.dark-theme .btn-back-main {
+      background: var(--color-primary);
+    }
+    body.dark-theme .btn-back-main:hover {
+      background: var(--color-primary-hover);
+    }
+
   </style>
 </head>
 <body>
@@ -1544,7 +2016,8 @@
     </div>
 
     <!-- MAIN NAV TABS -->
-    <nav class="nav-tabs" aria-label="Learning tools">
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <nav class="nav-tabs" aria-label="Learning tools">
       <button class="nav-tab-btn active" id="tabDictBtn" onclick="switchTab('dictionary')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <span>Word Finder</span>
@@ -1562,6 +2035,22 @@
         <span>Teacher Studio</span>
       </a>
     </nav>
+      <div class="header-tools-group">
+        <button class="btn-header-tool" id="btnHistoryToggle" onclick="openHistoryDrawer()" aria-label="Recent Words" title="View Recent Searched Words">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>Recent</span>
+          <span id="historyBadgeCount" class="history-badge-count">0</span>
+        </button>
+
+        <button class="btn-header-tool" id="btnThemeToggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode" title="Toggle Dark/Light Mode">
+          <span id="themeToggleIcon">🌙</span>
+          <span id="themeToggleText">Dark</span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- MAIN CONTENT CONTAINER -->
@@ -1627,7 +2116,100 @@
       </div>
 
       <!-- SKELETON LOADING STATE -->
-      <div class="skeleton-card" id="skeletonCard">
+      
+      <!-- WELCOME / INITIAL GETTING STARTED GUIDE CARD -->
+      <div class="welcome-guide-card" id="welcomeGuideCard">
+        <div class="welcome-arrow-guide">
+          <div class="animated-arrow-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+          </div>
+          <div class="arrow-hint-text">Type or tap a word above to start!</div>
+        </div>
+
+        <div class="welcome-hero-content">
+          <div class="welcome-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <span>Interactive Pupil Phonics &amp; Word Explorer</span>
+          </div>
+          <h2 class="welcome-title">What would you like to explore?</h2>
+          <p class="welcome-sub">
+            Search any word to hear authentic teacher phonics sounds, British educator read-aloud, trusted kid-friendly meanings, and real sentence puzzles!
+          </p>
+
+          <!-- Category Starter Word Grids -->
+          <div class="welcome-starters-section">
+            <div class="starter-category">
+              <div class="starter-cat-label">🌟 Popular Words to Try:</div>
+              <div class="starter-chips-wrap">
+                <button class="starter-chip" onclick="setAndLookup('talked')">
+                  <span class="chip-word">talked</span>
+                  <span class="chip-tag">Verb</span>
+                </button>
+                <button class="starter-chip" onclick="setAndLookup('amazing')">
+                  <span class="chip-word">amazing</span>
+                  <span class="chip-tag">Adjective</span>
+                </button>
+                <button class="starter-chip" onclick="setAndLookup('dragon')">
+                  <span class="chip-word">dragon</span>
+                  <span class="chip-tag">Noun</span>
+                </button>
+                <button class="starter-chip" onclick="setAndLookup('purple')">
+                  <span class="chip-word">purple</span>
+                  <span class="chip-tag">Colour</span>
+                </button>
+                <button class="starter-chip" onclick="setAndLookup('floating')">
+                  <span class="chip-word">floating</span>
+                  <span class="chip-tag">Verb</span>
+                </button>
+                <button class="starter-chip" onclick="setAndLookup('sparkle')">
+                  <span class="chip-word">sparkle</span>
+                  <span class="chip-tag">Verb</span>
+                </button>
+                <button class="starter-chip" onclick="setAndLookup('bright')">
+                  <span class="chip-word">bright</span>
+                  <span class="chip-tag">Adjective</span>
+                </button>
+                <button class="starter-chip" onclick="setAndLookup('castle')">
+                  <span class="chip-word">castle</span>
+                  <span class="chip-tag">Noun</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="welcome-features-grid">
+              <div class="feature-card">
+                <div class="feature-icon">🔴</div>
+                <div class="feature-text">
+                  <strong>Sound Buttons</strong>
+                  <span>Tap dots &amp; dashes to blend authentic Little Wandle teacher sounds</span>
+                </div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <div class="feature-text">
+                  <strong>British Voice</strong>
+                  <span>Hear clear educator pronunciation with high-clarity British speech</span>
+                </div>
+              </div>
+              <div class="feature-card">
+                <div class="feature-icon">🧩</div>
+                <div class="feature-text">
+                  <strong>Example Builder</strong>
+                  <span>Drag and tap puzzle tiles to rebuild real sentence examples</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skeleton-card" id="skeletonCard" style="display: none;">
         <div class="skeleton-line" style="width: 40%; height: 32px;"></div>
         <div class="skeleton-line" style="width: 100%; height: 110px;"></div>
         <div class="skeleton-line" style="width: 80%; height: 70px;"></div>
@@ -1829,6 +2411,39 @@
             <span>Hear Model</span>
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- RECENT WORDS HISTORY DRAWER MODAL -->
+  <div class="history-drawer-backdrop" id="historyDrawerBackdrop" onclick="if(event.target===this) closeHistoryDrawer()">
+    <div class="history-drawer-window">
+      <div class="history-drawer-header">
+        <div class="history-drawer-title-group">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px; color: var(--color-primary);">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <div class="history-drawer-title">Previous Words</div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button class="btn-clear-history" id="btnClearHistory" onclick="clearSearchHistory()" title="Clear all search history">Clear History</button>
+          <button class="btn-close-modal" onclick="closeHistoryDrawer()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="history-drawer-body" id="historyListContainer">
+        <!-- Dynamically rendered word cards -->
+      </div>
+
+      <div class="history-drawer-footer">
+        <button class="btn-back-main" onclick="closeHistoryDrawer()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <span>Back to Dictionary</span>
+        </button>
       </div>
     </div>
   </div>
@@ -2919,7 +3534,7 @@
 
     function showDictionaryUnavailable(word, reason) {
       document.getElementById('resWordTitle').innerText = word;
-      document.getElementById('resIpaBadge').innerText = 'Not in dictionary';
+      document.getElementById('resIpaBadge').style.display = 'none';
       document.getElementById('resPosBadge').innerText = 'WORD';
       document.getElementById('resPosChildTip').innerText = '• You can still practise sounding this word out';
       document.getElementById('resVisualTitle').innerText = 'Phonics practice';
@@ -3067,7 +3682,13 @@
       if (!sense) return;
       const pronunciation = (sense.pronunciations && sense.pronunciations[currentPronunciationIndex]) || { mw: sense.pronunciation, audioUrl: sense.audioUrl };
       renderPronunciationsBar(sense);
-      document.getElementById('resIpaBadge').innerText = pronunciation.mw || 'Pronunciation unavailable';
+      const ipaBadge = document.getElementById('resIpaBadge');
+      if (pronunciation && pronunciation.mw) {
+        ipaBadge.innerText = '/' + pronunciation.mw + '/';
+        ipaBadge.style.display = 'inline-flex';
+      } else {
+        ipaBadge.style.display = 'none';
+      }
 
       const wc = getWordClassDetails(sense.pos);
       const posBadge = document.getElementById('resPosBadge');
@@ -3086,6 +3707,7 @@
       document.getElementById('resVisualTitle').innerText = sense.title || wc.name;
       document.getElementById('resVisualDesc').innerText = defStr;
 
+      recordWordInHistory(currentSearchWord, sense.pos);
       currentParsedResult = applyDictionaryPronunciation(parseWordToPhonemes(currentSearchWord), pronunciation.mw);
       renderSoundButtons(currentParsedResult);
       const wholeWordButton = document.getElementById('btnSayWholeWord');
@@ -3860,7 +4482,130 @@
       if (tabId === 'soundboard') renderSoundboard();
     }
 
+    
+    // ================= 10. DARK MODE THEME CONTROLLER =================
+    function initTheme() {
+      const savedTheme = localStorage.getItem('prep2_theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+      applyTheme(isDark);
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.contains('dark-theme');
+      applyTheme(!isDark);
+      localStorage.setItem('prep2_theme', !isDark ? 'dark' : 'light');
+    }
+
+    function applyTheme(isDark) {
+      document.body.classList.toggle('dark-theme', isDark);
+      const icon = document.getElementById('themeToggleIcon');
+      const text = document.getElementById('themeToggleText');
+      if (icon) icon.innerText = isDark ? '☀️' : '🌙';
+      if (text) text.innerText = isDark ? 'Light' : 'Dark';
+    }
+
+    // ================= 11. RECENT WORDS SEARCH HISTORY =================
+    const HISTORY_STORAGE_KEY = 'prep2_search_history';
+
+    function getSearchHistory() {
+      try {
+        const raw = localStorage.getItem(HISTORY_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function recordWordInHistory(word, pos) {
+      if (!word) return;
+      const cleanWord = word.trim().toLowerCase();
+      let history = getSearchHistory();
+      history = history.filter(item => item.word.toLowerCase() !== cleanWord);
+      history.unshift({
+        word: cleanWord,
+        pos: pos || 'word',
+        timestamp: Date.now()
+      });
+      localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history.slice(0, 30)));
+      updateHistoryBadge();
+    }
+
+    function updateHistoryBadge() {
+      const history = getSearchHistory();
+      const badge = document.getElementById('historyBadgeCount');
+      if (badge) badge.innerText = history.length;
+    }
+
+    function openHistoryDrawer() {
+      const backdrop = document.getElementById('historyDrawerBackdrop');
+      const container = document.getElementById('historyListContainer');
+      const history = getSearchHistory();
+
+      container.innerHTML = '';
+      if (history.length === 0) {
+        container.innerHTML = `
+          <div class="history-empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <div style="font-weight: 700; margin-bottom: 4px; color: var(--color-ink);">No previous words yet</div>
+            <div>Search any word to start building your class learning history!</div>
+          </div>
+        `;
+      } else {
+        history.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'history-word-card';
+          card.onclick = () => {
+            closeHistoryDrawer();
+            setAndLookup(item.word);
+          };
+
+          const dateStr = formatRelativeTime(item.timestamp);
+          card.innerHTML = `
+            <div class="history-word-left">
+              <div class="history-word-text">${item.word}</div>
+              <div class="history-word-pos">${item.pos}</div>
+            </div>
+            <div class="history-word-time">
+              <span>${dateStr}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      backdrop.style.display = 'flex';
+    }
+
+    function closeHistoryDrawer() {
+      document.getElementById('historyDrawerBackdrop').style.display = 'none';
+    }
+
+    function clearSearchHistory() {
+      localStorage.removeItem(HISTORY_STORAGE_KEY);
+      updateHistoryBadge();
+      openHistoryDrawer();
+      showToast('Search history cleared.');
+    }
+
+    function formatRelativeTime(timestamp) {
+      if (!timestamp) return 'recently';
+      const diffSec = Math.floor((Date.now() - timestamp) / 1000);
+      if (diffSec < 60) return 'just now';
+      const diffMin = Math.floor(diffSec / 60);
+      if (diffMin < 60) return `${diffMin}m ago`;
+      const diffHr = Math.floor(diffMin / 60);
+      if (diffHr < 24) return `${diffHr}h ago`;
+      return `${Math.floor(diffHr / 24)}d ago`;
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      updateHistoryBadge();
       updateContentCounts();
       renderTrickyWords();
       renderSoundboard();
