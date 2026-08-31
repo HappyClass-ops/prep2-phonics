@@ -1062,10 +1062,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         <span>Export Sound Pack</span>
       </button>
-      <button class="btn-head btn-head-secondary" onclick="syncAllToStudentApp()" title="Use saved teacher recordings in the Student App on this browser">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-        <span>Use on This Browser</span>
-      </button>
       <a class="btn-head btn-head-primary" data-app-root-link href="../">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
         <span>Open Student App</span>
@@ -1147,7 +1143,7 @@
         </button>
       </div>
       <div class="publish-note" role="note">
-        <strong>Saving versus publishing:</strong> Record or Upload saves the new audio in this browser immediately. “Use on This Browser” makes it available to the Student App on this browser only. To publish for every pupil, use Export Sound Pack for phonemes or Export Word Voice Pack for whole words, then send the downloaded JSON file for the GitHub update.
+        <strong>Saving versus publishing:</strong> Record or Upload saves the new audio immediately, and the Student App in this same browser uses it when opened or reloaded—no extra sync step is needed. To publish for every pupil, use Export Sound Pack for phonemes or Export Word Voice Pack for whole words, then send the downloaded JSON file for the GitHub update.
       </div>
       <div class="sounds-grid" id="wordRecordingsGrid"></div>
     </section>
@@ -3408,12 +3404,6 @@
       link.remove();
       URL.revokeObjectURL(url);
       showToast('Word Voice Pack exported. Send this JSON file for GitHub publishing.');
-    }
-
-    async function syncAllToStudentApp() {
-      localStorage.setItem('phonics_audio_sync_version', String(Date.now()));
-      showToast("Saved recordings are ready in the Student App on this browser only.");
-      if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
     function showToast(msg) {

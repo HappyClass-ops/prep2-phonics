@@ -42,8 +42,9 @@ async function run() {
     assert.doesNotMatch(await page.locator('header').innerText(), /Little Wandle/i);
     assert.match(await page.locator('header .brand-logo-image').getAttribute('src'), /assets\/visual-dictionary-logo\.png$/);
     assert.equal(await page.locator('#wordRecordingsGrid .sound-card').count(), 32, 'the studio must include all 24 tricky words and 8 homograph models');
-    assert.match(await page.locator('#wordRecordingSection').innerText(), /this browser only/i);
+    assert.match(await page.locator('#wordRecordingSection').innerText(), /same browser.*opened or reloaded.*no extra sync step is needed/i);
     assert.match(await page.locator('#wordRecordingSection').innerText(), /Export Sound Pack.*Export Word Voice Pack.*send the downloaded JSON file.*GitHub/i);
+    assert.equal(await page.getByRole('button', { name: 'Use on This Browser' }).count(), 0, 'the studio must not present a fake manual sync step');
     assert.equal(await page.locator('[data-word-recording-id="tricky:is"] .status-teacher').count(), 1, 'a local tricky-word recording must be recognized');
 
     const downloadPromise = page.waitForEvent('download');
