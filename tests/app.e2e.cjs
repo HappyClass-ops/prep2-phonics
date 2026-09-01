@@ -194,6 +194,9 @@ async function run() {
     assert.match(await page.locator('#tabTrickyBtn').innerText(), new RegExp(`\\(${trickyTotal}\\)`));
     assert.match(await page.locator('#tabSbBtn').innerText(), new RegExp(`\\(${soundboardTotal}\\)`));
     assert.equal(trickyTotal, 93, 'the verified Little Wandle set must contain all 93 tricky words');
+    assert.equal(await page.locator('#trickyGrid .tricky-tip').count(), 93, 'every tricky word must show a reading prompt in silent mode');
+    assert.equal(await page.locator('#trickyGrid .tricky-parts-breakdown').count(), 93, 'every tricky word must show either verified detail or a safe spot-the-sounds prompt');
+    assert.equal(await page.locator('#trickyGrid .tricky-recording-status', { hasText: 'Silent mode' }).count(), 0, 'silent mode must not replace reading guidance with a mode label');
     assert.equal(await page.locator('#btnSoundModeToggle').getAttribute('aria-pressed'), 'true', 'silent mode must be the default');
     assert.match(await page.locator('#btnSoundModeToggle').innerText(), /Silent/i);
     assert.equal(await page.locator('#trickyGrid .tricky-card').first().getAttribute('role'), null, 'tricky words must not be clickable in silent mode');
@@ -213,11 +216,6 @@ async function run() {
     assert.equal(await page.locator('#btnDefinitionVoice').isDisabled(), true, 'definition voice must be disabled in silent mode');
     assert.equal(await page.locator('#soundAttemptPanel').isVisible(), true, 'silent mode must ask the child to build the sound buttons first');
     assert.equal(await page.locator('#soundAnswerPanel').isVisible(), false, 'completed sound buttons must stay hidden before a successful attempt');
-    await page.evaluate(() => commitSoundAttemptGroup(0, 2));
-    for (let attempt = 0; attempt < 3; attempt++) await page.locator('#btnCheckSoundAttempt').click();
-    assert.match(await page.locator('#soundAttemptFeedback').innerText(), /Call a teacher over to help you/i, 'the third unsuccessful check must ask for teacher support');
-    assert.equal(await page.locator('#soundAnswerPanel').isVisible(), false, 'three unsuccessful checks must never reveal the answer');
-    await page.getByRole('button', { name: 'Start again' }).click();
     for (const letter of await page.locator('.sound-builder-letter').all()) await letter.click();
     await page.locator('#btnCheckSoundAttempt').click();
     await page.waitForTimeout(650);
@@ -229,6 +227,17 @@ async function run() {
     await page.waitForTimeout(30);
     assert.equal(await page.evaluate(() => window.__playedAudioUrls.length), silentAudioCount, 'silent blending must animate without creating audio');
     await page.evaluate(() => stopAllAudio());
+
+    await search(page, 'jump');
+    await page.evaluate(() => commitSoundAttemptGroup(0, 3));
+    for (let attempt = 0; attempt < 3; attempt++) await page.locator('#btnCheckSoundAttempt').click();
+    assert.match(await page.locator('#soundAttemptFeedback').innerText(), /Call a teacher over to help you.*locked/i, 'the third unsuccessful check must ask for teacher support and lock the attempt');
+    assert.equal(await page.locator('#soundAnswerPanel').isVisible(), false, 'three unsuccessful checks must never reveal the answer');
+    assert.equal(await page.locator('.sound-builder-letter:not(:disabled)').count(), 0, 'a locked attempt must disable every letter');
+    assert.equal(await page.getByRole('button', { name: 'Undo' }).isDisabled(), true, 'a locked attempt must disable Undo');
+    assert.equal(await page.getByRole('button', { name: 'Start again' }).isDisabled(), true, 'a locked attempt must disable Start again');
+    assert.equal(await page.locator('#btnCheckSoundAttempt').isDisabled(), true, 'a locked attempt must disable further checks');
+
     await page.locator('#btnSoundModeToggle').click();
     const eightKey = page.locator('#soundPinBackdrop .sound-pin-key', { hasText: /^8$/ });
     for (let index = 0; index < 4; index++) await eightKey.click();

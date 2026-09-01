@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="app-version" content="2026.09.01.2">
+  <meta name="app-version" content="2026.09.01.3">
   <title>Visual Dictionary</title>
   <link rel="icon" type="image/png" href="assets/visual-dictionary-logo.png">
   
@@ -2379,6 +2379,12 @@
       background: var(--color-primary-hover);
     }
 
+    .tricky-parts-prompt {
+      color: var(--color-stone);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
     /* CALM DICTIONARY COMPOSITION + SILENT MODE */
     .dict-workspace-card {
       border-color: var(--color-hairline-soft);
@@ -2615,6 +2621,7 @@
       touch-action: none;
       user-select: none;
     }
+    .sound-builder-board.blocked { opacity: 0.72; touch-action: auto; }
 
     .sound-builder-letter {
       position: relative;
@@ -2632,8 +2639,10 @@
       cursor: crosshair;
       transition: 0.15s ease;
     }
-    .sound-builder-letter.preview { border-color: var(--color-primary); background: var(--color-primary-subtle); }
+    .sound-builder-letter:disabled { cursor: default; }
+    .sound-builder-letter.preview { border-color: var(--color-primary); background: var(--color-primary-subtle); transform: translateY(-2px); }
     .sound-builder-letter.grouped { border-color: #94a3b8; background: var(--color-canvas); }
+    .sound-builder-letter.needs-review { border-color: #d97706; background: #fffbeb; box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.14); }
     .sound-builder-letter.grouped::after {
       content: '';
       position: absolute;
@@ -2654,8 +2663,14 @@
     .sound-builder-letter.group-5 { --group-color: #db2777; }
     .sound-builder-split-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: visible; }
     .sound-builder-split-path { fill: none; stroke: #7c3aed; stroke-width: 4; stroke-linecap: round; }
+    .sound-builder-split-path.needs-review { stroke: #d97706; stroke-dasharray: 7 5; }
+    .sound-builder-gesture-svg { position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none; overflow: visible; }
+    .sound-builder-gesture-path { fill: none; stroke: rgba(86, 69, 212, 0.72); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    .sound-builder-gesture-end { fill: var(--color-primary); opacity: 0; }
+    .sound-builder-gesture-end.visible { opacity: 0.85; }
 
     .sound-attempt-feedback { min-height: 38px; padding: 9px 11px; border-radius: 9px; background: var(--color-canvas); color: var(--color-slate); font-size: 0.8rem; line-height: 1.4; }
+    .sound-attempt-feedback.review { color: #92400e; background: #fffbeb; border: 1px solid #fde68a; }
     .sound-attempt-feedback.success { color: #047857; background: #ecfdf5; }
     .sound-attempt-feedback.teacher { color: #92400e; background: #fffbeb; border: 1px solid #fde68a; }
     .sound-attempt-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
@@ -2676,7 +2691,9 @@
     body.dark-theme .sound-buttons-container { background: var(--color-canvas); }
     body.dark-theme .other-meanings-panel { background: var(--color-surface); border-color: var(--color-hairline); }
     body.dark-theme .sound-attempt-feedback.success { background: #0d2e27; color: #6ee7b7; }
+    body.dark-theme .sound-attempt-feedback.review { background: #332610; color: #fcd34d; border-color: #6b4f16; }
     body.dark-theme .sound-attempt-feedback.teacher { background: #332610; color: #fcd34d; border-color: #6b4f16; }
+    body.dark-theme .sound-builder-letter.needs-review { border-color: #f59e0b; background: #332610; box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.14); }
     body.dark-theme .blend-actions-row .btn-act-primary { border-color: #514b75; }
     body.dark-theme .sound-mode-toggle[aria-pressed="false"] { border-color: #514b75; color: #c4b5fd; }
 
@@ -2695,6 +2712,8 @@
     @media (prefers-reduced-motion: reduce) {
       .word-form-card { transition: none; }
       .word-form-card:hover { transform: none; }
+      .sound-builder-letter { transition: none; }
+      .sound-builder-letter.preview { transform: none; }
     }
 
   </style>
@@ -5067,8 +5086,12 @@
             attempts: 0,
             feedback: 'Build every sound button, then check your thinking.',
             feedbackType: '',
+            reviewIndices: [],
+            blocked: false,
             dragStart: null,
-            dragEnd: null
+            dragEnd: null,
+            dragPoints: [],
+            dragVisitedIndices: []
           };
         }
         renderSoundChallengePanel();
@@ -5086,29 +5109,31 @@
       const panel = document.getElementById('soundAttemptPanel');
       const covered = new Set(state.groups.flat());
       const allCovered = covered.size === state.wordLetters.length;
+      const isBlocked = Boolean(state.blocked || state.attempts >= 3);
       panel.innerHTML = `
         <div class="sound-attempt-top">
           <div>
             <div class="sound-attempt-kicker">Try it first</div>
             <div class="sound-attempt-title">Make the sound buttons yourself.</div>
-            <p class="sound-attempt-instruction">Tap one letter for one sound. Swipe across letters that work together. For a split sound, curve from the vowel to the final e.</p>
+            <p class="sound-attempt-instruction">Tap one letter for one sound. Draw a straight line through every letter in a team. Curve around letters you want to skip for a split sound.</p>
           </div>
           <div class="sound-attempt-progress" aria-label="${Math.min(state.attempts, 3)} of 3 checks used">
             ${[0, 1, 2].map(index => `<span class="${index < state.attempts ? 'used' : ''}"></span>`).join('')}
           </div>
         </div>
-        <div class="sound-builder-board" id="soundBuilderBoard" aria-label="Build sound buttons for ${currentSearchWord}">
-          ${state.wordLetters.map((letter, index) => `<button class="sound-builder-letter" type="button" data-letter-index="${index}" aria-label="Letter ${letter}">${letter}</button>`).join('')}
+        <div class="sound-builder-board ${isBlocked ? 'blocked' : ''}" id="soundBuilderBoard" aria-label="Build sound buttons for ${currentSearchWord}" aria-disabled="${isBlocked}">
+          <svg class="sound-builder-gesture-svg" id="soundGesturePreviewSvg" aria-hidden="true"><polyline class="sound-builder-gesture-path" id="soundGesturePreviewPath" points=""></polyline><circle class="sound-builder-gesture-end" id="soundGesturePreviewEnd" r="5"></circle></svg>
+          ${state.wordLetters.map((letter, index) => `<button class="sound-builder-letter" type="button" data-letter-index="${index}" aria-label="Letter ${letter}" ${isBlocked ? 'disabled' : ''}>${letter}</button>`).join('')}
         </div>
         <div class="sound-attempt-feedback ${state.feedbackType}" id="soundAttemptFeedback" role="status">${state.feedback}</div>
         <div class="sound-attempt-actions">
           <div class="sound-attempt-tools">
-            <button class="sound-attempt-btn" type="button" onclick="undoSoundAttemptGroup()" ${state.groups.length ? '' : 'disabled'}>Undo</button>
-            <button class="sound-attempt-btn" type="button" onclick="resetSoundAttempt()" ${state.groups.length ? '' : 'disabled'}>Start again</button>
+            <button class="sound-attempt-btn" type="button" onclick="undoSoundAttemptGroup()" ${state.groups.length && !isBlocked ? '' : 'disabled'}>Undo</button>
+            <button class="sound-attempt-btn" type="button" onclick="resetSoundAttempt()" ${state.groups.length && !isBlocked ? '' : 'disabled'}>Start again</button>
           </div>
-          <button class="sound-attempt-btn primary" id="btnCheckSoundAttempt" type="button" onclick="checkSoundAttempt()" ${allCovered ? '' : 'disabled'}>Check my sound buttons</button>
+          <button class="sound-attempt-btn primary" id="btnCheckSoundAttempt" type="button" onclick="checkSoundAttempt()" ${allCovered && !isBlocked ? '' : 'disabled'}>Check my sound buttons</button>
         </div>
-        <div class="sound-attempt-help">You can change any group and keep trying. The finished sound buttons stay hidden until your groups are correct.</div>`;
+        <div class="sound-attempt-help">${isBlocked ? 'This attempt is locked. A teacher can use the teacher control to continue.' : 'Straight lines select every letter they cross. Curved lines can skip letters and link split sounds. You can change any group and keep trying.'}</div>`;
 
       state.groups.forEach((indices, groupIndex) => {
         const isSplitGroup = indices.some((value, index) => index > 0 && value !== indices[index - 1] + 1);
@@ -5118,19 +5143,23 @@
           letter.classList.add('grouped', `group-${groupIndex % 6}`);
           if (indices.length === 1) letter.classList.add('single');
           if (isSplitGroup) letter.classList.add('split');
+          if (state.reviewIndices.includes(index)) letter.classList.add('needs-review');
         });
       });
 
       const board = document.getElementById('soundBuilderBoard');
-      board.addEventListener('pointerdown', beginSoundAttemptGesture);
-      board.addEventListener('pointermove', moveSoundAttemptGesture);
-      board.addEventListener('pointerup', finishSoundAttemptGesture);
-      board.addEventListener('pointercancel', cancelSoundAttemptGesture);
-      board.querySelectorAll('.sound-builder-letter').forEach(letter => {
-        letter.addEventListener('click', event => {
-          if (event.detail === 0) commitSoundAttemptGroup(Number(letter.dataset.letterIndex), Number(letter.dataset.letterIndex));
+      if (!isBlocked) {
+        board.addEventListener('pointerdown', beginSoundAttemptGesture);
+        board.addEventListener('pointermove', moveSoundAttemptGesture);
+        board.addEventListener('pointerup', finishSoundAttemptGesture);
+        board.addEventListener('pointercancel', cancelSoundAttemptGesture);
+        board.querySelectorAll('.sound-builder-letter').forEach(letter => {
+          letter.addEventListener('click', event => {
+            if (event.detail === 0) commitSoundAttemptGroup(Number(letter.dataset.letterIndex), Number(letter.dataset.letterIndex));
+          });
         });
-      });
+      }
+      prepareSoundGestureOverlay();
       drawSoundAttemptSplitArches();
     }
 
@@ -5140,83 +5169,157 @@
       return letter ? Number(letter.dataset.letterIndex) : null;
     }
 
+    function soundAttemptBoardPoint(board, clientX, clientY) {
+      const rect = board.getBoundingClientRect();
+      return {
+        x: clientX - rect.left + board.scrollLeft,
+        y: clientY - rect.top + board.scrollTop,
+        clientX,
+        clientY
+      };
+    }
+
+    function prepareSoundGestureOverlay() {
+      const board = document.getElementById('soundBuilderBoard');
+      const svg = document.getElementById('soundGesturePreviewSvg');
+      if (!board || !svg) return;
+      const width = Math.max(board.clientWidth, board.scrollWidth);
+      const height = board.clientHeight;
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.style.width = `${width}px`;
+      svg.style.height = `${height}px`;
+    }
+
+    function collectSoundLettersAlongSegment(fromPoint, toPoint) {
+      const state = activeSoundChallenge;
+      if (!state || !fromPoint || !toPoint) return;
+      const distance = Math.hypot(toPoint.clientX - fromPoint.clientX, toPoint.clientY - fromPoint.clientY);
+      const steps = Math.max(1, Math.ceil(distance / 6));
+      for (let step = 0; step <= steps; step++) {
+        const ratio = step / steps;
+        const clientX = fromPoint.clientX + (toPoint.clientX - fromPoint.clientX) * ratio;
+        const clientY = fromPoint.clientY + (toPoint.clientY - fromPoint.clientY) * ratio;
+        const index = soundAttemptLetterAtPoint(clientX, clientY);
+        if (index !== null && !state.dragVisitedIndices.includes(index)) state.dragVisitedIndices.push(index);
+        if (index !== null) state.dragEnd = index;
+      }
+    }
+
     function beginSoundAttemptGesture(event) {
       const letter = event.target.closest('.sound-builder-letter');
-      if (!letter || !activeSoundChallenge) return;
+      if (!letter || !activeSoundChallenge || activeSoundChallenge.blocked) return;
       event.preventDefault();
-      activeSoundChallenge.dragStart = Number(letter.dataset.letterIndex);
-      activeSoundChallenge.dragEnd = activeSoundChallenge.dragStart;
+      const state = activeSoundChallenge;
+      const board = event.currentTarget;
+      state.reviewIndices = [];
+      state.feedbackType = '';
+      state.dragStart = Number(letter.dataset.letterIndex);
+      state.dragEnd = state.dragStart;
+      state.dragVisitedIndices = [state.dragStart];
+      state.dragPoints = [soundAttemptBoardPoint(board, event.clientX, event.clientY)];
       event.currentTarget.setPointerCapture?.(event.pointerId);
       previewSoundAttemptGesture();
     }
 
     function moveSoundAttemptGesture(event) {
       if (!activeSoundChallenge || activeSoundChallenge.dragStart === null) return;
-      const index = soundAttemptLetterAtPoint(event.clientX, event.clientY);
-      if (index === null || index === activeSoundChallenge.dragEnd) return;
-      activeSoundChallenge.dragEnd = index;
+      const state = activeSoundChallenge;
+      const board = event.currentTarget;
+      const point = soundAttemptBoardPoint(board, event.clientX, event.clientY);
+      const previousPoint = state.dragPoints[state.dragPoints.length - 1];
+      if (previousPoint && Math.hypot(point.x - previousPoint.x, point.y - previousPoint.y) < 2) return;
+      collectSoundLettersAlongSegment(previousPoint, point);
+      state.dragPoints.push(point);
       previewSoundAttemptGesture();
     }
 
     function previewSoundAttemptGesture() {
       const state = activeSoundChallenge;
       if (!state) return;
-      const start = Math.min(state.dragStart, state.dragEnd);
-      const end = Math.max(state.dragStart, state.dragEnd);
       document.querySelectorAll('.sound-builder-letter').forEach(letter => {
         const index = Number(letter.dataset.letterIndex);
-        letter.classList.toggle('preview', index >= start && index <= end);
+        letter.classList.toggle('preview', state.dragVisitedIndices.includes(index));
       });
+      const path = document.getElementById('soundGesturePreviewPath');
+      const endpoint = document.getElementById('soundGesturePreviewEnd');
+      if (!path || !endpoint) return;
+      path.setAttribute('points', state.dragPoints.map(point => `${point.x},${point.y}`).join(' '));
+      const lastPoint = state.dragPoints[state.dragPoints.length - 1];
+      if (lastPoint) {
+        endpoint.setAttribute('cx', lastPoint.x);
+        endpoint.setAttribute('cy', lastPoint.y);
+        endpoint.classList.add('visible');
+      }
     }
 
     function finishSoundAttemptGesture(event) {
       if (!activeSoundChallenge || activeSoundChallenge.dragStart === null) return;
+      const state = activeSoundChallenge;
+      const board = event.currentTarget;
+      const finalPoint = soundAttemptBoardPoint(board, event.clientX, event.clientY);
+      collectSoundLettersAlongSegment(state.dragPoints[state.dragPoints.length - 1], finalPoint);
+      state.dragPoints.push(finalPoint);
       const endAtPoint = soundAttemptLetterAtPoint(event.clientX, event.clientY);
-      const start = activeSoundChallenge.dragStart;
-      const end = endAtPoint === null ? activeSoundChallenge.dragEnd : endAtPoint;
-      activeSoundChallenge.dragStart = null;
-      activeSoundChallenge.dragEnd = null;
-      commitSoundAttemptGroup(start, end);
+      const start = state.dragStart;
+      const end = endAtPoint === null ? state.dragEnd : endAtPoint;
+      if (endAtPoint !== null && !state.dragVisitedIndices.includes(endAtPoint)) state.dragVisitedIndices.push(endAtPoint);
+      const minimum = Math.min(start, end);
+      const maximum = Math.max(start, end);
+      const everyCrossedLetterSelected = Array.from({ length: maximum - minimum + 1 }, (_, index) => minimum + index)
+        .every(index => state.dragVisitedIndices.includes(index));
+      const indices = maximum - minimum > 1 && !everyCrossedLetterSelected
+        ? [start, end].sort((a, b) => a - b)
+        : Array.from({ length: maximum - minimum + 1 }, (_, index) => minimum + index);
+      state.dragStart = null;
+      state.dragEnd = null;
+      state.dragPoints = [];
+      state.dragVisitedIndices = [];
+      commitSoundAttemptIndices(indices);
     }
 
     function cancelSoundAttemptGesture() {
       if (!activeSoundChallenge) return;
       activeSoundChallenge.dragStart = null;
       activeSoundChallenge.dragEnd = null;
+      activeSoundChallenge.dragPoints = [];
+      activeSoundChallenge.dragVisitedIndices = [];
       renderSoundChallengePanel();
     }
 
     function commitSoundAttemptGroup(start, end) {
+      if (start === null || end === null) return;
+      const indices = Array.from({ length: Math.abs(end - start) + 1 }, (_, index) => Math.min(start, end) + index);
+      commitSoundAttemptIndices(indices);
+    }
+
+    function commitSoundAttemptIndices(indices) {
       const state = activeSoundChallenge;
-      if (!state || start === null || end === null) return;
+      if (!state || state.blocked || !indices || !indices.length) return;
+      indices = [...new Set(indices)].sort((a, b) => a - b);
+      const start = indices[0];
       const existingIndex = state.groups.findIndex(group => group.includes(start));
-      if (start === end && existingIndex >= 0) {
+      if (indices.length === 1 && existingIndex >= 0) {
         state.groups.splice(existingIndex, 1);
+        state.reviewIndices = [];
         renderSoundChallengePanel();
         return;
       }
-
-      const splitMatch = state.expected.find(group => group.split
-        && Math.min(...group.indices) === Math.min(start, end)
-        && Math.max(...group.indices) === Math.max(start, end));
-      const indices = splitMatch
-        ? splitMatch.indices.slice()
-        : Array.from({ length: Math.abs(end - start) + 1 }, (_, index) => Math.min(start, end) + index);
       state.groups = state.groups.filter(group => !group.some(index => indices.includes(index)));
-      state.groups.push(indices.slice().sort((a, b) => a - b));
+      state.groups.push(indices);
+      state.reviewIndices = [];
       state.feedback = 'Keep going until every letter belongs to a sound.';
       state.feedbackType = '';
       renderSoundChallengePanel();
     }
 
     function undoSoundAttemptGroup() {
-      if (!activeSoundChallenge || !activeSoundChallenge.groups.length) return;
+      if (!activeSoundChallenge || activeSoundChallenge.blocked || !activeSoundChallenge.groups.length) return;
       activeSoundChallenge.groups.pop();
       renderSoundChallengePanel();
     }
 
     function resetSoundAttempt() {
-      if (!activeSoundChallenge) return;
+      if (!activeSoundChallenge || activeSoundChallenge.blocked) return;
       activeSoundChallenge.groups = [];
       activeSoundChallenge.feedback = 'Start with the first sound you can hear.';
       activeSoundChallenge.feedbackType = '';
@@ -5229,17 +5332,74 @@
         .sort();
     }
 
+    function soundGroupIsSplit(group) {
+      return group.some((value, index) => index > 0 && value !== group[index - 1] + 1);
+    }
+
+    function analyseSoundAttempt(state) {
+      const expectedKeys = new Set(state.expected.map(group => group.indices.join('-')));
+      const actualKeys = new Set(state.groups.map(group => group.join('-')));
+
+      const wrongCurvedGroup = state.groups.find(group => soundGroupIsSplit(group) && !expectedKeys.has(group.join('-')));
+      if (wrongCurvedGroup) {
+        return {
+          reviewIndices: wrongCurvedGroup,
+          message: 'This curved link skips letters, but its two ends do not make a split sound in this word.'
+        };
+      }
+
+      const joinedSeparateSounds = state.groups.find(group => {
+        if (soundGroupIsSplit(group)) return false;
+        return state.expected.filter(expectedGroup => expectedGroup.indices.some(index => group.includes(index))).length > 1;
+      });
+      if (joinedSeparateSounds) {
+        return {
+          reviewIndices: joinedSeparateSounds,
+          message: 'This straight line joins more than one sound in this word. Try putting a break inside it.'
+        };
+      }
+
+      const missingSplit = state.expected.find(group => group.split && !actualKeys.has(group.indices.join('-')));
+      if (missingSplit) {
+        const currentGroupsAtEnds = state.groups.filter(group => group.some(index => missingSplit.indices.includes(index)));
+        return {
+          reviewIndices: currentGroupsAtEnds.flat(),
+          message: 'A split sound is not linked yet. Try a curved line that skips the middle letter or letters.'
+        };
+      }
+
+      const dividedLetterTeam = state.expected.find(expectedGroup => {
+        const touchingGroups = state.groups.filter(group => group.some(index => expectedGroup.indices.includes(index)));
+        return expectedGroup.indices.length > 1 && touchingGroups.length > 1;
+      });
+      if (dividedLetterTeam) {
+        const touchingGroups = state.groups.filter(group => group.some(index => dividedLetterTeam.indices.includes(index)));
+        return {
+          reviewIndices: touchingGroups.flat(),
+          message: 'Some letters shown separately here work together as one sound in this word. Try joining them.'
+        };
+      }
+
+      const firstDifferentGroup = state.groups.find(group => !expectedKeys.has(group.join('-'))) || state.groups[0] || [];
+      return {
+        reviewIndices: firstDifferentGroup,
+        message: 'One sound boundary needs another look. Say the word slowly and decide where one sound ends.'
+      };
+    }
+
     function soundAttemptHint(state) {
       if (state.attempts === 1) {
-        return `Say the word slowly in your head. You should hear ${state.expected.length} sound${state.expected.length === 1 ? '' : 's'}.`;
+        return 'Say the word slowly once more and listen for where one sound ends and the next begins.';
       }
       if (state.attempts === 2) {
+        if (state.expected.some(group => group.split)) {
+          return 'Look for a vowel and final e that might be working together.';
+        }
         const teams = state.expected.filter(group => group.indices.length > 1).map(group => {
-          if (group.split) return `${state.wordLetters[group.indices[0]]}_${state.wordLetters[group.indices.at(-1)]}`;
           return group.indices.map(index => state.wordLetters[index]).join('');
         });
         return teams.length
-          ? `Look again for a letter team such as ${teams.slice(0, 2).map(team => `“${team}”`).join(' or ')}.`
+          ? `One place to look again is the letter team ${teams.slice(0, 1).map(team => `“${team}”`).join('')}.`
           : 'Try giving each letter its own sound button.';
       }
       return 'Call a teacher over to help you. Keep your attempt here so you can explain what you tried.';
@@ -5247,12 +5407,13 @@
 
     function checkSoundAttempt() {
       const state = activeSoundChallenge;
-      if (!state) return;
+      if (!state || state.blocked) return;
       const actual = normaliseSoundGroups(state.groups);
       const expected = normaliseSoundGroups(state.expected.map(group => group.indices));
       const isCorrect = actual.length === expected.length && actual.every((value, index) => value === expected[index]);
       if (isCorrect) {
         completedSoundChallenges.add(state.key);
+        state.reviewIndices = [];
         state.feedback = 'You worked it out. Now compare your sound buttons.';
         state.feedbackType = 'success';
         renderSoundChallengePanel();
@@ -5262,9 +5423,17 @@
         }, 550);
         return;
       }
+      const review = analyseSoundAttempt(state);
       state.attempts = Math.min(3, state.attempts + 1);
-      state.feedback = soundAttemptHint(state);
-      state.feedbackType = state.attempts >= 3 ? 'teacher' : '';
+      state.reviewIndices = review.reviewIndices;
+      if (state.attempts >= 3) {
+        state.blocked = true;
+        state.feedback = 'Call a teacher over to help you. Your attempt is now locked so you can look at it together.';
+        state.feedbackType = 'teacher';
+      } else {
+        state.feedback = `${review.message} ${soundAttemptHint(state)}`;
+        state.feedbackType = 'review';
+      }
       renderSoundChallengePanel();
     }
 
@@ -5285,7 +5454,7 @@
         const y = first.top - boardRect.top + 8;
         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', `M ${x1} ${y} Q ${(x1 + x2) / 2} ${Math.max(2, y - 18)} ${x2} ${y}`);
-        path.setAttribute('class', 'sound-builder-split-path');
+        path.setAttribute('class', `sound-builder-split-path${group.some(index => state.reviewIndices.includes(index)) ? ' needs-review' : ''}`);
         svg.appendChild(path);
       });
       board.appendChild(svg);
@@ -5942,11 +6111,14 @@
             }
           };
         }
-        const breakdown = tw.decodable !== undefined && tw.tricky !== undefined
+        const hasVerifiedTeachingNote = tw.decodable !== undefined && tw.tricky !== undefined && tw.tip;
+        const breakdown = hasVerifiedTeachingNote
           ? `<div class="tricky-parts-breakdown"><span class="part-decodable">${tw.decodable}</span><span class="part-tricky">${tw.tricky}</span></div>`
-          : '';
-        const tip = tw.tip ? `<div class="tricky-tip">${tw.tip}</div>` : '';
-        const status = isSilentMode ? 'Silent mode' : teacherAudio ? 'Teacher voice ready' : 'Teacher recording needed';
+          : '<div class="tricky-parts-breakdown tricky-parts-prompt">Spot the sounds you know.</div>';
+        const tip = hasVerifiedTeachingNote
+          ? `<div class="tricky-tip">${tw.tip}</div>`
+          : '<div class="tricky-tip">Read those parts, then ask: “Which part is tricky?”</div>';
+        const status = isSilentMode ? 'Read it yourself first' : teacherAudio ? 'Teacher voice ready' : 'Teacher recording needed';
         card.innerHTML = `
           <div class="tricky-card-phase">${tw.phase}</div>
           <div class="tricky-word-display">${tw.word}</div>

@@ -11,19 +11,36 @@ mode immediately.
 
 Silent searches begin with one compact, inline sound-button activity on the
 main dictionary page. Pupils tap a single letter for one sound, swipe across
-adjacent letters for a digraph, trigraph, quadgraph, or suffix sound, and draw
-from a vowel to final `e` for a split digraph. The completed phoneme map and
+adjacent letters for a digraph, trigraph/triphthong, quadgraph, or suffix sound,
+and draw a curved line that skips intervening letters to propose a split
+digraph. A live line follows the pointer and every crossed letter highlights as
+it is selected. Any adjacent or skipped-letter combination is allowed, so a
+child can make a genuine mistake before asking the app to check it. The completed phoneme map and
 blend controls remain hidden until the pupil's groups are correct.
 
-The first unsuccessful check prompts the pupil to listen for the number of
-sounds. The second points towards a likely letter team without completing the
-word. The third says to call a teacher and deliberately leaves the pupil's
-attempt visible for discussion; it never reveals the answer after repeated
-guessing. Pupils may keep editing with teacher support. Successful challenges
+Unsuccessful checks identify only one dependable structural issue at a time:
+an incorrect skipped-letter link, separate sounds joined together, a letter
+team split apart, or a missing split link. The second check can point towards a
+likely letter team without completing the word. The third says to call a
+teacher, leaves the pupil's attempt visible for discussion, and locks every
+letter and action control. The child cannot edit, undo, restart, or check again;
+the teacher voice control is the only route onward. Successful challenges
 stay complete only for the current page session, so a reload restores genuine
 independent practice. Tricky words receive a separate prompt to read known
 parts and ask a teacher, because a regular segmentation challenge would teach
-the wrong rule.
+the wrong rule. All 93 tricky-word cards keep reading guidance visible in
+silent mode. The 24 words with verified letter-level teaching notes show those
+specific details; every remaining card gives the safe prompt to spot known
+sounds and ask which part is tricky instead of inventing an unverified rule.
+
+## Teacher recording workflow
+
+Teacher Studio supports rapid spacebar recording for both phoneme sounds and
+all 93 tricky words. Every sound and word card has a small **Needs review**
+checkbox beneath its Ready/Empty status. Those flags persist in the browser.
+The main Review Queue opens only flagged items, while separate All Sounds and
+Tricky Words buttons remain available for intentional full passes. Saving a
+replacement recording automatically clears its review flag.
 
 ## 🚀 Live Links
 - **Pupil App**: [Open Student App](https://happyclass-ops.github.io/prep2-phonics/)

@@ -33,6 +33,8 @@ async function run() {
   await page.addInitScript(() => {
     sessionStorage.setItem('teacher_studio_unlocked', 'true');
     localStorage.setItem('word_audio_tricky:is', 'data:audio/wav;base64,VEVTVA==');
+    localStorage.setItem('phonics_recording_review:sound:ed-d', 'true');
+    localStorage.setItem('phonics_recording_review:word:tricky:is', 'true');
   });
 
   try {
@@ -46,6 +48,20 @@ async function run() {
     assert.match(await page.locator('#wordRecordingSection').innerText(), /Export Sound Pack.*Export Word Voice Pack.*send the downloaded JSON file.*GitHub/i);
     assert.equal(await page.getByRole('button', { name: 'Use on This Browser' }).count(), 0, 'the studio must not present a fake manual sync step');
     assert.equal(await page.locator('[data-word-recording-id="tricky:is"] .status-teacher').count(), 1, 'a local tricky-word recording must be recognized');
+    assert.equal(await page.locator('#card-ed-d .recording-review-control input').isChecked(), true, 'sound review flags must persist beneath the status');
+    assert.equal(await page.locator('[data-word-recording-id="tricky:is"] .recording-review-control input').isChecked(), true, 'tricky-word review flags must persist beneath the status');
+
+    await page.getByRole('button', { name: 'Review Queue', exact: true }).click();
+    assert.equal(await page.locator('#boothModalBackdrop').isVisible(), true, 'the review queue must open in the rapid booth');
+    assert.deepEqual(await page.evaluate(() => boothQueue.map(target => `${target.targetType}:${target.id}`)), ['sound:ed-d', 'word:tricky:is'], 'the priority queue must exclude recordings that were not flagged');
+    await page.evaluate(() => nextBoothSound());
+    assert.equal(await page.locator('#boothGrapheme').innerText(), 'is', 'the same rapid booth must present tricky-word targets');
+    await page.evaluate(() => closeRecordingBooth());
+
+    await page.getByRole('button', { name: 'Rapid Tricky Words' }).click();
+    assert.equal(await page.evaluate(() => boothQueue.length), 93, 'rapid tricky-word mode must include all verified tricky words');
+    assert.equal(await page.evaluate(() => boothQueue.every(target => target.targetType === 'word' && target.kind === 'Tricky word')), true);
+    await page.evaluate(() => closeRecordingBooth());
 
     const downloadPromise = page.waitForEvent('download');
     await page.getByRole('button', { name: 'Export Word Voice Pack' }).click();

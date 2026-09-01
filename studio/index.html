@@ -491,7 +491,8 @@
       transform: translateY(-2px);
     }
 
-    .sound-card.card-needs-update {
+    .sound-card.card-needs-update,
+    .sound-card.card-needs-review {
       border-color: #fde68a;
       background: #fffdf5;
     }
@@ -538,6 +539,36 @@
     .status-master { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
     .status-update-needed { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
     .status-empty { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    .recording-review-control {
+      margin-top: 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--color-slate);
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .recording-review-control input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: #d97706;
+      cursor: pointer;
+    }
+
+    .recording-review-control:has(input:checked) {
+      color: #b45309;
+    }
+
+    .recording-status-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
 
     .sound-body-meta {
       display: flex;
@@ -1054,9 +1085,9 @@
     </a>
 
     <div class="header-actions">
-      <button class="btn-head btn-head-rose" onclick="openRecordingBooth()" title="Rapid Spacebar Push-to-Talk Mode">
+      <button class="btn-head btn-head-rose" onclick="openRecordingBooth('review')" title="Record only items marked Needs review">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
-        <span>Spacebar Booth</span>
+        <span>Review Queue</span>
       </button>
       <button class="btn-head btn-head-secondary" onclick="exportSoundPackJson()" title="Download updated master pack for GitHub deployment">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 15px; height: 15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -1080,12 +1111,18 @@
       <div class="hero-info-group">
         <div class="hero-title">Prep 2 Master Soundboard &amp; Suffix Studio</div>
         <div class="hero-subtitle">
-          Record your own authentic teacher voice for every phoneme, suffix (-ed, -ing, -es), and split digraph chant. Use the <strong>Spacebar Booth</strong> to cycle through sounds with zero mouse clicks!
+          Record your own authentic teacher voice for every phoneme, suffix (-ed, -ing, -es), split digraph chant, and tricky word. Tick <strong>Needs review</strong> on any card, then use the rapid booth to fix only those recordings.
         </div>
         <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
-          <button class="btn-head btn-head-rose" style="font-size: 0.92rem; padding: 9px 16px;" onclick="openRecordingBooth()">
+          <button class="btn-head btn-head-rose" style="font-size: 0.92rem; padding: 9px 16px;" onclick="openRecordingBooth('review')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>
-            <span>Start Rapid Spacebar Booth</span>
+            <span>Record Review Queue</span>
+          </button>
+          <button class="btn-head btn-head-secondary" style="font-size: 0.92rem; padding: 9px 16px;" onclick="openRecordingBooth('sounds')">
+            <span>All Sounds</span>
+          </button>
+          <button class="btn-head btn-head-secondary" style="font-size: 0.92rem; padding: 9px 16px;" onclick="openRecordingBooth('tricky')">
+            <span>Tricky Words</span>
           </button>
         </div>
       </div>
@@ -1093,7 +1130,7 @@
       <div class="progress-stats-box">
         <div class="progress-label-row">
           <span>Master Pack Progress</span>
-          <span id="txtProgressFraction">0 / 76</span>
+          <span id="txtProgressFraction">0 / 75</span>
         </div>
         <div class="progress-bar-track">
           <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
@@ -1107,8 +1144,8 @@
       <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
         <input type="text" class="search-filter-input" id="searchFilterInput" placeholder="Search sounds (e.g. ed, ing, split, or)..." oninput="handleSearchFilter(this.value)">
         <div class="category-tabs" id="categoryTabs">
-          <button class="cat-tab-btn tab-alert" onclick="filterCategory('needs-update')" id="tabNeedsUpdate">Needs Re-record (26)</button>
-          <button class="cat-tab-btn active" onclick="filterCategory('all')">All (76)</button>
+          <button class="cat-tab-btn tab-alert" onclick="filterCategory('needs-review')" id="tabNeedsUpdate">Needs review (0)</button>
+          <button class="cat-tab-btn active" onclick="filterCategory('all')">All (75)</button>
           <button class="cat-tab-btn" onclick="filterCategory('Suffixes')">Suffixes (15)</button>
           <button class="cat-tab-btn" onclick="filterCategory('Prefixes')">Prefixes (5)</button>
           <button class="cat-tab-btn" onclick="filterCategory('Split Digraphs')">Split Digraphs (6)</button>
@@ -1138,9 +1175,14 @@
           <div class="word-recording-title">Teacher Word Recordings</div>
           <div class="word-recording-subtitle">Record every tricky word, plus separate teacher models for homographs whose spellings are the same but pronunciations are different.</div>
         </div>
-        <button class="btn-head btn-head-secondary" onclick="exportWordVoicePack()" title="Download teacher word recordings for GitHub publishing">
-          <span>Export Word Voice Pack</span>
-        </button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn-head btn-head-rose" onclick="openRecordingBooth('tricky')" title="Rapidly record all tricky words with the spacebar">
+            <span>Rapid Tricky Words</span>
+          </button>
+          <button class="btn-head btn-head-secondary" onclick="exportWordVoicePack()" title="Download teacher word recordings for GitHub publishing">
+            <span>Export Word Voice Pack</span>
+          </button>
+        </div>
       </div>
       <div class="publish-note" role="note">
         <strong>Saving versus publishing:</strong> Record or Upload saves the new audio immediately, and the Student App in this same browser uses it when opened or reloaded—no extra sync step is needed. To publish for every pupil, use Export Sound Pack for phonemes or Export Word Voice Pack for whole words, then send the downloaded JSON file for the GitHub update.
@@ -2584,6 +2626,55 @@
       ...HOMOGRAPH_RECORDINGS.map(item => ({ ...item, id: pronunciationRecordingId(item.word, item.pronunciation), kind: 'Pronunciation override' }))
     ];
 
+    const RECORDING_REVIEW_PREFIX = 'phonics_recording_review:';
+
+    function recordingReviewKey(targetType, recordingId) {
+      return RECORDING_REVIEW_PREFIX + targetType + ':' + recordingId;
+    }
+
+    function recordingNeedsReview(targetType, recordingId) {
+      try { return localStorage.getItem(recordingReviewKey(targetType, recordingId)) === 'true'; }
+      catch (error) { return false; }
+    }
+
+    function setRecordingReviewFlag(targetType, recordingId, checked, refresh = true) {
+      try {
+        const key = recordingReviewKey(targetType, recordingId);
+        if (checked) localStorage.setItem(key, 'true');
+        else localStorage.removeItem(key);
+      } catch (error) {
+        showToast('This browser could not save the review flag.');
+      }
+      if (!refresh) return;
+      updateProgressStats();
+      renderSoundCards();
+      renderWordRecordingCards();
+    }
+
+    function reviewCheckboxMarkup(targetType, recordingId, checked) {
+      return `<label class="recording-review-control">
+        <input type="checkbox" ${checked ? 'checked' : ''} onchange="setRecordingReviewFlag('${targetType}', '${recordingId}', this.checked)">
+        <span>Needs review</span>
+      </label>`;
+    }
+
+    function soundBoothTarget(sound) {
+      return { ...sound, targetType: 'sound', progressKind: 'Sound' };
+    }
+
+    function wordBoothTarget(target) {
+      return {
+        ...target,
+        targetType: 'word',
+        progressKind: target.kind === 'Tricky word' ? 'Tricky word' : 'Word',
+        grapheme: target.word,
+        ipa: target.pronunciation ? `/${target.pronunciation}/` : 'whole word',
+        catchphrase: target.context,
+        tip: 'Say the whole word naturally and clearly. Hold space, speak, then release to save.',
+        examples: []
+      };
+    }
+
     // BOOTH STATE
     let boothQueue = [];
     let boothCurrentIndex = 0;
@@ -2649,15 +2740,12 @@
     function updateProgressStats() {
       let total = SOUNDS_REGISTRY.length;
       let recorded = 0;
-      let needsUpdateCount = 0;
+      let needsReviewCount = 0;
 
       SOUNDS_REGISTRY.forEach(s => {
         const stem = AUDIO_STEMS_MAP.get(s.id);
         if (stem && stem.hasAudio) recorded++;
-        // A legacy "needsUpdate" marker describes an old export, not the
-        // currently published clip.  Only show work still to do when audio is
-        // genuinely absent.
-        if (s.needsUpdate && (!stem || !stem.hasAudio)) needsUpdateCount++;
+        if (recordingNeedsReview('sound', s.id)) needsReviewCount++;
       });
 
       document.getElementById('txtProgressFraction').innerText = recorded + ' / ' + total;
@@ -2667,8 +2755,8 @@
 
       const tabAlert = document.getElementById('tabNeedsUpdate');
       if (tabAlert) {
-        tabAlert.innerText = 'Needs Re-record (' + needsUpdateCount + ')';
-        tabAlert.style.display = needsUpdateCount > 0 ? 'inline-block' : 'none';
+        tabAlert.innerText = 'Needs review (' + needsReviewCount + ')';
+        tabAlert.style.display = 'inline-block';
       }
     }
 
@@ -2677,10 +2765,7 @@
       grid.innerHTML = "";
 
       const filtered = SOUNDS_REGISTRY.filter(s => {
-        if (currentCategoryFilter === 'needs-update') {
-          const stem = AUDIO_STEMS_MAP.get(s.id);
-          return s.needsUpdate === true && (!stem || !stem.hasAudio);
-        }
+        if (currentCategoryFilter === 'needs-review') return recordingNeedsReview('sound', s.id);
         if (currentCategoryFilter !== 'all' && s.category !== currentCategoryFilter) return false;
         if (currentSearchFilter) {
           const q = currentSearchFilter.toLowerCase();
@@ -2700,16 +2785,14 @@
       filtered.forEach(s => {
         const stem = AUDIO_STEMS_MAP.get(s.id);
         const hasAudio = stem && stem.hasAudio;
-        const isNeedsUpdate = s.needsUpdate === true && !hasAudio;
+        const isNeedsReview = recordingNeedsReview('sound', s.id);
 
         const card = document.createElement('div');
-        card.className = 'sound-card' + (isNeedsUpdate ? ' card-needs-update' : '');
+        card.className = 'sound-card' + (isNeedsReview ? ' card-needs-review' : '');
         card.id = 'card-' + s.id;
 
         let statusBadge = '';
-        if (isNeedsUpdate) {
-          statusBadge = '<span class="sound-status-badge status-update-needed">Needs Re-record</span>';
-        } else if (hasAudio) {
+        if (hasAudio) {
           statusBadge = '<span class="sound-status-badge status-teacher">Ready</span>';
         } else {
           statusBadge = '<span class="sound-status-badge status-empty">Empty</span>';
@@ -2723,7 +2806,10 @@
               <div class="sound-grapheme-big">${s.grapheme}</div>
               <span class="sound-ipa-badge">${s.ipa || s.id}</span>
             </div>
-            ${statusBadge}
+            <div class="recording-status-stack">
+              ${statusBadge}
+              ${reviewCheckboxMarkup('sound', s.id, isNeedsReview)}
+            </div>
           </div>
 
           <div class="sound-body-meta">
@@ -2773,8 +2859,9 @@
       WORD_RECORDING_TARGETS.forEach(target => {
         const audio = WORD_AUDIO_MAP.get(target.id);
         const hasAudio = Boolean(audio && audio.base64);
+        const isNeedsReview = recordingNeedsReview('word', target.id);
         const card = document.createElement('div');
-        card.className = 'sound-card';
+        card.className = 'sound-card' + (isNeedsReview ? ' card-needs-review' : '');
         card.dataset.wordRecordingId = target.id;
         card.innerHTML = `
           <div class="sound-card-header">
@@ -2783,7 +2870,10 @@
               <div class="sound-grapheme-big">${target.word}</div>
               ${target.pronunciation ? `<span class="sound-ipa-badge">/${target.pronunciation}/</span>` : ''}
             </div>
-            <span class="sound-status-badge ${hasAudio ? 'status-teacher' : 'status-empty'}">${hasAudio ? 'Ready' : 'Empty'}</span>
+            <div class="recording-status-stack">
+              <span class="sound-status-badge ${hasAudio ? 'status-teacher' : 'status-empty'}">${hasAudio ? 'Ready' : 'Empty'}</span>
+              ${reviewCheckboxMarkup('word', target.id, isNeedsReview)}
+            </div>
           </div>
           <div class="sound-body-meta">
             <div class="sound-catchphrase">${target.context}</div>
@@ -2808,7 +2898,7 @@
       document.querySelectorAll('.cat-tab-btn').forEach(b => {
         b.classList.remove('active');
         if (cat === 'all' && b.innerText.startsWith('All')) b.classList.add('active');
-        else if (cat === 'needs-update' && b.id === 'tabNeedsUpdate') b.classList.add('active');
+        else if (cat === 'needs-review' && b.id === 'tabNeedsUpdate') b.classList.add('active');
         else if (b.innerText.includes(cat)) b.classList.add('active');
       });
       renderSoundCards();
@@ -2820,12 +2910,22 @@
     }
 
     // ================= 3. RAPID BOOTH (SPACEBAR ZERO-CLICK CAROUSEL) =================
-    function openRecordingBooth(filterMode = 'all') {
-      if (filterMode === 'needs-update') {
-        boothQueue = SOUNDS_REGISTRY.filter(s => s.needsUpdate);
-        if (boothQueue.length === 0) boothQueue = SOUNDS_REGISTRY;
+    function openRecordingBooth(filterMode = 'review') {
+      const soundTargets = SOUNDS_REGISTRY.map(soundBoothTarget);
+      const wordTargets = WORD_RECORDING_TARGETS.map(wordBoothTarget);
+      if (filterMode === 'review') {
+        boothQueue = [
+          ...soundTargets.filter(target => recordingNeedsReview('sound', target.id)),
+          ...wordTargets.filter(target => recordingNeedsReview('word', target.id))
+        ];
+        if (boothQueue.length === 0) {
+          showToast('Nothing is marked Needs review. Tick a box on a sound or word card first.');
+          return;
+        }
+      } else if (filterMode === 'tricky') {
+        boothQueue = wordTargets.filter(target => target.kind === 'Tricky word');
       } else {
-        boothQueue = SOUNDS_REGISTRY;
+        boothQueue = soundTargets;
       }
 
       boothCurrentIndex = 0;
@@ -2846,21 +2946,24 @@
       if (!boothQueue || boothQueue.length === 0) return;
       const sound = boothQueue[boothCurrentIndex];
 
-      document.getElementById('boothProgressTag').innerText = 'Sound ' + (boothCurrentIndex + 1) + ' of ' + boothQueue.length;
-      document.getElementById('boothFilterLabel').innerText = sound.category || 'Sound';
+      document.getElementById('boothProgressTag').innerText = sound.progressKind + ' ' + (boothCurrentIndex + 1) + ' of ' + boothQueue.length;
+      document.getElementById('boothFilterLabel').innerText = sound.targetType === 'word' ? sound.kind : (sound.category || 'Sound');
       document.getElementById('boothIpaBadge').innerText = sound.ipa || sound.id;
       document.getElementById('boothGrapheme').innerText = sound.grapheme;
       document.getElementById('boothCatchphrase').innerText = sound.catchphrase || sound.grapheme;
       document.getElementById('boothTip').innerText = sound.tip || 'Say a pure, punchy sound with no extra vowel. Hold space, speak, release space!';
 
       const statusBadge = document.getElementById('boothStatusBadge');
-      const stem = AUDIO_STEMS_MAP.get(sound.id);
-      if (sound.needsUpdate && (!stem || !stem.hasAudio)) {
+      const stem = sound.targetType === 'word' ? WORD_AUDIO_MAP.get(sound.id) : AUDIO_STEMS_MAP.get(sound.id);
+      if (recordingNeedsReview(sound.targetType, sound.id)) {
         statusBadge.className = 'sound-status-badge status-update-needed';
-        statusBadge.innerText = 'Needs Re-recording';
-      } else {
+        statusBadge.innerText = 'Needs review';
+      } else if (stem && stem.hasAudio) {
         statusBadge.className = 'sound-status-badge status-teacher';
-        statusBadge.innerText = 'Recorded';
+        statusBadge.innerText = 'Ready';
+      } else {
+        statusBadge.className = 'sound-status-badge status-empty';
+        statusBadge.innerText = 'Empty';
       }
 
       const exRow = document.getElementById('boothExamplesRow');
@@ -2940,8 +3043,12 @@
           stream.getTracks().forEach(t => t.stop());
           if (animationFrameId) cancelAnimationFrame(animationFrameId);
 
-          await processAndSaveBlob(sound.id, audioBlob);
-          sound.needsUpdate = false;
+          await processAndSaveBlob(sound.id, audioBlob, sound.targetType);
+          setRecordingReviewFlag(sound.targetType, sound.id, false, false);
+          if (sound.targetType === 'sound') sound.needsUpdate = false;
+          updateProgressStats();
+          renderSoundCards();
+          renderWordRecordingCards();
           renderBoothCard();
           setBoothIndicator('saved');
           playBoothPreview();
@@ -2996,7 +3103,7 @@
     function playBoothPreview() {
       const sound = boothQueue[boothCurrentIndex];
       if (!sound) return;
-      const stem = AUDIO_STEMS_MAP.get(sound.id);
+      const stem = sound.targetType === 'word' ? WORD_AUDIO_MAP.get(sound.id) : AUDIO_STEMS_MAP.get(sound.id);
       if (stem && stem.base64) {
         const audio = new Audio(stem.base64);
         audio.play();
@@ -3129,11 +3236,13 @@
           WORD_AUDIO_MAP.set(soundId, { id: soundId, hasAudio: true, source: 'teacher', base64: base64Wav });
           localStorage.setItem('word_audio_' + soundId, base64Wav);
           localStorage.setItem('phonics_audio_last_saved', soundId + ':' + Date.now());
+          setRecordingReviewFlag('word', soundId, false, false);
           showToast('Word recording normalized and saved on this browser.');
           renderWordRecordingCards();
         } else {
           AUDIO_STEMS_MAP.set(soundId, { id: soundId, hasAudio: true, source: 'teacher', base64: base64Wav });
           localStorage.setItem('sound_stem_' + soundId, base64Wav);
+          setRecordingReviewFlag('sound', soundId, false, false);
           saveAudioDirect(soundId, base64Wav);
           showToast('Recorded, normalized (' + gain.toFixed(1) + 'x boost), and saved "' + soundId + '"!');
         }
