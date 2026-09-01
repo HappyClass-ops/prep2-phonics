@@ -222,6 +222,16 @@ async function run() {
     assert.equal(await page.locator('#btnDefinitionVoice').isDisabled(), true, 'definition voice must be disabled in silent mode');
     assert.equal(await page.locator('#soundAttemptPanel').isVisible(), true, 'silent mode must ask the child to build the sound buttons first');
     assert.equal(await page.locator('#soundAnswerPanel').isVisible(), false, 'completed sound buttons must stay hidden before a successful attempt');
+    assert.equal(await page.locator('#soundAttemptPanel').evaluate(el => el.classList.contains('focused')), true, 'silent practice must open as a focused touch workspace');
+    assert.equal(await page.locator('body').evaluate(el => el.classList.contains('sound-challenge-open')), true, 'the dictionary behind the focused workspace must not scroll');
+    const focusedBoard = await page.locator('#soundBuilderBoard').boundingBox();
+    assert.ok(focusedBoard && focusedBoard.x >= 0 && focusedBoard.y >= 0 && focusedBoard.x + focusedBoard.width <= (await page.evaluate(() => innerWidth)), 'the drawing board must remain inside the viewport');
+    assert.equal(await page.locator('#soundGesturePreviewSvg').evaluate(el => getComputedStyle(el).overflow), 'hidden', 'the live gesture line must be clipped to the drawing board');
+    await page.getByRole('button', { name: 'Back to word' }).click();
+    assert.equal(await page.locator('#soundAttemptPanel').evaluate(el => el.classList.contains('minimized')), true, 'Back to word must preserve a compact launcher for the unfinished attempt');
+    assert.equal(await page.locator('#soundAnswerPanel').isVisible(), false, 'minimising practice must not reveal the answer');
+    await page.getByRole('button', { name: 'Open workspace' }).click();
+    assert.equal(await page.locator('#soundAttemptPanel').evaluate(el => el.classList.contains('focused')), true, 'the same attempt must reopen in the focused workspace');
     for (const letter of await page.locator('.sound-builder-letter').all()) await letter.click();
     await page.locator('#btnCheckSoundAttempt').click();
     await page.waitForTimeout(650);

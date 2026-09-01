@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="app-version" content="2026.09.02.1">
+  <meta name="app-version" content="2026.09.02.2">
   <title>Visual Dictionary</title>
   <link rel="icon" type="image/png" href="assets/visual-dictionary-logo.png">
   
@@ -2627,6 +2627,72 @@
       background: var(--color-surface-soft);
     }
 
+    .sound-attempt-panel[hidden] { display: none !important; }
+    body.sound-challenge-open { overflow: hidden; }
+    .sound-attempt-panel.focused {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      width: auto;
+      max-width: none;
+      margin: 0;
+      padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 0;
+      background: rgba(15, 23, 42, 0.28);
+      backdrop-filter: blur(12px) saturate(0.82);
+      -webkit-backdrop-filter: blur(12px) saturate(0.82);
+      overflow: hidden;
+    }
+
+    .sound-attempt-sheet {
+      position: relative;
+      width: min(920px, 100%);
+      max-height: min(720px, calc(100dvh - 36px));
+      padding: clamp(22px, 3vw, 34px);
+      overflow: auto;
+      overscroll-behavior: contain;
+      border: 1px solid var(--color-hairline);
+      border-radius: 22px;
+      background: var(--color-canvas);
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24), 0 2px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    .sound-attempt-exit {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      min-height: 44px;
+      padding: 9px 13px;
+      border: 1px solid var(--color-hairline);
+      border-radius: 10px;
+      background: var(--color-surface);
+      color: var(--color-slate);
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .sound-attempt-exit:hover { border-color: var(--color-hairline-strong); color: var(--color-ink); }
+    .sound-attempt-exit:focus-visible { outline: 3px solid rgba(86, 69, 212, 0.28); outline-offset: 2px; }
+
+    .sound-attempt-word {
+      margin: 16px 0 2px;
+      color: var(--color-ink);
+      font: 850 clamp(2rem, 5vw, 3.3rem)/1 'Nunito', sans-serif;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    .sound-attempt-panel.minimized {
+      width: min(700px, 100%);
+      padding: 18px;
+    }
+    .sound-attempt-launcher { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .sound-attempt-launcher-copy { min-width: 0; }
+    .sound-attempt-launcher .sound-attempt-title { margin-top: 2px; }
+    .sound-attempt-launcher-btn { flex: 0 0 auto; min-height: 44px; }
+
     .sound-attempt-top { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
     .sound-attempt-kicker { color: var(--color-primary-dark); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
     .sound-attempt-title { margin-top: 3px; color: var(--color-ink); font: 800 1.08rem/1.3 'Nunito', sans-serif; }
@@ -2638,14 +2704,20 @@
     .sound-builder-board {
       position: relative;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
+      align-items: center;
       gap: clamp(4px, 1vw, 9px);
-      min-height: 92px;
-      margin: 18px 0 12px;
-      padding: 22px 10px 16px;
+      min-height: 190px;
+      margin: 12px 0 16px;
+      padding: 48px 24px 42px;
       overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
       touch-action: none;
       user-select: none;
+      border: 1px solid var(--color-hairline);
+      border-radius: 18px;
+      background: var(--color-surface-soft);
     }
     .sound-builder-board.blocked { opacity: 0.72; touch-action: auto; }
 
@@ -2653,18 +2725,20 @@
       position: relative;
       z-index: 2;
       flex: 0 0 auto;
-      width: clamp(39px, 8vw, 52px);
-      height: 54px;
+      width: clamp(48px, 7vw, 64px);
+      height: clamp(62px, 8vw, 72px);
       display: grid;
       place-items: center;
       border: 1px solid var(--color-hairline-strong);
       border-radius: 12px;
       background: var(--color-canvas);
       color: var(--color-ink);
-      font: 800 clamp(1.45rem, 5vw, 1.9rem)/1 'Nunito', sans-serif;
+      font: 800 clamp(1.7rem, 4vw, 2.25rem)/1 'Nunito', sans-serif;
       cursor: crosshair;
       transition: 0.15s ease;
     }
+    .sound-builder-letter:first-of-type { margin-left: auto; }
+    .sound-builder-letter:last-of-type { margin-right: auto; }
     .sound-builder-letter:disabled { cursor: default; }
     .sound-builder-letter.preview { border-color: var(--color-primary); background: var(--color-primary-subtle); transform: translateY(-2px); }
     .sound-builder-letter.grouped { border-color: #94a3b8; background: var(--color-canvas); }
@@ -2687,10 +2761,10 @@
     .sound-builder-letter.group-3 { --group-color: #059669; }
     .sound-builder-letter.group-4 { --group-color: #d97706; }
     .sound-builder-letter.group-5 { --group-color: #db2777; }
-    .sound-builder-split-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: visible; }
+    .sound-builder-split-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: hidden; }
     .sound-builder-split-path { fill: none; stroke: #7c3aed; stroke-width: 4; stroke-linecap: round; }
     .sound-builder-split-path.needs-review { stroke: #d97706; stroke-dasharray: 7 5; }
-    .sound-builder-gesture-svg { position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none; overflow: visible; }
+    .sound-builder-gesture-svg { position: absolute; left: 0; top: 0; z-index: 4; pointer-events: none; overflow: hidden; }
     .sound-builder-gesture-path { fill: none; stroke: rgba(86, 69, 212, 0.72); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
     .sound-builder-gesture-end { fill: var(--color-primary); opacity: 0; }
     .sound-builder-gesture-end.visible { opacity: 0.85; }
@@ -2701,11 +2775,13 @@
     .sound-attempt-feedback.teacher { color: #92400e; background: #fffbeb; border: 1px solid #fde68a; }
     .sound-attempt-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
     .sound-attempt-tools { display: flex; gap: 6px; }
-    .sound-attempt-btn { min-height: 40px; padding: 8px 13px; border: 1px solid var(--color-hairline-strong); border-radius: 9px; background: var(--color-canvas); color: var(--color-charcoal); font-weight: 700; cursor: pointer; }
+    .sound-attempt-btn { min-height: 44px; padding: 9px 13px; border: 1px solid var(--color-hairline-strong); border-radius: 9px; background: var(--color-canvas); color: var(--color-charcoal); font-weight: 700; cursor: pointer; }
     .sound-attempt-btn.primary { border-color: var(--color-primary); background: var(--color-primary); color: white; }
     .sound-attempt-btn:disabled { cursor: default; opacity: 0.45; }
     .sound-attempt-btn:hover:not(:disabled) { border-color: var(--color-slate); }
     .sound-attempt-help { margin-top: 10px; color: var(--color-stone); font-size: 0.73rem; text-align: center; }
+    .sound-attempt-panel.focused .sound-attempt-title { font-size: 1.18rem; }
+    .sound-attempt-panel.focused .sound-attempt-instruction { max-width: 72ch; font-size: 0.9rem; }
     .sound-attempt-tricky { text-align: center; padding-block: 20px; }
     .sound-attempt-tricky .sound-attempt-title { font-size: 1.15rem; }
     .nav-tabs, .quick-chips-bar, .sound-builder-board, .sound-buttons-stage-wrapper { scrollbar-width: none; }
@@ -2733,6 +2809,22 @@
       .sound-attempt-progress { margin-top: 10px; }
       .sound-attempt-actions { align-items: stretch; }
       .sound-attempt-actions > .sound-attempt-btn.primary { width: 100%; order: -1; }
+      .sound-attempt-panel.focused { padding: 0; place-items: stretch; }
+      .sound-attempt-sheet {
+        width: 100%;
+        height: 100dvh;
+        max-height: none;
+        padding: max(18px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+        border: 0;
+        border-radius: 0;
+      }
+      .sound-attempt-top { padding-right: 94px; }
+      .sound-attempt-exit { top: max(12px, env(safe-area-inset-top)); right: max(12px, env(safe-area-inset-right)); }
+      .sound-attempt-word { margin-top: 14px; }
+      .sound-builder-board { min-height: 210px; padding: 55px 14px 46px; }
+      .sound-builder-letter { width: 52px; height: 64px; font-size: 1.85rem; }
+      .sound-attempt-launcher { align-items: flex-start; flex-direction: column; }
+      .sound-attempt-launcher-btn { width: 100%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -5156,6 +5248,13 @@
       return groups.sort((a, b) => Math.min(...a.indices) - Math.min(...b.indices));
     }
 
+    function setSoundChallengeFocus(isFocused) {
+      const panel = document.getElementById('soundAttemptPanel');
+      panel?.classList.toggle('focused', Boolean(isFocused));
+      panel?.classList.toggle('minimized', !isFocused && Boolean(activeSoundChallenge?.minimized));
+      document.body.classList.toggle('sound-challenge-open', Boolean(isFocused));
+    }
+
     function renderSoundButtons(parsed) {
       const challengePanel = document.getElementById('soundAttemptPanel');
       const answerPanel = document.getElementById('soundAnswerPanel');
@@ -5163,6 +5262,8 @@
       const isTrickyWord = MASTER_TRICKY_WORDS_SET.has(String(currentSearchWord || '').toLowerCase());
 
       if (isSilentMode && currentSearchWord && isTrickyWord) {
+        setSoundChallengeFocus(false);
+        challengePanel.classList.remove('minimized');
         document.getElementById('soundButtonsRow').innerHTML = '';
         document.getElementById('splitArchSvg')?.remove();
         answerPanel.hidden = true;
@@ -5195,6 +5296,7 @@
             feedbackType: '',
             reviewIndices: [],
             blocked: false,
+            minimized: false,
             dragStart: null,
             dragEnd: null,
             dragPoints: [],
@@ -5205,6 +5307,8 @@
         return;
       }
 
+      setSoundChallengeFocus(false);
+      challengePanel.classList.remove('minimized');
       challengePanel.hidden = true;
       answerPanel.hidden = false;
       renderCompletedSoundButtons(parsed);
@@ -5217,30 +5321,48 @@
       const covered = new Set(state.groups.flat());
       const allCovered = covered.size === state.wordLetters.length;
       const isBlocked = Boolean(state.blocked || state.attempts >= 3);
+      if (state.minimized) {
+        setSoundChallengeFocus(false);
+        panel.innerHTML = `
+          <div class="sound-attempt-launcher">
+            <div class="sound-attempt-launcher-copy">
+              <div class="sound-attempt-kicker">Try it first</div>
+              <div class="sound-attempt-title">Your sound-button workspace is waiting.</div>
+              <p class="sound-attempt-instruction">Open it when you are ready to continue with “${currentSearchWord}”.</p>
+            </div>
+            <button class="sound-attempt-btn primary sound-attempt-launcher-btn" type="button" onclick="openSoundChallengeWorkspace()">Open workspace</button>
+          </div>`;
+        return;
+      }
+      setSoundChallengeFocus(true);
       panel.innerHTML = `
-        <div class="sound-attempt-top">
-          <div>
-            <div class="sound-attempt-kicker">Try it first</div>
-            <div class="sound-attempt-title">Make the sound buttons yourself.</div>
-            <p class="sound-attempt-instruction">Tap one letter for one sound. Draw a straight line through every letter in a team. Curve around letters you want to skip for a split sound.</p>
+        <section class="sound-attempt-sheet" role="dialog" aria-modal="true" aria-labelledby="soundAttemptTitle" tabindex="-1">
+          <button class="sound-attempt-exit" type="button" onclick="minimiseSoundChallengeWorkspace()">Back to word</button>
+          <div class="sound-attempt-top">
+            <div>
+              <div class="sound-attempt-kicker">Try it first</div>
+              <div class="sound-attempt-title" id="soundAttemptTitle">Make the sound buttons yourself.</div>
+              <p class="sound-attempt-instruction">Tap one letter for one sound. Draw a straight line through every letter in a team. Curve around letters you want to skip for a split sound.</p>
+            </div>
+            <div class="sound-attempt-progress" aria-label="${Math.min(state.attempts, 3)} of 3 checks used">
+              ${[0, 1, 2].map(index => `<span class="${index < state.attempts ? 'used' : ''}"></span>`).join('')}
+            </div>
           </div>
-          <div class="sound-attempt-progress" aria-label="${Math.min(state.attempts, 3)} of 3 checks used">
-            ${[0, 1, 2].map(index => `<span class="${index < state.attempts ? 'used' : ''}"></span>`).join('')}
+          <div class="sound-attempt-word" aria-label="Word to build">${currentSearchWord}</div>
+          <div class="sound-builder-board ${isBlocked ? 'blocked' : ''}" id="soundBuilderBoard" aria-label="Build sound buttons for ${currentSearchWord}" aria-disabled="${isBlocked}">
+            <svg class="sound-builder-gesture-svg" id="soundGesturePreviewSvg" aria-hidden="true"><polyline class="sound-builder-gesture-path" id="soundGesturePreviewPath" points=""></polyline><circle class="sound-builder-gesture-end" id="soundGesturePreviewEnd" r="5"></circle></svg>
+            ${state.wordLetters.map((letter, index) => `<button class="sound-builder-letter" type="button" data-letter-index="${index}" aria-label="Letter ${letter}" ${isBlocked ? 'disabled' : ''}>${letter}</button>`).join('')}
           </div>
-        </div>
-        <div class="sound-builder-board ${isBlocked ? 'blocked' : ''}" id="soundBuilderBoard" aria-label="Build sound buttons for ${currentSearchWord}" aria-disabled="${isBlocked}">
-          <svg class="sound-builder-gesture-svg" id="soundGesturePreviewSvg" aria-hidden="true"><polyline class="sound-builder-gesture-path" id="soundGesturePreviewPath" points=""></polyline><circle class="sound-builder-gesture-end" id="soundGesturePreviewEnd" r="5"></circle></svg>
-          ${state.wordLetters.map((letter, index) => `<button class="sound-builder-letter" type="button" data-letter-index="${index}" aria-label="Letter ${letter}" ${isBlocked ? 'disabled' : ''}>${letter}</button>`).join('')}
-        </div>
-        <div class="sound-attempt-feedback ${state.feedbackType}" id="soundAttemptFeedback" role="status">${state.feedback}</div>
-        <div class="sound-attempt-actions">
-          <div class="sound-attempt-tools">
-            <button class="sound-attempt-btn" type="button" onclick="undoSoundAttemptGroup()" ${state.groups.length && !isBlocked ? '' : 'disabled'}>Undo</button>
-            <button class="sound-attempt-btn" type="button" onclick="resetSoundAttempt()" ${state.groups.length && !isBlocked ? '' : 'disabled'}>Start again</button>
+          <div class="sound-attempt-feedback ${state.feedbackType}" id="soundAttemptFeedback" role="status">${state.feedback}</div>
+          <div class="sound-attempt-actions">
+            <div class="sound-attempt-tools">
+              <button class="sound-attempt-btn" type="button" onclick="undoSoundAttemptGroup()" ${state.groups.length && !isBlocked ? '' : 'disabled'}>Undo</button>
+              <button class="sound-attempt-btn" type="button" onclick="resetSoundAttempt()" ${state.groups.length && !isBlocked ? '' : 'disabled'}>Start again</button>
+            </div>
+            <button class="sound-attempt-btn primary" id="btnCheckSoundAttempt" type="button" onclick="checkSoundAttempt()" ${allCovered && !isBlocked ? '' : 'disabled'}>Check my sound buttons</button>
           </div>
-          <button class="sound-attempt-btn primary" id="btnCheckSoundAttempt" type="button" onclick="checkSoundAttempt()" ${allCovered && !isBlocked ? '' : 'disabled'}>Check my sound buttons</button>
-        </div>
-        <div class="sound-attempt-help">${isBlocked ? 'This attempt is locked. A teacher can use the teacher control to continue.' : 'Straight lines select every letter they cross. Curved lines can skip letters and link split sounds. You can change any group and keep trying.'}</div>`;
+          <div class="sound-attempt-help">${isBlocked ? 'This attempt is locked. A teacher can use the teacher control to continue.' : 'Straight lines select every letter they cross. Curved lines can skip letters and link split sounds. You can change any group and keep trying.'}</div>
+        </section>`;
 
       state.groups.forEach((indices, groupIndex) => {
         const isSplitGroup = indices.some((value, index) => index > 0 && value !== indices[index - 1] + 1);
@@ -5270,6 +5392,23 @@
       drawSoundAttemptSplitArches();
     }
 
+    function minimiseSoundChallengeWorkspace() {
+      if (!activeSoundChallenge) return;
+      activeSoundChallenge.dragStart = null;
+      activeSoundChallenge.dragEnd = null;
+      activeSoundChallenge.dragPoints = [];
+      activeSoundChallenge.dragVisitedIndices = [];
+      activeSoundChallenge.minimized = true;
+      renderSoundChallengePanel();
+    }
+
+    function openSoundChallengeWorkspace() {
+      if (!activeSoundChallenge) return;
+      activeSoundChallenge.minimized = false;
+      renderSoundChallengePanel();
+      requestAnimationFrame(() => document.querySelector('.sound-attempt-sheet')?.focus({ preventScroll: true }));
+    }
+
     function soundAttemptLetterAtPoint(clientX, clientY) {
       const element = document.elementFromPoint(clientX, clientY);
       const letter = element && element.closest && element.closest('.sound-builder-letter');
@@ -5278,9 +5417,13 @@
 
     function soundAttemptBoardPoint(board, clientX, clientY) {
       const rect = board.getBoundingClientRect();
+      const visibleLeft = board.scrollLeft;
+      const visibleRight = visibleLeft + board.clientWidth;
+      const rawX = clientX - rect.left + board.scrollLeft;
+      const rawY = clientY - rect.top + board.scrollTop;
       return {
-        x: clientX - rect.left + board.scrollLeft,
-        y: clientY - rect.top + board.scrollTop,
+        x: Math.max(visibleLeft, Math.min(visibleRight, rawX)),
+        y: Math.max(0, Math.min(board.clientHeight, rawY)),
         clientX,
         clientY
       };
@@ -5290,12 +5433,29 @@
       const board = document.getElementById('soundBuilderBoard');
       const svg = document.getElementById('soundGesturePreviewSvg');
       if (!board || !svg) return;
-      const width = Math.max(board.clientWidth, board.scrollWidth);
+      svg.style.width = '0px';
+      const boardStyle = getComputedStyle(board);
+      const rightPadding = parseFloat(boardStyle.paddingRight) || 0;
+      const letters = [...board.querySelectorAll('.sound-builder-letter')];
+      const letterContentWidth = letters.length
+        ? Math.max(...letters.map(letter => letter.offsetLeft + letter.offsetWidth)) + rightPadding
+        : board.clientWidth;
+      const width = Math.max(board.clientWidth, letterContentWidth);
       const height = board.clientHeight;
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
       svg.style.width = `${width}px`;
       svg.style.height = `${height}px`;
     }
+
+    let soundChallengeResizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(soundChallengeResizeTimer);
+      soundChallengeResizeTimer = setTimeout(() => {
+        if (!document.getElementById('soundAttemptPanel')?.classList.contains('focused')) return;
+        prepareSoundGestureOverlay();
+        drawSoundAttemptSplitArches();
+      }, 80);
+    });
 
     function collectSoundLettersAlongSegment(fromPoint, toPoint) {
       const state = activeSoundChallenge;
@@ -5548,6 +5708,7 @@
       const state = activeSoundChallenge;
       const board = document.getElementById('soundBuilderBoard');
       if (!state || !board) return;
+      board.querySelector('.sound-builder-split-svg')?.remove();
       const splitGroups = state.groups.filter(group => group.some((value, index) => index > 0 && value !== group[index - 1] + 1));
       if (!splitGroups.length) return;
       const boardRect = board.getBoundingClientRect();

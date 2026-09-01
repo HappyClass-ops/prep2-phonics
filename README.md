@@ -9,8 +9,12 @@ mode immediately.
 
 ## Try It First
 
-Silent searches begin with one compact, inline sound-button activity on the
-main dictionary page. Pupils tap a single letter for one sound, swipe across
+Silent searches open one focused, iPad-friendly sound-button workspace over a
+softly blurred dictionary page. The larger drawing board clips every live line
+and saved split curve to its own boundary, and recalculates after phone or iPad
+rotation. **Back to word** minimises the workspace without revealing the
+answer or discarding the pupil's attempt; **Open workspace** returns to it.
+Pupils tap a single letter for one sound, swipe across
 adjacent letters for a digraph, trigraph/triphthong, quadgraph, or suffix sound,
 and draw a curved line that skips intervening letters to propose a split
 digraph. A live line follows the pointer and every crossed letter highlights as
