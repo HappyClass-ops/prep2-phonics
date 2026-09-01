@@ -49,6 +49,12 @@ The main Review Queue opens only flagged items, while separate All Sounds and
 Tricky Words buttons remain available for intentional full passes. Saving a
 replacement recording automatically clears its review flag.
 
+Complete phoneme exports are published with
+`scripts/import-master-voice-pack.mjs`. The importer requires the exact 75-ID
+inventory, normalizes only changed WAV clips, preserves unchanged recordings
+byte-for-byte, and embeds the validated pack into the pupil app. Tricky-word
+recordings remain in the separate `little_wandle_word_voice_pack.json` file.
+
 ## 🚀 Live Links
 - **Pupil App**: [Open Student App](https://happyclass-ops.github.io/prep2-phonics/)
 - **Teacher Studio (PIN Locked)**: [Open Teacher Studio](https://happyclass-ops.github.io/prep2-phonics/studio/)
