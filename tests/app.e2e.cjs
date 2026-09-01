@@ -161,6 +161,7 @@ async function run() {
   page.on('pageerror', error => pageErrors.push(error.message));
   await page.addInitScript(() => {
     window.__playedAudioUrls = [];
+    localStorage.setItem('word_audio_tricky:is', 'data:audio/wav;base64,VEVTVA==');
     window.Audio = class {
       constructor(url) { this.url = url; window.__playedAudioUrls.push(url); }
       play() { if (this.onended) setTimeout(() => this.onended(), 0); return Promise.resolve(); }
@@ -192,6 +193,10 @@ async function run() {
     const soundboardTotal = await page.locator('#soundboardGrid .sb-tile').count();
     assert.match(await page.locator('#tabTrickyBtn').innerText(), new RegExp(`\\(${trickyTotal}\\)`));
     assert.match(await page.locator('#tabSbBtn').innerText(), new RegExp(`\\(${soundboardTotal}\\)`));
+    assert.equal(trickyTotal, 93, 'the verified Little Wandle set must contain all 93 tricky words');
+    assert.equal(await page.locator('#btnSoundModeToggle').getAttribute('aria-pressed'), 'true', 'silent mode must be the default');
+    assert.match(await page.locator('#btnSoundModeToggle').innerText(), /Silent/i);
+    assert.equal(await page.locator('#trickyGrid .tricky-card').first().getAttribute('role'), null, 'tricky words must not be clickable in silent mode');
     assert.equal(await page.evaluate(() => isAcceptedDictionaryEntry({
       meta: { id: 'fire:2', stems: ['fire'] },
       hwi: { hw: 'fire' },
@@ -203,6 +208,33 @@ async function run() {
     console.log('PASS: Word Finder opens in a clean start state');
 
     await search(page, 'cat');
+    assert.equal(await page.locator('#resContextPhrase').isVisible(), false, 'image-search context must not appear on the dictionary page');
+    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), true, 'whole-word voice must be disabled in silent mode');
+    assert.equal(await page.locator('#btnDefinitionVoice').isDisabled(), true, 'definition voice must be disabled in silent mode');
+    assert.equal(await page.locator('#soundAttemptPanel').isVisible(), true, 'silent mode must ask the child to build the sound buttons first');
+    assert.equal(await page.locator('#soundAnswerPanel').isVisible(), false, 'completed sound buttons must stay hidden before a successful attempt');
+    await page.evaluate(() => commitSoundAttemptGroup(0, 2));
+    for (let attempt = 0; attempt < 3; attempt++) await page.locator('#btnCheckSoundAttempt').click();
+    assert.match(await page.locator('#soundAttemptFeedback').innerText(), /Call a teacher over to help you/i, 'the third unsuccessful check must ask for teacher support');
+    assert.equal(await page.locator('#soundAnswerPanel').isVisible(), false, 'three unsuccessful checks must never reveal the answer');
+    await page.getByRole('button', { name: 'Start again' }).click();
+    for (const letter of await page.locator('.sound-builder-letter').all()) await letter.click();
+    await page.locator('#btnCheckSoundAttempt').click();
+    await page.waitForTimeout(650);
+    assert.equal(await page.locator('#soundAnswerPanel').isVisible(), true, 'a correct attempt must reveal the completed sound buttons');
+    const silentAudioCount = await page.evaluate(() => window.__playedAudioUrls.length);
+    await page.locator('#soundButtonsRow .phoneme-unit').first().click();
+    assert.equal(await page.locator('#soundButtonsRow .phoneme-unit').first().evaluate(el => el.classList.contains('active-sound')), true, 'silent sound buttons must still highlight');
+    await page.evaluate(() => playFullBlendSequence());
+    await page.waitForTimeout(30);
+    assert.equal(await page.evaluate(() => window.__playedAudioUrls.length), silentAudioCount, 'silent blending must animate without creating audio');
+    await page.evaluate(() => stopAllAudio());
+    await page.locator('#btnSoundModeToggle').click();
+    const eightKey = page.locator('#soundPinBackdrop .sound-pin-key', { hasText: /^8$/ });
+    for (let index = 0; index < 4; index++) await eightKey.click();
+    assert.equal(await page.locator('#btnSoundModeToggle').getAttribute('aria-pressed'), 'false', 'the teacher PIN must unlock voice mode');
+    assert.match(await page.locator('#btnSoundModeToggle').innerText(), /Voice on/i);
+    assert.equal(await page.locator('#btnSayWholeWord').isDisabled(), false);
     assert.match(await page.locator('.dictionary-credits').innerText(), /Definitions, examples and pronunciations from Merriam-Webster's Elementary Dictionary/i);
     assert.match(await page.locator('.dictionary-credits').innerText(), /Whole-word and read-aloud voice by ElevenLabs/i);
     assert.match(await page.locator('.dictionary-credits').innerText(), /Merriam-Webster audio is used when the voice service is unavailable/i);
@@ -293,9 +325,8 @@ async function run() {
     await isCard.click();
     await page.waitForTimeout(50);
     const playedUrls = await page.evaluate(() => window.__playedAudioUrls);
-    assert.match(playedUrls.at(-1) || '', /^blob:/, `the is card did not use ElevenLabs audio: ${playedUrls.at(-1)}`);
-    assert.match(elevenRequests.at(-1).text, /^is\.?$/, 'tricky-word speech may add terminal punctuation for clean synthesis');
-    console.log('PASS: each tricky-word card uses the British ElevenLabs voice');
+    assert.equal(playedUrls.at(-1), 'data:audio/wav;base64,VEVTVA==', 'a tricky word must use only its teacher recording');
+    console.log('PASS: tricky-word cards use teacher recordings only');
 
     await page.locator('#tabDictBtn').click();
     await search(page, 'cautious');
@@ -361,15 +392,17 @@ async function run() {
     await page.evaluate(() => localStorage.removeItem('word_audio_pronunciation:tear:2c8-74-65-72'));
     console.log('PASS: teacher-published pronunciation overrides replace blocked provider audio');
 
-    elevenMode = 'failure';
-    await page.evaluate(() => { ELEVENLABS_AUDIO_CACHE.clear(); elevenLabsBlocked = false; });
     await page.locator('#tabTrickyBtn').click();
-    await isCard.click();
-    await page.waitForTimeout(30);
-    const fallbackUrls = await page.evaluate(() => window.__playedAudioUrls);
-    assert.match(fallbackUrls.at(-1) || '', /\/i\/is000001\.mp3$/, 'Merriam audio must remain the fallback when ElevenLabs fails');
+    await page.locator('#btnSoundModeToggle').click();
+    assert.equal(await page.locator('#btnSoundModeToggle').getAttribute('aria-pressed'), 'true');
+    assert.equal(await isCard.getAttribute('role'), null, 'silent tricky-word cards must become non-interactive');
+    const beforeSilentTrickyClick = await page.evaluate(() => window.__playedAudioUrls.length);
+    await isCard.click({ force: true });
+    assert.equal(await page.evaluate(() => window.__playedAudioUrls.length), beforeSilentTrickyClick, 'silent tricky words must never play their recording');
     await page.locator('#tabDictBtn').click();
-    console.log('PASS: Merriam exact-word audio remains the ElevenLabs failure fallback');
+    console.log('PASS: returning to silent mode immediately disables all tricky-word audio');
+    await page.locator('#btnSoundModeToggle').click();
+    for (let index = 0; index < 4; index++) await eightKey.click();
 
     await search(page, 'catt');
     const suggestions = await page.locator('#autocompleteDropdown .autocomplete-item span:first-child').allTextContents();

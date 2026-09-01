@@ -41,7 +41,7 @@ async function run() {
     assert.match(await page.locator('header .brand-sub').innerText(), /Visual Dictionary Audio Pack/i);
     assert.doesNotMatch(await page.locator('header').innerText(), /Little Wandle/i);
     assert.match(await page.locator('header .brand-logo-image').getAttribute('src'), /assets\/visual-dictionary-logo\.png$/);
-    assert.equal(await page.locator('#wordRecordingsGrid .sound-card').count(), 32, 'the studio must include all 24 tricky words and 8 homograph models');
+    assert.equal(await page.locator('#wordRecordingsGrid .sound-card').count(), 101, 'the studio must include all 93 verified tricky words and 8 homograph models');
     assert.match(await page.locator('#wordRecordingSection').innerText(), /same browser.*opened or reloaded.*no extra sync step is needed/i);
     assert.match(await page.locator('#wordRecordingSection').innerText(), /Export Sound Pack.*Export Word Voice Pack.*send the downloaded JSON file.*GitHub/i);
     assert.equal(await page.getByRole('button', { name: 'Use on This Browser' }).count(), 0, 'the studio must not present a fake manual sync step');

@@ -32,6 +32,19 @@ assert.match(worker, /Xb7hH8MSUJpSbSDYk0k2|env\.ELEVENLABS_VOICE_ID/, 'The Worke
 assert.match(worker, /eleven_multilingual_v2[\s\S]*stability: 0\.85[\s\S]*speed: 0\.82/, 'The Worker must own the high-clarity speech settings.');
 assert.match(app, /function playElevenLabsSpeech[\s\S]*fetch\(ELEVENLABS_ENDPOINT[\s\S]*JSON\.stringify\(\{ text: normalizedSpeechText \}\)/, 'Read-aloud must request speech through Cloudflare without a browser key.');
 assert.match(app, /function speakNaturalWord[\s\S]*playElevenLabsSpeech[\s\S]*onFailure: \(\) => playAudioUrl/, 'Whole-word audio must try ElevenLabs and preserve the exact dictionary fallback.');
+assert.match(app, /const SOUND_MODE_PIN = '8888'/, 'Teacher voice unlock must use the requested PIN.');
+assert.match(app, /let isSilentMode = true/, 'The pupil app must start in silent mode.');
+assert.match(app, /function playSound[\s\S]*if \(isSilentMode\)[\s\S]*setTimeout\(clearHighlight/, 'Silent sound buttons must keep their visual feedback without playing audio.');
+assert.match(app, /id="soundAttemptPanel" hidden[\s\S]*id="soundAnswerPanel"/, 'Silent searches must include one inline Try It First activity before the completed answer.');
+assert.match(app, /function renderSoundButtons[\s\S]*isSilentMode[\s\S]*completedSoundChallenges[\s\S]*renderSoundChallengePanel/, 'Silent searches must withhold completed sound buttons until the child succeeds.');
+assert.match(app, /Tap one letter for one sound[\s\S]*Swipe across letters[\s\S]*split sound/, 'The challenge must teach tap, swipe, and split-digraph gestures clearly.');
+assert.match(app, /state\.attempts = Math\.min\(3/, 'Unsuccessful checks must stop at the third-attempt teacher-support state.');
+assert.match(app, /Call a teacher over to help you[\s\S]*Keep your attempt here/, 'The third unsuccessful check must lead to teacher support without an automatic reveal.');
+assert.match(app, /const VERIFIED_TRICKY_WORDS = \[[\s\S]*father[\s\S]*shoe[\s\S]*const MASTER_TRICKY_WORDS_SET/, 'The verified 93-word Little Wandle list must be embedded.');
+const trickyAudioFunction = app.match(/async function playTrickyWordAudio[\s\S]*?\n    }/)[0];
+assert.match(trickyAudioFunction, /wordAudioFor\(trickyRecordingId\(word\)\)/, 'Tricky words must use the matching teacher recording.');
+assert.doesNotMatch(trickyAudioFunction, /ElevenLabs|resolveDictionaryWord|dictionaryAudio/, 'Tricky words must never fall back to AI or dictionary voice.');
+assert.match(app, /id="resContextPhrase" hidden/, 'Image-search context must stay off the dictionary page.');
 assert.match(app, /function speakCurrentDefinition/, 'Definitions must expose read-aloud.');
 assert.match(app, /Search “\$\{suggestion\.word\}”/, 'Every typed word must keep an exact-search action.');
 assert.doesNotMatch(app, /Different Picture Idea|btnLevelEasy|btnLevelHard/, 'Misleading picture shuffling and duplicate puzzle levels must stay removed.');
@@ -51,6 +64,8 @@ assert.doesNotMatch(app, decorativeEmoji, 'The pupil interface must not contain 
 const studio = fs.readFileSync('studio.html', 'utf8');
 assert.match(studio, /s\.needsUpdate && \(!stem \|\| !stem\.hasAudio\)/, 'The studio must only flag clips that are actually missing.');
 assert.match(studio, /const TRICKY_WORD_RECORDINGS = \[[^\]]+\]/, 'The studio must expose tricky-word recording targets.');
+const trickyRecordingList = studio.match(/const TRICKY_WORD_RECORDINGS = \[([\s\S]*?)\];/)[1];
+assert.equal((trickyRecordingList.match(/'[^']+'/g) || []).length, 93, 'Teacher Studio must expose all 93 verified tricky words for recording.');
 assert.match(studio, /function exportWordVoicePack/, 'The studio must export a publishable word voice pack.');
 assert.match(studio, /same browser[\s\S]*no extra sync step is needed[\s\S]*Export Sound Pack[\s\S]*Export Word Voice Pack[\s\S]*send the downloaded JSON file/, 'The studio must explain automatic local use versus publishing for every pupil.');
 assert.doesNotMatch(studio, /Use on This Browser|syncAllToStudentApp/, 'The studio must not present a timestamp write as a manual sync operation.');
@@ -58,4 +73,4 @@ assert.match(studio, /\.sound-actions-row \{[\s\S]*grid-template-columns: repeat
 assert.match(studio, /<span>Download WAV<\/span>/, 'The WAV download control must have a clear label.');
 assert.doesNotMatch(studio, decorativeEmoji, 'Teacher Studio must not contain decorative emoji.');
 assert.equal(studio, fs.readFileSync('studio/index.html', 'utf8'), 'Both Teacher Studio routes must remain identical.');
-console.log('Content checks passed: calm primary meanings, verified word forms and suggestions, emoji-free interfaces, mobile phoneme reachability, safe audio, and publishable teacher recordings.');
+console.log('Content checks passed: calm primary meanings, default teacher-locked silent mode, 93 verified tricky words, safe audio, and publishable teacher recordings.');

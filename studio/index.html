@@ -2557,7 +2557,12 @@
     let animationFrameId = null;
     let activeWordRecordingId = null;
 
-    const TRICKY_WORD_RECORDINGS = ['is','the','I','to','into','go','no','he','she','we','me','was','you','they','my','said','have','come','some','one','people','water','friend','because'];
+    const TRICKY_WORD_RECORDINGS = [
+      'is','I','the','put','pull','full','as','and','has','his','her','go','no','to','into','she','push','he','of','we','me','be',
+      'was','you','they','my','by','all','are','sure','pure','said','so','have','like','some','come','love','do','were','here',
+      'little','says','there','when','what','one','out','today',
+      'their','people','oh','your','Mr','Mrs','Ms','ask','could','would','should','our','house','mouse','water','want','any','many','again','who','whole','where','two','school','call','different','thought','through','friend','work','once','laugh','half','father','because','eye','busy','beautiful','pretty','hour','move','improve','parents','shoe'
+    ];
     const HOMOGRAPH_RECORDINGS = [
       { word: 'tear', pronunciation: 'ˈtir', context: 'a drop from your eye' },
       { word: 'tear', pronunciation: 'ˈter', context: 'to rip or pull apart' },

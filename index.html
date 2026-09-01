@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="app-version" content="2026.09.01.1">
+  <meta name="app-version" content="2026.09.01.2">
   <title>Visual Dictionary</title>
   <link rel="icon" type="image/png" href="assets/visual-dictionary-logo.png">
   
@@ -20,6 +20,7 @@
     :root {
       --color-primary: #5645d4;           /* Notion Purple */
       --color-primary-hover: #4534b3;
+      --color-primary-dark: #4534b3;
       --color-primary-subtle: #f0edfc;
       --color-on-primary: #ffffff;
       --color-brand-navy: #0a1530;
@@ -2378,12 +2379,317 @@
       background: var(--color-primary-hover);
     }
 
+    /* CALM DICTIONARY COMPOSITION + SILENT MODE */
+    .dict-workspace-card {
+      border-color: var(--color-hairline-soft);
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.045);
+    }
+
+    .dict-page-header {
+      padding: 19px 24px 15px;
+      border-bottom: 0;
+    }
+
+    .word-main-title { font-size: clamp(2.05rem, 4.4vw, 2.4rem); }
+
+    .dict-senses-bar,
+    .dict-visual-banner,
+    .word-family-panel {
+      background: var(--color-canvas);
+      border-top: 1px solid var(--color-hairline-soft);
+      border-bottom: 0;
+      padding-inline: 24px;
+    }
+
+    .dict-senses-bar.word-job-bar { padding-block: 9px; }
+    .meaning-count-note { font-weight: 500; }
+    .other-meanings-panel { background: var(--color-surface-soft); border-color: var(--color-hairline-soft); }
+
+    .dict-visual-banner { padding-block: 13px; gap: 12px; }
+    .visual-story-body { gap: 3px; }
+    .visual-story-headline { max-width: 720px; font-size: 1rem; font-weight: 560; }
+    .visual-context-phrase[hidden] { display: none !important; }
+    .btn-notion-picture-link { box-shadow: none; }
+
+    .word-family-panel { padding-block: 11px; }
+    .word-family-prompt { color: var(--color-slate); font-weight: 560; }
+
+    .sound-buttons-container {
+      padding: 20px 24px;
+      gap: 14px;
+      background: var(--color-canvas);
+      border-top: 1px solid var(--color-hairline-soft);
+      border-bottom: 0;
+    }
+
+    .sound-buttons-stage-wrapper {
+      max-width: 760px;
+      padding: 17px 22px 20px;
+      background: var(--color-surface);
+      border-color: var(--color-hairline-soft);
+      box-shadow: none;
+    }
+
+    .sound-buttons-row { min-height: 88px; }
+
+    .blend-actions-row .btn-act {
+      background: transparent !important;
+      color: var(--color-charcoal) !important;
+      border: 1px solid var(--color-hairline-strong);
+      box-shadow: none;
+    }
+
+    .blend-actions-row .btn-act-primary {
+      background: var(--color-primary-subtle) !important;
+      color: var(--color-primary-dark) !important;
+      border-color: #c7d2fe;
+    }
+
+    .blend-actions-row .btn-act:hover:not(:disabled) {
+      background: var(--color-surface-soft) !important;
+      border-color: var(--color-slate);
+      transform: none;
+    }
+
+    .btn-act:disabled,
+    .btn-sentence-audio:disabled {
+      cursor: default;
+      opacity: 0.48;
+      box-shadow: none;
+    }
+
+    .dict-body-content {
+      padding: 18px 24px 16px;
+      gap: 10px;
+      border-top: 1px solid var(--color-hairline-soft);
+    }
+
+    .meaning-text-body { font-size: 1.02rem; font-weight: 480; }
+    .btn-sentence-audio { width: auto; box-shadow: none; }
+
+    .example-quote-box {
+      padding: 11px 14px;
+      background: transparent;
+      border-left-width: 2px;
+      box-shadow: none;
+    }
+
+    .dictionary-credits {
+      margin-top: 2px;
+      padding-top: 10px;
+      gap: 4px 16px;
+      opacity: 0.78;
+    }
+
+    .provider-credit {
+      padding: 5px 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .provider-mark { min-width: 25px; height: 25px; border-radius: 7px; font-size: 0.62rem; }
+
+    .sound-mode-toggle[aria-pressed="true"] {
+      background: var(--color-surface-soft);
+      border-color: var(--color-hairline-strong);
+      color: var(--color-slate);
+    }
+
+    .sound-mode-toggle[aria-pressed="false"] {
+      background: var(--color-primary-subtle);
+      border-color: #c7d2fe;
+      color: var(--color-primary-dark);
+    }
+
+    .sound-mode-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.75;
+    }
+
+    .sound-pin-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(10, 21, 48, 0.72);
+      backdrop-filter: blur(8px);
+    }
+
+    .sound-pin-card {
+      width: min(360px, 100%);
+      padding: 30px 28px;
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-xl);
+      background: var(--color-canvas);
+      box-shadow: var(--shadow-modal);
+      text-align: center;
+      animation: soundPinPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes soundPinPop {
+      from { transform: scale(0.94); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .sound-pin-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #c7d2fe;
+      border-radius: 50%;
+      background: var(--color-primary-subtle);
+      color: var(--color-primary-dark);
+    }
+
+    .sound-pin-title { font: 800 1.25rem/1.2 'Nunito', sans-serif; color: var(--color-ink); }
+    .sound-pin-subtitle { margin-top: 5px; color: var(--color-slate); font-size: 0.84rem; }
+    .sound-pin-dots { display: flex; justify-content: center; gap: 13px; margin: 20px 0; }
+    .sound-pin-dot {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--color-hairline-strong);
+      border-radius: 50%;
+      background: var(--color-surface);
+      transition: 0.15s ease;
+    }
+    .sound-pin-dot.filled { background: var(--color-primary); border-color: var(--color-primary); transform: scale(1.12); }
+    .sound-pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; max-width: 244px; margin: 0 auto; }
+    .sound-pin-key {
+      min-height: 50px;
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      color: var(--color-ink);
+      font: 750 1.2rem/1 'Nunito', sans-serif;
+      cursor: pointer;
+    }
+    .sound-pin-key:hover { background: var(--color-surface-hover); border-color: var(--color-hairline-strong); }
+    .sound-pin-key:active { transform: scale(0.95); }
+    .sound-pin-key.utility { color: var(--color-slate); font-size: 0.9rem; }
+    .sound-pin-cancel { margin-top: 15px; border: 0; background: transparent; color: var(--color-slate); font-weight: 650; cursor: pointer; }
+    .sound-pin-error { animation: soundPinShake 0.38s ease-in-out; }
+    @keyframes soundPinShake {
+      0%, 100% { transform: translateX(0); }
+      25%, 75% { transform: translateX(-7px); }
+      50% { transform: translateX(7px); }
+    }
+
+    .tricky-card.audio-unavailable { cursor: default; }
+    .tricky-card.audio-unavailable:hover { transform: none; }
+    .tricky-recording-status { margin-top: 7px; color: var(--color-stone); font-size: 0.7rem; font-weight: 650; }
+
+    .sound-attempt-panel {
+      width: min(700px, 100%);
+      margin: 0 auto;
+      padding: clamp(16px, 3vw, 22px);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface-soft);
+    }
+
+    .sound-attempt-top { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+    .sound-attempt-kicker { color: var(--color-primary-dark); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
+    .sound-attempt-title { margin-top: 3px; color: var(--color-ink); font: 800 1.08rem/1.3 'Nunito', sans-serif; }
+    .sound-attempt-instruction { margin: 5px 0 0; color: var(--color-slate); font-size: 0.82rem; line-height: 1.45; }
+    .sound-attempt-progress { display: flex; gap: 5px; padding-top: 4px; white-space: nowrap; }
+    .sound-attempt-progress span { width: 8px; height: 8px; border: 1px solid var(--color-hairline-strong); border-radius: 50%; background: var(--color-canvas); }
+    .sound-attempt-progress span.used { border-color: var(--color-primary); background: var(--color-primary); }
+
+    .sound-builder-board {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: clamp(4px, 1vw, 9px);
+      min-height: 92px;
+      margin: 18px 0 12px;
+      padding: 22px 10px 16px;
+      overflow-x: auto;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .sound-builder-letter {
+      position: relative;
+      z-index: 2;
+      flex: 0 0 auto;
+      width: clamp(39px, 8vw, 52px);
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--color-hairline-strong);
+      border-radius: 12px;
+      background: var(--color-canvas);
+      color: var(--color-ink);
+      font: 800 clamp(1.45rem, 5vw, 1.9rem)/1 'Nunito', sans-serif;
+      cursor: crosshair;
+      transition: 0.15s ease;
+    }
+    .sound-builder-letter.preview { border-color: var(--color-primary); background: var(--color-primary-subtle); }
+    .sound-builder-letter.grouped { border-color: #94a3b8; background: var(--color-canvas); }
+    .sound-builder-letter.grouped::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      bottom: -10px;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--group-color, var(--color-primary));
+    }
+    .sound-builder-letter.single::after { left: 50%; right: auto; width: 8px; height: 8px; transform: translateX(-50%); border-radius: 50%; }
+    .sound-builder-letter.split::after { display: none; }
+    .sound-builder-letter.group-0 { --group-color: #2563eb; }
+    .sound-builder-letter.group-1 { --group-color: #7c3aed; }
+    .sound-builder-letter.group-2 { --group-color: #0891b2; }
+    .sound-builder-letter.group-3 { --group-color: #059669; }
+    .sound-builder-letter.group-4 { --group-color: #d97706; }
+    .sound-builder-letter.group-5 { --group-color: #db2777; }
+    .sound-builder-split-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: visible; }
+    .sound-builder-split-path { fill: none; stroke: #7c3aed; stroke-width: 4; stroke-linecap: round; }
+
+    .sound-attempt-feedback { min-height: 38px; padding: 9px 11px; border-radius: 9px; background: var(--color-canvas); color: var(--color-slate); font-size: 0.8rem; line-height: 1.4; }
+    .sound-attempt-feedback.success { color: #047857; background: #ecfdf5; }
+    .sound-attempt-feedback.teacher { color: #92400e; background: #fffbeb; border: 1px solid #fde68a; }
+    .sound-attempt-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .sound-attempt-tools { display: flex; gap: 6px; }
+    .sound-attempt-btn { min-height: 40px; padding: 8px 13px; border: 1px solid var(--color-hairline-strong); border-radius: 9px; background: var(--color-canvas); color: var(--color-charcoal); font-weight: 700; cursor: pointer; }
+    .sound-attempt-btn.primary { border-color: var(--color-primary); background: var(--color-primary); color: white; }
+    .sound-attempt-btn:disabled { cursor: default; opacity: 0.45; }
+    .sound-attempt-btn:hover:not(:disabled) { border-color: var(--color-slate); }
+    .sound-attempt-help { margin-top: 10px; color: var(--color-stone); font-size: 0.73rem; text-align: center; }
+    .sound-attempt-tricky { text-align: center; padding-block: 20px; }
+    .sound-attempt-tricky .sound-attempt-title { font-size: 1.15rem; }
+    .nav-tabs, .quick-chips-bar, .sound-builder-board, .sound-buttons-stage-wrapper { scrollbar-width: none; }
+    .nav-tabs::-webkit-scrollbar, .quick-chips-bar::-webkit-scrollbar, .sound-builder-board::-webkit-scrollbar, .sound-buttons-stage-wrapper::-webkit-scrollbar { display: none; }
+
+    body.dark-theme .dict-senses-bar,
+    body.dark-theme .dict-visual-banner,
+    body.dark-theme .word-family-panel,
+    body.dark-theme .sound-buttons-container { background: var(--color-canvas); }
+    body.dark-theme .other-meanings-panel { background: var(--color-surface); border-color: var(--color-hairline); }
+    body.dark-theme .sound-attempt-feedback.success { background: #0d2e27; color: #6ee7b7; }
+    body.dark-theme .sound-attempt-feedback.teacher { background: #332610; color: #fcd34d; border-color: #6b4f16; }
+    body.dark-theme .blend-actions-row .btn-act-primary { border-color: #514b75; }
+    body.dark-theme .sound-mode-toggle[aria-pressed="false"] { border-color: #514b75; color: #c4b5fd; }
+
     @media (max-width: 680px) {
       .dict-senses-bar,
       .word-family-panel { padding-inline: 16px; }
       .word-family-scroll { grid-auto-columns: minmax(126px, 76%); }
       .word-family-heading { align-items: flex-start; }
       .sense-pill-btn { min-height: 40px; padding-inline: 11px; }
+      .sound-attempt-top { display: block; }
+      .sound-attempt-progress { margin-top: 10px; }
+      .sound-attempt-actions { align-items: stretch; }
+      .sound-attempt-actions > .sound-attempt-btn.primary { width: 100%; order: -1; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2434,6 +2740,11 @@
           </svg>
           <span>Recent</span>
           <span id="historyBadgeCount" class="history-badge-count">0</span>
+        </button>
+
+        <button class="btn-header-tool sound-mode-toggle" id="btnSoundModeToggle" onclick="requestSoundModeToggle()" aria-label="Silent mode is on" aria-pressed="true" title="Teacher PIN required to enable voice">
+          <span class="sound-mode-dot" aria-hidden="true"></span>
+          <span id="soundModeToggleText">Silent</span>
         </button>
 
         <button class="btn-header-tool" id="btnThemeToggle" onclick="toggleTheme()" aria-label="Toggle Dark Mode" title="Toggle Dark/Light Mode">
@@ -2497,7 +2808,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
             <span>Open Tricky Words Tab</span>
           </button>
-          <button class="btn-act btn-act-secondary" onclick="speakNaturalWord()">
+          <button class="btn-act btn-act-secondary" id="btnTrickyHearWord" onclick="speakNaturalWord()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
             <span>Hear Word</span>
           </button>
@@ -2528,7 +2839,7 @@
           </div>
           <h2 class="welcome-title">What would you like to explore?</h2>
           <p class="welcome-sub">
-            Search any word to hear authentic teacher phonics sounds, British educator read-aloud, trusted kid-friendly meanings, and real sentence puzzles!
+            Search any word to explore sound buttons, trusted kid-friendly meanings, and real sentence puzzles. Voice stays silent until a teacher unlocks it.
           </p>
 
           <!-- Category Starter Word Grids -->
@@ -2575,13 +2886,13 @@
               <div class="feature-card">
                 <div class="feature-text">
                   <strong>Sound Buttons</strong>
-                  <span>Tap dots &amp; dashes to blend teacher-recorded phonics sounds</span>
+                  <span>Tap dots &amp; dashes to see each sound highlight as you blend</span>
                 </div>
               </div>
               <div class="feature-card">
                 <div class="feature-text">
-                  <strong>British Voice</strong>
-                  <span>Hear clear educator pronunciation with high-clarity British speech</span>
+                  <strong>Teacher Voice Mode</strong>
+                  <span>Teachers can unlock read-aloud when the class is ready</span>
                 </div>
               </div>
               <div class="feature-card">
@@ -2647,7 +2958,7 @@
           <div class="visual-story-body">
             <div class="visual-story-tag" id="resVisualTitle">Word</div>
             <div class="visual-story-headline" id="resVisualDesc">Explore the meaning, sound buttons, and sentence examples.</div>
-            <div class="visual-context-phrase" id="resContextPhrase">Type any word to begin!</div>
+            <div class="visual-context-phrase" id="resContextPhrase" hidden>Type any word to begin!</div>
           </div>
           <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <a class="btn-notion-picture-link" id="btnGoogleSafeSearch" href="#" target="_blank" rel="noopener noreferrer">
@@ -2693,29 +3004,32 @@
 
         <!-- Sound Buttons Segmentation Stage -->
         <div class="sound-buttons-container">
-          <div class="sound-buttons-stage-wrapper">
-            <div class="sound-buttons-row" id="soundButtonsRow">
-              <!-- Populated dynamically by JS -->
+          <div class="sound-attempt-panel" id="soundAttemptPanel" hidden></div>
+          <div id="soundAnswerPanel">
+            <div class="sound-buttons-stage-wrapper">
+              <div class="sound-buttons-row" id="soundButtonsRow">
+                <!-- Populated dynamically by JS -->
+              </div>
             </div>
-          </div>
 
-          <div class="blend-actions-row">
-            <button class="btn-act btn-act-primary" onclick="playFullBlendSequence()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span>Blend Sounds</span>
-            </button>
-            <button class="btn-act btn-act-secondary" id="btnSayWholeWord" onclick="speakNaturalWord()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-              <span>Say Whole Word</span>
-            </button>
-            <button class="btn-act btn-act-blue" onclick="openVoiceStudio()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-              <span>My Recording Booth</span>
-            </button>
-            <button class="btn-act btn-act-green" id="btnSentenceBuilder" onclick="openSentenceGame()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v4h1.5a2.5 2.5 0 0 1 0 5H2v4a2 2 0 0 0 2 2h4v-1.5a2.5 2.5 0 0 1 5 0V22h4a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"></path></svg>
-              <span>Build the Example</span>
-            </button>
+            <div class="blend-actions-row">
+              <button class="btn-act btn-act-primary" onclick="playFullBlendSequence()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Blend Sounds</span>
+              </button>
+              <button class="btn-act btn-act-secondary" id="btnSayWholeWord" onclick="speakNaturalWord()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                <span>Say Whole Word</span>
+              </button>
+              <button class="btn-act btn-act-blue" onclick="openVoiceStudio()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                <span>My Recording Booth</span>
+              </button>
+              <button class="btn-act btn-act-green" id="btnSentenceBuilder" onclick="openSentenceGame()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v4h1.5a2.5 2.5 0 0 1 0 5H2v4a2 2 0 0 0 2 2h4v-1.5a2.5 2.5 0 0 1 5 0V22h4a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"></path></svg>
+                <span>Build the Example</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2835,12 +3149,33 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             <span>Listen to Voice</span>
           </button>
-          <button class="btn-act btn-act-secondary" onclick="speakNaturalWord()">
+          <button class="btn-act btn-act-secondary" id="btnStudioHearModel" onclick="speakNaturalWord()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
             <span>Hear Model</span>
           </button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Teacher-only voice unlock, matching the Teacher Studio keypad pattern. -->
+  <div class="sound-pin-backdrop" id="soundPinBackdrop" onclick="if(event.target===this) closeSoundPin()" role="dialog" aria-modal="true" aria-labelledby="soundPinTitle">
+    <div class="sound-pin-card" id="soundPinCard">
+      <div class="sound-pin-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="width: 25px; height: 25px;"><rect x="3" y="11" width="18" height="10" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+      <div class="sound-pin-title" id="soundPinTitle">Teacher voice unlock</div>
+      <div class="sound-pin-subtitle">Enter the 4-digit teacher PIN to enable sound.</div>
+      <div class="sound-pin-dots" aria-label="PIN entry">
+        <span class="sound-pin-dot" id="soundPinDot0"></span><span class="sound-pin-dot" id="soundPinDot1"></span><span class="sound-pin-dot" id="soundPinDot2"></span><span class="sound-pin-dot" id="soundPinDot3"></span>
+      </div>
+      <div class="sound-pin-pad">
+        <button class="sound-pin-key" onclick="enterSoundPinDigit('1')">1</button><button class="sound-pin-key" onclick="enterSoundPinDigit('2')">2</button><button class="sound-pin-key" onclick="enterSoundPinDigit('3')">3</button>
+        <button class="sound-pin-key" onclick="enterSoundPinDigit('4')">4</button><button class="sound-pin-key" onclick="enterSoundPinDigit('5')">5</button><button class="sound-pin-key" onclick="enterSoundPinDigit('6')">6</button>
+        <button class="sound-pin-key" onclick="enterSoundPinDigit('7')">7</button><button class="sound-pin-key" onclick="enterSoundPinDigit('8')">8</button><button class="sound-pin-key" onclick="enterSoundPinDigit('9')">9</button>
+        <button class="sound-pin-key utility" onclick="clearSoundPin()">Clear</button><button class="sound-pin-key" onclick="enterSoundPinDigit('0')">0</button><button class="sound-pin-key utility" onclick="backspaceSoundPin()" aria-label="Backspace">Back</button>
+      </div>
+      <button class="sound-pin-cancel" onclick="closeSoundPin()">Cancel</button>
     </div>
   </div>
 
@@ -2966,6 +3301,7 @@
     let activeSpeechAudio = null;
     let activePhonemeAudio = null;
     let activeBlendToken = 0;
+    let isSilentMode = true;
 
     function stopAllAudio() {
       activeBlendToken++;
@@ -2999,6 +3335,7 @@
     }
 
     function playSinglePhonemeAudio(masterId) {
+      if (isSilentMode) return;
       if (!AUDIO_CACHE.has(masterId)) return;
       if (activePhonemeAudio) {
         try {
@@ -3016,30 +3353,33 @@
 
     function playSound(masterId, element) {
       stopAllAudio();
+      if (element) {
+        if (element.classList.contains('split-partner')) {
+          document.querySelectorAll('.split-partner').forEach(partner => partner.classList.add('active-split'));
+        } else {
+          element.classList.add('active-sound');
+        }
+      }
+      const clearHighlight = () => {
+        if (!element) return;
+        document.querySelectorAll('.split-partner').forEach(partner => partner.classList.remove('active-split'));
+        element.classList.remove('active-sound');
+      };
+      if (isSilentMode) {
+        setTimeout(clearHighlight, 520);
+        return;
+      }
       ensureAudioContext();
       if (AUDIO_CACHE.has(masterId)) {
         const audio = new Audio(AUDIO_CACHE.get(masterId));
         activePhonemeAudio = audio;
-        if (element) {
-          if (element.classList.contains('split-partner')) {
-            document.querySelectorAll('.split-partner').forEach(p => p.classList.add('active-split'));
-          } else {
-            element.classList.add('active-sound');
-          }
-        }
         audio.onended = () => {
           if (activePhonemeAudio === audio) activePhonemeAudio = null;
-          if (element) {
-            document.querySelectorAll('.split-partner').forEach(p => p.classList.remove('active-split'));
-            element.classList.remove('active-sound');
-          }
+          clearHighlight();
         };
         audio.onerror = () => {
           if (activePhonemeAudio === audio) activePhonemeAudio = null;
-          if (element) {
-            document.querySelectorAll('.split-partner').forEach(p => p.classList.remove('active-split'));
-            element.classList.remove('active-sound');
-          }
+          clearHighlight();
         };
         audio.play().catch(() => {});
       } else {
@@ -3048,6 +3388,7 @@
     }
 
     function playTrickyBuzzer() {
+      if (isSilentMode) return;
       try {
         ensureAudioContext();
         const osc = audioCtx.createOscillator();
@@ -3065,16 +3406,14 @@
     }
 
     // ================= 2. TRICKY WORDS LIST & HOMOPHONES KNOWLEDGE =================
-    const MASTER_TRICKY_WORDS_SET = new Set([
-      'the', 'to', 'i', 'no', 'go', 'into', 'he', 'she', 'we', 'me', 'be', 'was',
-      'you', 'they', 'all', 'are', 'my', 'by', 'sure', 'pure', 'said', 'so', 'have',
-      'some', 'come', 'love', 'do', 'were', 'here', 'there', 'little', 'one', 'says',
-      'today', 'when', 'what', 'out', 'their', 'people', 'oh', 'your', 'mr', 'mrs', 'ms',
-      'could', 'would', 'should', 'our', 'house', 'mouse', 'water', 'where', 'who', 'again',
-      'thought', 'through', 'friend', 'work', 'once', 'laugh', 'because', 'eye', 'any',
-      'many', 'busy', 'beautiful', 'pretty', 'hour', 'move', 'prove', 'improve', 'parents',
-      'shoe', 'two', 'four', 'eight', 'caught', 'bought', 'dough', 'walk', 'talk', 'half', 'calm'
-    ]);
+    // Verified against the local Little Wandle Year 1 termly overview PDFs.
+    const VERIFIED_TRICKY_WORDS = [
+      ...['is','I','the','put','pull','full','as','and','has','his','her','go','no','to','into','she','push','he','of','we','me','be'].map(word => ({ word, phase: 'Phase 2' })),
+      ...['was','you','they','my','by','all','are','sure','pure','said','so','have','like','some','come','love','do','were','here'].map(word => ({ word, phase: 'Phase 3' })),
+      ...['little','says','there','when','what','one','out','today'].map(word => ({ word, phase: 'Phase 4' })),
+      ...['their','people','oh','your','Mr','Mrs','Ms','ask','could','would','should','our','house','mouse','water','want','any','many','again','who','whole','where','two','school','call','different','thought','through','friend','work','once','laugh','half','father','because','eye','busy','beautiful','pretty','hour','move','improve','parents','shoe'].map(word => ({ word, phase: 'Phase 5' }))
+    ];
+    const MASTER_TRICKY_WORDS_SET = new Set(VERIFIED_TRICKY_WORDS.map(item => item.word.toLowerCase()));
 
     const HOMOPHONES_MAP = {
       'night': { match: 'knight', tricky: false },
@@ -3552,7 +3891,7 @@
     ];
 
     // ================= 6. TRICKY WORDS DATABASE =================
-    const TRICKY_WORDS_DB = [
+    const TRICKY_WORD_TEACHING_NOTES = [
       { word: "is", phase: "Phase 2", decodable: "i", tricky: "s", tip: "s makes /z/ sound" },
       { word: "the", phase: "Phase 2", decodable: "th", tricky: "e", tip: "e makes schwa /uh/ sound" },
       { word: "I", phase: "Phase 2", decodable: "", tricky: "I", tip: "letter I makes /igh/ sound" },
@@ -3577,7 +3916,14 @@
       { word: "water", phase: "Phase 5", decodable: "t-er", tricky: "wa", tip: "a makes /or/ sound" },
       { word: "friend", phase: "Phase 5", decodable: "f-r-n-d", tricky: "ie", tip: "ie makes short /e/ sound" },
       { word: "because", phase: "Phase 5", decodable: "b-c-z", tricky: "e-au-se", tip: "au makes /o/, se makes /z/" }
-    ];
+    ].reduce((notes, item) => {
+      notes[item.word.toLowerCase()] = item;
+      return notes;
+    }, {});
+    const TRICKY_WORDS_DB = VERIFIED_TRICKY_WORDS.map(item => ({
+      ...(TRICKY_WORD_TEACHING_NOTES[item.word.toLowerCase()] || {}),
+      ...item
+    }));
 
     // ================= 7. PHONICS GPC TOKENIZER =================
     function parseWordToPhonemes(rawWord) {
@@ -3887,6 +4233,10 @@
 
     wordAudioLoadPromise.then(() => {
       if (currentWordSenses.length) applyActiveSenseData(currentActiveSenseIdx);
+      if (document.readyState !== 'loading') {
+        renderTrickyWords();
+        updateSoundModeControls();
+      }
     });
 
     // Provider keys live only in the Cloudflare Worker. The pupil app receives
@@ -4247,6 +4597,7 @@
         showToast('Please search for one word using letters only.');
         return;
       }
+      document.getElementById('autocompleteDropdown').style.display = 'none';
       const preferredWordJob = pendingPreferredWordJob;
       const requestedWordFormContext = pendingWordFormContext;
       pendingPreferredWordJob = '';
@@ -4570,12 +4921,25 @@
       renderSoundButtons(currentParsedResult);
       const wholeWordButton = document.getElementById('btnSayWholeWord');
       const teacherWordAudio = wordAudioFor(pronunciationRecordingId(currentSearchWord, pronunciation.mw));
-      wholeWordButton.disabled = !(teacherWordAudio || pronunciation.audioUrl || API_PROXY_BASE);
-      wholeWordButton.title = teacherWordAudio
-        ? 'Hear the teacher-recorded pronunciation'
-        : pronunciation.audioUrl
-          ? 'Hear this exact dictionary pronunciation'
-          : 'Hear this exact word with the British ElevenLabs voice';
+      const isTrickyWord = MASTER_TRICKY_WORDS_SET.has(String(currentSearchWord || '').toLowerCase());
+      const teacherTrickyAudio = isTrickyWord ? wordAudioFor(trickyRecordingId(currentSearchWord)) : '';
+      const wholeWordAudioAvailable = isTrickyWord
+        ? Boolean(teacherTrickyAudio)
+        : Boolean(teacherWordAudio || pronunciation.audioUrl || API_PROXY_BASE);
+      wholeWordButton.dataset.audioAvailable = wholeWordAudioAvailable ? 'true' : 'false';
+      wholeWordButton.disabled = isSilentMode || !wholeWordAudioAvailable;
+      wholeWordButton.title = isSilentMode
+        ? 'Silent mode is on'
+        : isTrickyWord
+          ? (teacherTrickyAudio ? 'Hear the teacher-recorded tricky word' : 'A teacher recording is needed for this tricky word')
+          : teacherWordAudio
+            ? 'Hear the teacher-recorded pronunciation'
+            : pronunciation.audioUrl
+              ? 'Hear this exact dictionary pronunciation'
+              : 'Hear this exact word with the British ElevenLabs voice';
+      const trickyHearButton = document.getElementById('btnTrickyHearWord');
+      trickyHearButton.dataset.audioAvailable = teacherTrickyAudio ? 'true' : 'false';
+      trickyHearButton.disabled = isSilentMode || !teacherTrickyAudio;
 
       // Every image query is rebuilt from the selected, exact-match dictionary sense.
       currentImageOptions = buildVerifiedImageQueries(currentSearchWord, sense);
@@ -4638,7 +5002,296 @@
       lookupWord();
     }
 
+    const completedSoundChallenges = new Set();
+    let activeSoundChallenge = null;
+
+    function soundChallengeKey(parsed) {
+      return `${String(currentSearchWord || '').toLowerCase()}|${parsed.units.map(unit => `${unit.letters}:${unit.id}:${unit.isSplit ? 'split' : 'plain'}`).join('|')}`;
+    }
+
+    function buildExpectedSoundGroups(parsed) {
+      let letterOffset = 0;
+      const groups = [];
+      const splitIndices = [];
+      parsed.units.forEach(unit => {
+        const indices = Array.from(unit.letters).map((_, index) => letterOffset + index);
+        letterOffset += Array.from(unit.letters).length;
+        if (unit.isSplit) splitIndices.push(...indices);
+        else groups.push({ indices, split: false, letters: unit.letters, soundId: unit.id });
+      });
+      if (splitIndices.length) {
+        groups.push({
+          indices: splitIndices.slice().sort((a, b) => a - b),
+          split: true,
+          letters: splitIndices.map(index => Array.from(currentSearchWord)[index]).join(''),
+          soundId: parsed.splitInfo && parsed.splitInfo.soundId
+        });
+      }
+      return groups.sort((a, b) => Math.min(...a.indices) - Math.min(...b.indices));
+    }
+
     function renderSoundButtons(parsed) {
+      const challengePanel = document.getElementById('soundAttemptPanel');
+      const answerPanel = document.getElementById('soundAnswerPanel');
+      const key = soundChallengeKey(parsed);
+      const isTrickyWord = MASTER_TRICKY_WORDS_SET.has(String(currentSearchWord || '').toLowerCase());
+
+      if (isSilentMode && currentSearchWord && isTrickyWord) {
+        document.getElementById('soundButtonsRow').innerHTML = '';
+        document.getElementById('splitArchSvg')?.remove();
+        answerPanel.hidden = true;
+        challengePanel.hidden = false;
+        challengePanel.innerHTML = `
+          <div class="sound-attempt-tricky">
+            <div class="sound-attempt-kicker">Try it first</div>
+            <div class="sound-attempt-title">Read the parts you know.</div>
+            <p class="sound-attempt-instruction">This is a tricky word, so sound buttons cannot tell the whole story. Try it yourself, then call a teacher to check the tricky part with you.</p>
+          </div>`;
+        return;
+      }
+
+      if (isSilentMode && currentSearchWord && !completedSoundChallenges.has(key)) {
+        document.getElementById('soundButtonsRow').innerHTML = '';
+        document.getElementById('splitArchSvg')?.remove();
+        answerPanel.hidden = true;
+        challengePanel.hidden = false;
+        if (!activeSoundChallenge || activeSoundChallenge.key !== key) {
+          const wordLetters = Array.from(currentSearchWord);
+          const expected = buildExpectedSoundGroups(parsed);
+          activeSoundChallenge = {
+            key,
+            parsed,
+            wordLetters,
+            expected,
+            groups: [],
+            attempts: 0,
+            feedback: 'Build every sound button, then check your thinking.',
+            feedbackType: '',
+            dragStart: null,
+            dragEnd: null
+          };
+        }
+        renderSoundChallengePanel();
+        return;
+      }
+
+      challengePanel.hidden = true;
+      answerPanel.hidden = false;
+      renderCompletedSoundButtons(parsed);
+    }
+
+    function renderSoundChallengePanel() {
+      const state = activeSoundChallenge;
+      if (!state) return;
+      const panel = document.getElementById('soundAttemptPanel');
+      const covered = new Set(state.groups.flat());
+      const allCovered = covered.size === state.wordLetters.length;
+      panel.innerHTML = `
+        <div class="sound-attempt-top">
+          <div>
+            <div class="sound-attempt-kicker">Try it first</div>
+            <div class="sound-attempt-title">Make the sound buttons yourself.</div>
+            <p class="sound-attempt-instruction">Tap one letter for one sound. Swipe across letters that work together. For a split sound, curve from the vowel to the final e.</p>
+          </div>
+          <div class="sound-attempt-progress" aria-label="${Math.min(state.attempts, 3)} of 3 checks used">
+            ${[0, 1, 2].map(index => `<span class="${index < state.attempts ? 'used' : ''}"></span>`).join('')}
+          </div>
+        </div>
+        <div class="sound-builder-board" id="soundBuilderBoard" aria-label="Build sound buttons for ${currentSearchWord}">
+          ${state.wordLetters.map((letter, index) => `<button class="sound-builder-letter" type="button" data-letter-index="${index}" aria-label="Letter ${letter}">${letter}</button>`).join('')}
+        </div>
+        <div class="sound-attempt-feedback ${state.feedbackType}" id="soundAttemptFeedback" role="status">${state.feedback}</div>
+        <div class="sound-attempt-actions">
+          <div class="sound-attempt-tools">
+            <button class="sound-attempt-btn" type="button" onclick="undoSoundAttemptGroup()" ${state.groups.length ? '' : 'disabled'}>Undo</button>
+            <button class="sound-attempt-btn" type="button" onclick="resetSoundAttempt()" ${state.groups.length ? '' : 'disabled'}>Start again</button>
+          </div>
+          <button class="sound-attempt-btn primary" id="btnCheckSoundAttempt" type="button" onclick="checkSoundAttempt()" ${allCovered ? '' : 'disabled'}>Check my sound buttons</button>
+        </div>
+        <div class="sound-attempt-help">You can change any group and keep trying. The finished sound buttons stay hidden until your groups are correct.</div>`;
+
+      state.groups.forEach((indices, groupIndex) => {
+        const isSplitGroup = indices.some((value, index) => index > 0 && value !== indices[index - 1] + 1);
+        indices.forEach(index => {
+          const letter = panel.querySelector(`[data-letter-index="${index}"]`);
+          if (!letter) return;
+          letter.classList.add('grouped', `group-${groupIndex % 6}`);
+          if (indices.length === 1) letter.classList.add('single');
+          if (isSplitGroup) letter.classList.add('split');
+        });
+      });
+
+      const board = document.getElementById('soundBuilderBoard');
+      board.addEventListener('pointerdown', beginSoundAttemptGesture);
+      board.addEventListener('pointermove', moveSoundAttemptGesture);
+      board.addEventListener('pointerup', finishSoundAttemptGesture);
+      board.addEventListener('pointercancel', cancelSoundAttemptGesture);
+      board.querySelectorAll('.sound-builder-letter').forEach(letter => {
+        letter.addEventListener('click', event => {
+          if (event.detail === 0) commitSoundAttemptGroup(Number(letter.dataset.letterIndex), Number(letter.dataset.letterIndex));
+        });
+      });
+      drawSoundAttemptSplitArches();
+    }
+
+    function soundAttemptLetterAtPoint(clientX, clientY) {
+      const element = document.elementFromPoint(clientX, clientY);
+      const letter = element && element.closest && element.closest('.sound-builder-letter');
+      return letter ? Number(letter.dataset.letterIndex) : null;
+    }
+
+    function beginSoundAttemptGesture(event) {
+      const letter = event.target.closest('.sound-builder-letter');
+      if (!letter || !activeSoundChallenge) return;
+      event.preventDefault();
+      activeSoundChallenge.dragStart = Number(letter.dataset.letterIndex);
+      activeSoundChallenge.dragEnd = activeSoundChallenge.dragStart;
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+      previewSoundAttemptGesture();
+    }
+
+    function moveSoundAttemptGesture(event) {
+      if (!activeSoundChallenge || activeSoundChallenge.dragStart === null) return;
+      const index = soundAttemptLetterAtPoint(event.clientX, event.clientY);
+      if (index === null || index === activeSoundChallenge.dragEnd) return;
+      activeSoundChallenge.dragEnd = index;
+      previewSoundAttemptGesture();
+    }
+
+    function previewSoundAttemptGesture() {
+      const state = activeSoundChallenge;
+      if (!state) return;
+      const start = Math.min(state.dragStart, state.dragEnd);
+      const end = Math.max(state.dragStart, state.dragEnd);
+      document.querySelectorAll('.sound-builder-letter').forEach(letter => {
+        const index = Number(letter.dataset.letterIndex);
+        letter.classList.toggle('preview', index >= start && index <= end);
+      });
+    }
+
+    function finishSoundAttemptGesture(event) {
+      if (!activeSoundChallenge || activeSoundChallenge.dragStart === null) return;
+      const endAtPoint = soundAttemptLetterAtPoint(event.clientX, event.clientY);
+      const start = activeSoundChallenge.dragStart;
+      const end = endAtPoint === null ? activeSoundChallenge.dragEnd : endAtPoint;
+      activeSoundChallenge.dragStart = null;
+      activeSoundChallenge.dragEnd = null;
+      commitSoundAttemptGroup(start, end);
+    }
+
+    function cancelSoundAttemptGesture() {
+      if (!activeSoundChallenge) return;
+      activeSoundChallenge.dragStart = null;
+      activeSoundChallenge.dragEnd = null;
+      renderSoundChallengePanel();
+    }
+
+    function commitSoundAttemptGroup(start, end) {
+      const state = activeSoundChallenge;
+      if (!state || start === null || end === null) return;
+      const existingIndex = state.groups.findIndex(group => group.includes(start));
+      if (start === end && existingIndex >= 0) {
+        state.groups.splice(existingIndex, 1);
+        renderSoundChallengePanel();
+        return;
+      }
+
+      const splitMatch = state.expected.find(group => group.split
+        && Math.min(...group.indices) === Math.min(start, end)
+        && Math.max(...group.indices) === Math.max(start, end));
+      const indices = splitMatch
+        ? splitMatch.indices.slice()
+        : Array.from({ length: Math.abs(end - start) + 1 }, (_, index) => Math.min(start, end) + index);
+      state.groups = state.groups.filter(group => !group.some(index => indices.includes(index)));
+      state.groups.push(indices.slice().sort((a, b) => a - b));
+      state.feedback = 'Keep going until every letter belongs to a sound.';
+      state.feedbackType = '';
+      renderSoundChallengePanel();
+    }
+
+    function undoSoundAttemptGroup() {
+      if (!activeSoundChallenge || !activeSoundChallenge.groups.length) return;
+      activeSoundChallenge.groups.pop();
+      renderSoundChallengePanel();
+    }
+
+    function resetSoundAttempt() {
+      if (!activeSoundChallenge) return;
+      activeSoundChallenge.groups = [];
+      activeSoundChallenge.feedback = 'Start with the first sound you can hear.';
+      activeSoundChallenge.feedbackType = '';
+      renderSoundChallengePanel();
+    }
+
+    function normaliseSoundGroups(groups) {
+      return groups
+        .map(group => group.slice().sort((a, b) => a - b).join('-'))
+        .sort();
+    }
+
+    function soundAttemptHint(state) {
+      if (state.attempts === 1) {
+        return `Say the word slowly in your head. You should hear ${state.expected.length} sound${state.expected.length === 1 ? '' : 's'}.`;
+      }
+      if (state.attempts === 2) {
+        const teams = state.expected.filter(group => group.indices.length > 1).map(group => {
+          if (group.split) return `${state.wordLetters[group.indices[0]]}_${state.wordLetters[group.indices.at(-1)]}`;
+          return group.indices.map(index => state.wordLetters[index]).join('');
+        });
+        return teams.length
+          ? `Look again for a letter team such as ${teams.slice(0, 2).map(team => `“${team}”`).join(' or ')}.`
+          : 'Try giving each letter its own sound button.';
+      }
+      return 'Call a teacher over to help you. Keep your attempt here so you can explain what you tried.';
+    }
+
+    function checkSoundAttempt() {
+      const state = activeSoundChallenge;
+      if (!state) return;
+      const actual = normaliseSoundGroups(state.groups);
+      const expected = normaliseSoundGroups(state.expected.map(group => group.indices));
+      const isCorrect = actual.length === expected.length && actual.every((value, index) => value === expected[index]);
+      if (isCorrect) {
+        completedSoundChallenges.add(state.key);
+        state.feedback = 'You worked it out. Now compare your sound buttons.';
+        state.feedbackType = 'success';
+        renderSoundChallengePanel();
+        const completedKey = state.key;
+        setTimeout(() => {
+          if (activeSoundChallenge && activeSoundChallenge.key === completedKey) renderSoundButtons(state.parsed);
+        }, 550);
+        return;
+      }
+      state.attempts = Math.min(3, state.attempts + 1);
+      state.feedback = soundAttemptHint(state);
+      state.feedbackType = state.attempts >= 3 ? 'teacher' : '';
+      renderSoundChallengePanel();
+    }
+
+    function drawSoundAttemptSplitArches() {
+      const state = activeSoundChallenge;
+      const board = document.getElementById('soundBuilderBoard');
+      if (!state || !board) return;
+      const splitGroups = state.groups.filter(group => group.some((value, index) => index > 0 && value !== group[index - 1] + 1));
+      if (!splitGroups.length) return;
+      const boardRect = board.getBoundingClientRect();
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'sound-builder-split-svg');
+      splitGroups.forEach(group => {
+        const first = board.querySelector(`[data-letter-index="${Math.min(...group)}"]`).getBoundingClientRect();
+        const last = board.querySelector(`[data-letter-index="${Math.max(...group)}"]`).getBoundingClientRect();
+        const x1 = (first.left + first.right) / 2 - boardRect.left + board.scrollLeft;
+        const x2 = (last.left + last.right) / 2 - boardRect.left + board.scrollLeft;
+        const y = first.top - boardRect.top + 8;
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M ${x1} ${y} Q ${(x1 + x2) / 2} ${Math.max(2, y - 18)} ${x2} ${y}`);
+        path.setAttribute('class', 'sound-builder-split-path');
+        svg.appendChild(path);
+      });
+      board.appendChild(svg);
+    }
+
+    function renderCompletedSoundButtons(parsed) {
       const oldSvg = document.getElementById('splitArchSvg');
       if (oldSvg) oldSvg.remove();
 
@@ -4755,7 +5408,7 @@
 
         if (token !== activeBlendToken) return;
         setTimeout(() => {
-          if (token === activeBlendToken) speakNaturalWord();
+          if (token === activeBlendToken && !isSilentMode) speakNaturalWord();
         }, 400);
       } else {
         for (let i = 0; i < units.length; i++) {
@@ -4767,13 +5420,20 @@
         }
         if (token !== activeBlendToken) return;
         setTimeout(() => {
-          if (token === activeBlendToken) speakNaturalWord();
+          if (token === activeBlendToken && !isSilentMode) speakNaturalWord();
         }, 380);
       }
     }
 
     async function speakNaturalWord() {
+      if (isSilentMode) return;
       await wordAudioLoadPromise;
+      if (MASTER_TRICKY_WORDS_SET.has(String(currentSearchWord || '').toLowerCase())) {
+        const trickyAudio = wordAudioFor(trickyRecordingId(currentSearchWord));
+        if (trickyAudio) playAudioUrl(trickyAudio);
+        else showToast(`Ask a teacher to record "${currentSearchWord}" in Teacher Studio.`);
+        return;
+      }
       const activeSense = currentWordSenses[currentActiveSenseIdx] || currentWordSenses[0];
       const activePronunciation = activeSense && activeSense.pronunciations && activeSense.pronunciations[currentPronunciationIndex];
       const teacherAudio = activePronunciation
@@ -4790,6 +5450,7 @@
     }
 
     function playAudioUrl(audioUrl, cardElement) {
+      if (isSilentMode) return;
       stopAllAudio();
       if (!audioUrl) {
         showToast('No approved full-word audio is available for this meaning.');
@@ -4816,31 +5477,21 @@
     }
 
     async function playTrickyWordAudio(word, cardElement) {
-      stopAllAudio();
-      if (cardElement) cardElement.classList.add('playing');
-      try {
-        await wordAudioLoadPromise;
-        const teacherAudio = wordAudioFor(trickyRecordingId(word));
-        if (teacherAudio) {
-          playAudioUrl(teacherAudio, cardElement);
-          return;
-        }
-        const result = await resolveDictionaryWord(word);
-        const audioUrl = result.senses
-          .flatMap(sense => sense.pronunciations || [])
-          .map(pronunciation => pronunciation.audioUrl)
-          .find(Boolean);
-        playElevenLabsSpeech(word, {
-          cardElement,
-          onFailure: () => playAudioUrl(audioUrl, cardElement)
-        });
-      } catch (error) {
-        if (cardElement) cardElement.classList.remove('playing');
-        showToast(`Audio for "${word}" is not available just now.`);
+      if (isSilentMode) return;
+      await wordAudioLoadPromise;
+      const teacherAudio = wordAudioFor(trickyRecordingId(word));
+      if (!teacherAudio) {
+        showToast(`Ask a teacher to record "${word}" in Teacher Studio.`);
+        return;
       }
+      playAudioUrl(teacherAudio, cardElement);
     }
 
     async function playElevenLabsSpeech(text, options = {}) {
+      if (isSilentMode) {
+        if (typeof options.onFinish === 'function') options.onFinish();
+        return;
+      }
       const onFinish = typeof options.onFinish === 'function' ? options.onFinish : () => {};
       const onFailure = typeof options.onFailure === 'function' ? options.onFailure : () => {
         onFinish();
@@ -4907,6 +5558,10 @@
     }
 
     function speakBrowserText(text, onFinish) {
+      if (isSilentMode) {
+        if (typeof onFinish === 'function') onFinish();
+        return;
+      }
       stopAllAudio();
       const finish = typeof onFinish === 'function' ? onFinish : () => {};
       if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
@@ -4928,6 +5583,10 @@
     }
 
     function speakText(text, onFinish) {
+      if (isSilentMode) {
+        if (typeof onFinish === 'function') onFinish();
+        return;
+      }
       playElevenLabsSpeech(text, {
         onFinish,
         onFailure: () => speakBrowserText(text, onFinish)
@@ -5014,6 +5673,7 @@
     }
 
     function playStudentRecording() {
+      if (isSilentMode) return;
       if (studentAudioBlobUrl) {
         const audio = new Audio(studentAudioBlobUrl);
         audio.play();
@@ -5262,15 +5922,37 @@
       grid.innerHTML = "";
       TRICKY_WORDS_DB.forEach(tw => {
         if (currentTrickyFilter !== 'all' && tw.phase !== currentTrickyFilter) return;
+        const teacherAudio = wordAudioFor(trickyRecordingId(tw.word));
+        const canPlay = !isSilentMode && Boolean(teacherAudio);
         const card = document.createElement('div');
-        card.className = "tricky-card";
-        card.title = "Click to hear word pronunciation";
-        card.onclick = () => { playTrickyWordAudio(tw.word, card); };
+        card.className = `tricky-card${canPlay ? '' : ' audio-unavailable'}`;
+        card.title = isSilentMode
+          ? 'Silent mode is on'
+          : teacherAudio
+            ? 'Click to hear the teacher recording'
+            : 'Teacher recording needed';
+        if (canPlay) {
+          card.setAttribute('role', 'button');
+          card.tabIndex = 0;
+          card.onclick = () => playTrickyWordAudio(tw.word, card);
+          card.onkeydown = event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              playTrickyWordAudio(tw.word, card);
+            }
+          };
+        }
+        const breakdown = tw.decodable !== undefined && tw.tricky !== undefined
+          ? `<div class="tricky-parts-breakdown"><span class="part-decodable">${tw.decodable}</span><span class="part-tricky">${tw.tricky}</span></div>`
+          : '';
+        const tip = tw.tip ? `<div class="tricky-tip">${tw.tip}</div>` : '';
+        const status = isSilentMode ? 'Silent mode' : teacherAudio ? 'Teacher voice ready' : 'Teacher recording needed';
         card.innerHTML = `
           <div class="tricky-card-phase">${tw.phase}</div>
           <div class="tricky-word-display">${tw.word}</div>
-          <div class="tricky-parts-breakdown"><span class="part-decodable">${tw.decodable}</span><span class="part-tricky">${tw.tricky}</span></div>
-          <div class="tricky-tip">${tw.tip}</div>
+          ${breakdown}
+          ${tip}
+          <div class="tricky-recording-status">${status}</div>
         `;
         grid.appendChild(card);
       });
@@ -5330,6 +6012,111 @@
       if (tabId === 'tricky') renderTrickyWords();
       if (tabId === 'soundboard') renderSoundboard();
     }
+
+    // ================= 12. DEFAULT SILENT MODE + TEACHER PIN =================
+    const SOUND_MODE_PIN = '8888';
+    let enteredSoundPin = '';
+
+    function updateSoundModeControls() {
+      const toggle = document.getElementById('btnSoundModeToggle');
+      const label = document.getElementById('soundModeToggleText');
+      if (toggle) {
+        toggle.setAttribute('aria-pressed', isSilentMode ? 'true' : 'false');
+        toggle.setAttribute('aria-label', isSilentMode ? 'Silent mode is on. Teacher PIN required to enable voice.' : 'Voice mode is on. Tap to return to silent mode.');
+        toggle.title = isSilentMode ? 'Teacher PIN required to enable voice' : 'Return to silent mode';
+      }
+      if (label) label.textContent = isSilentMode ? 'Silent' : 'Voice on';
+
+      ['btnDefinitionVoice', 'btnSentenceVoice', 'btnStudioHearModel'].forEach(id => {
+        const button = document.getElementById(id);
+        if (button) {
+          button.disabled = isSilentMode;
+          button.title = isSilentMode ? 'Silent mode is on' : 'Play audio';
+        }
+      });
+
+      const wholeWordButton = document.getElementById('btnSayWholeWord');
+      if (wholeWordButton) wholeWordButton.disabled = isSilentMode || wholeWordButton.dataset.audioAvailable !== 'true';
+      const trickyHearButton = document.getElementById('btnTrickyHearWord');
+      if (trickyHearButton) trickyHearButton.disabled = isSilentMode || trickyHearButton.dataset.audioAvailable !== 'true';
+      const pupilPlaybackButton = document.getElementById('btnStudioPlay');
+      if (pupilPlaybackButton) pupilPlaybackButton.disabled = isSilentMode;
+    }
+
+    function setSilentMode(silent) {
+      isSilentMode = Boolean(silent);
+      if (isSilentMode) stopAllAudio();
+      updateSoundModeControls();
+      if (document.getElementById('trickyGrid')) renderTrickyWords();
+      if (currentSearchWord && currentParsedResult && currentParsedResult.units && currentParsedResult.units.length) {
+        renderSoundButtons(currentParsedResult);
+      }
+    }
+
+    function requestSoundModeToggle() {
+      if (!isSilentMode) {
+        setSilentMode(true);
+        showToast('Silent mode is on.');
+        return;
+      }
+      enteredSoundPin = '';
+      renderSoundPinDots();
+      document.getElementById('soundPinBackdrop').style.display = 'flex';
+      document.querySelector('#soundPinBackdrop .sound-pin-key')?.focus();
+    }
+
+    function closeSoundPin() {
+      enteredSoundPin = '';
+      renderSoundPinDots();
+      document.getElementById('soundPinBackdrop').style.display = 'none';
+      document.getElementById('btnSoundModeToggle')?.focus();
+    }
+
+    function enterSoundPinDigit(digit) {
+      if (enteredSoundPin.length >= 4) return;
+      enteredSoundPin += String(digit);
+      renderSoundPinDots();
+      if (enteredSoundPin.length === 4) validateSoundPin();
+    }
+
+    function backspaceSoundPin() {
+      enteredSoundPin = enteredSoundPin.slice(0, -1);
+      renderSoundPinDots();
+    }
+
+    function clearSoundPin() {
+      enteredSoundPin = '';
+      renderSoundPinDots();
+    }
+
+    function renderSoundPinDots() {
+      for (let index = 0; index < 4; index++) {
+        document.getElementById(`soundPinDot${index}`)?.classList.toggle('filled', index < enteredSoundPin.length);
+      }
+    }
+
+    function validateSoundPin() {
+      if (enteredSoundPin === SOUND_MODE_PIN) {
+        closeSoundPin();
+        setSilentMode(false);
+        showToast('Voice mode unlocked for this session.');
+        return;
+      }
+      const card = document.getElementById('soundPinCard');
+      card.classList.remove('sound-pin-error');
+      void card.offsetWidth;
+      card.classList.add('sound-pin-error');
+      showToast('Incorrect teacher PIN. Silent mode stays on.');
+      setTimeout(clearSoundPin, 420);
+    }
+
+    document.addEventListener('keydown', event => {
+      const backdrop = document.getElementById('soundPinBackdrop');
+      if (!backdrop || backdrop.style.display !== 'flex') return;
+      if (/^[0-9]$/.test(event.key)) enterSoundPinDigit(event.key);
+      else if (event.key === 'Backspace') backspaceSoundPin();
+      else if (event.key === 'Escape') closeSoundPin();
+    });
 
     
     // ================= 10. DARK MODE THEME CONTROLLER =================
@@ -5452,6 +6239,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       initTheme();
+      setSilentMode(true);
       updateHistoryBadge();
       updateContentCounts();
       renderTrickyWords();
