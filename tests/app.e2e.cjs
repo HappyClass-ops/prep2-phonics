@@ -195,7 +195,13 @@ async function run() {
     assert.match(await page.locator('#tabSbBtn').innerText(), new RegExp(`\\(${soundboardTotal}\\)`));
     assert.equal(trickyTotal, 93, 'the verified Little Wandle set must contain all 93 tricky words');
     assert.equal(await page.locator('#trickyGrid .tricky-tip').count(), 93, 'every tricky word must show a reading prompt in silent mode');
-    assert.equal(await page.locator('#trickyGrid .tricky-parts-breakdown').count(), 93, 'every tricky word must show either verified detail or a safe spot-the-sounds prompt');
+    assert.equal(await page.locator('#trickyGrid .tricky-parts-breakdown').count(), 93, 'every tricky word must show its complete ordered grapheme guide');
+    assert.equal(await page.locator('#trickyGrid .part-tricky').count() >= 93, true, 'every tricky word must mark at least one red underlined part');
+    assert.match(await page.locator('.tricky-reading-key').innerText(), /left to right.*Green.*Red and underlined/is);
+    const waterCard = page.locator('#trickyGrid .tricky-card').filter({ hasText: /^PHASE 5\s*water\s*/i });
+    assert.deepEqual(await waterCard.locator('.tricky-parts-breakdown > span:not(.tricky-part-separator)').allTextContents(), ['w', 'a', 't', 'er'], 'water must be shown in reading order');
+    assert.equal(await waterCard.locator('.part-tricky').innerText(), 'a', 'only the surprising a in water should be marked tricky');
+    assert.match(await waterCard.locator('.tricky-tip').innerText(), /a says \/or\/ here.*not \/a\/ as in cat/i);
     assert.equal(await page.locator('#trickyGrid .tricky-recording-status', { hasText: 'Silent mode' }).count(), 0, 'silent mode must not replace reading guidance with a mode label');
     assert.equal(await page.locator('#btnSoundModeToggle').getAttribute('aria-pressed'), 'true', 'silent mode must be the default');
     assert.match(await page.locator('#btnSoundModeToggle').innerText(), /Silent/i);

@@ -29,9 +29,12 @@ stay complete only for the current page session, so a reload restores genuine
 independent practice. Tricky words receive a separate prompt to read known
 parts and ask a teacher, because a regular segmentation challenge would teach
 the wrong rule. All 93 tricky-word cards keep reading guidance visible in
-silent mode. The 24 words with verified letter-level teaching notes show those
-specific details; every remaining card gives the safe prompt to spot known
-sounds and ask which part is tricky instead of inventing an unverified rule.
+silent mode. Each card now shows every grapheme from left to right: known sound
+patterns are green, while the exact tricky grapheme is red and underlined. A
+single plain sentence states the sound used in this word and, where useful,
+contrasts it with the sound children would normally expect. The complete
+93-word model follows Wandle Learning Trust's Phase 2–5 tricky-word guidance;
+split digraphs keep both separated letters marked in their true positions.
 
 ## Teacher recording workflow
 

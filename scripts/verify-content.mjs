@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import vm from 'node:vm';
 
 const pack = JSON.parse(fs.readFileSync('little_wandle_master_voice_pack_v3.json', 'utf8'));
 assert.equal(pack.clips.length, 75, 'All 75 teacher clips must be published.');
@@ -45,7 +46,26 @@ assert.match(app, /state\.attempts = Math\.min\(3/, 'Unsuccessful checks must st
 assert.match(app, /state\.blocked = true[\s\S]*Call a teacher over to help you[\s\S]*attempt is now locked/, 'The third unsuccessful check must lock the attempt for teacher support without an automatic reveal.');
 assert.match(app, /isBlocked \? 'disabled'[\s\S]*state\.blocked\) return/, 'A locked attempt must disable its visible controls and reject further edits.');
 assert.match(app, /const VERIFIED_TRICKY_WORDS = \[[\s\S]*father[\s\S]*shoe[\s\S]*const MASTER_TRICKY_WORDS_SET/, 'The verified 93-word Little Wandle list must be embedded.');
-assert.match(app, /hasVerifiedTeachingNote[\s\S]*Spot the sounds you know\.[\s\S]*Read those parts, then ask: “Which part is tricky\?”/, 'Every tricky-word card must keep reading guidance visible without inventing an unverified letter rule.');
+const verifiedTrickyBlock = app.match(/const VERIFIED_TRICKY_WORDS = \[([\s\S]*?)\];\s*const MASTER_TRICKY_WORDS_SET/)[1];
+const verifiedTrickyWords = [...verifiedTrickyBlock.matchAll(/\.\.\.\[(.*?)\]\.map\(word/gs)]
+  .flatMap(match => [...match[1].matchAll(/'([^']+)'/g)].map(wordMatch => wordMatch[1]));
+const teachingNotesSource = app.match(/const TRICKY_WORD_TEACHING_NOTES = (\[[\s\S]*?\])\.reduce/)[1];
+const teachingNotes = vm.runInNewContext(teachingNotesSource);
+assert.equal(verifiedTrickyWords.length, 93, 'The verified tricky-word inventory must stay at 93 words.');
+assert.equal(teachingNotes.length, 93, 'Every verified tricky word must have ordered teaching guidance.');
+assert.deepEqual(
+  Array.from(teachingNotes, note => note.word.toLowerCase()).sort(),
+  verifiedTrickyWords.map(word => word.toLowerCase()).sort(),
+  'Ordered teaching guidance must cover exactly the verified tricky-word inventory.'
+);
+teachingNotes.forEach(note => {
+  assert.equal(note.segments.map(segment => segment.replace(/^!/, '')).join('').toLowerCase(), note.word.toLowerCase(), `${note.word} segments must rebuild the printed word in order.`);
+  assert.ok(note.segments.some(segment => segment.startsWith('!')), `${note.word} must identify at least one tricky part.`);
+  assert.ok(note.tip && note.tip.length > 8, `${note.word} must explain the sound contrast clearly.`);
+});
+assert.deepEqual(Array.from(teachingNotes.find(note => note.word === 'water').segments), ['w', '!a', 't', 'er'], 'Water must show w-a-t-er in order with only a marked tricky.');
+assert.match(app, /Read each card from left to right[\s\S]*Green[\s\S]*Red and underlined/, 'The tricky-word page must explain the colour system once, clearly.');
+assert.match(app, /tw\.segments\.map[\s\S]*segment\.startsWith\('!'\)[\s\S]*tricky-part-separator/, 'Every card must render its ordered green and red segments from the verified model.');
 assert.match(app, /isSilentMode \? 'Read it yourself first'/, 'Silent tricky-word cards must prompt independent reading instead of replacing guidance with a mode label.');
 const trickyAudioFunction = app.match(/async function playTrickyWordAudio[\s\S]*?\n    }/)[0];
 assert.match(trickyAudioFunction, /wordAudioFor\(trickyRecordingId\(word\)\)/, 'Tricky words must use the matching teacher recording.');

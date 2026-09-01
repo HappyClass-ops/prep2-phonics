@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="app-version" content="2026.09.01.3">
+  <meta name="app-version" content="2026.09.02.1">
   <title>Visual Dictionary</title>
   <link rel="icon" type="image/png" href="assets/visual-dictionary-logo.png">
   
@@ -1626,9 +1626,26 @@
 
     .tricky-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 12px;
     }
+
+    .tricky-reading-key {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 10px 13px;
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      color: var(--color-slate);
+      font-size: 0.8rem;
+      font-weight: 650;
+    }
+
+    .tricky-reading-key strong { color: var(--color-ink); }
+    .tricky-key-example { display: inline-flex; align-items: center; gap: 5px; }
 
     .tricky-card {
       background: var(--color-canvas);
@@ -1678,19 +1695,34 @@
 
     .tricky-parts-breakdown {
       display: flex;
-      gap: 4px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      margin-bottom: 4px;
+      align-items: baseline;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 3px;
+      min-height: 22px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      margin: 2px 0 6px;
     }
 
-    .part-decodable { color: var(--color-success); }
-    .part-tricky { color: var(--color-error); text-decoration: underline; font-weight: 800; }
+    .tricky-part-separator { color: var(--color-stone); font-weight: 600; }
+    .part-decodable { color: #047857; }
+    .part-tricky {
+      color: #b91c1c;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+      font-weight: 900;
+    }
+    body.dark-theme .part-decodable { color: #6ee7b7; }
+    body.dark-theme .part-tricky { color: #fca5a5; }
 
     .tricky-tip {
-      font-size: 0.72rem;
+      font-size: 0.76rem;
       color: var(--color-slate);
-      font-weight: 500;
+      font-weight: 600;
+      line-height: 1.35;
+      max-width: 24ch;
     }
 
     /* SOUNDBOARD GRID WITH FIXED OVERFLOW TYPOGRAPHY */
@@ -2377,12 +2409,6 @@
     }
     body.dark-theme .btn-back-main:hover {
       background: var(--color-primary-hover);
-    }
-
-    .tricky-parts-prompt {
-      color: var(--color-stone);
-      text-decoration: none;
-      font-weight: 700;
     }
 
     /* CALM DICTIONARY COMPOSITION + SILENT MODE */
@@ -3095,6 +3121,12 @@
         <button class="filter-btn-pill" onclick="filterTricky('Phase 3')">Phase 3</button>
         <button class="filter-btn-pill" onclick="filterTricky('Phase 4')">Phase 4</button>
         <button class="filter-btn-pill" onclick="filterTricky('Phase 5')">Phase 5</button>
+      </div>
+
+      <div class="tricky-reading-key" role="note" aria-label="How to read the coloured word parts">
+        <strong>Read each card from left to right.</strong>
+        <span class="tricky-key-example"><span class="part-decodable">Green</span> follows a sound pattern you know.</span>
+        <span class="tricky-key-example"><span class="part-tricky">Red and underlined</span> is the part to remember.</span>
       </div>
 
       <div class="tricky-grid" id="trickyGrid">
@@ -3910,31 +3942,106 @@
     ];
 
     // ================= 6. TRICKY WORDS DATABASE =================
+    // Ordered grapheme guidance, paraphrased from Wandle Learning Trust's
+    // Phase 2-5 tricky-word support. Prefix a segment with ! to mark the
+    // exact tricky part; unprefixed segments are shown as known/regular.
     const TRICKY_WORD_TEACHING_NOTES = [
-      { word: "is", phase: "Phase 2", decodable: "i", tricky: "s", tip: "s makes /z/ sound" },
-      { word: "the", phase: "Phase 2", decodable: "th", tricky: "e", tip: "e makes schwa /uh/ sound" },
-      { word: "I", phase: "Phase 2", decodable: "", tricky: "I", tip: "letter I makes /igh/ sound" },
-      { word: "to", phase: "Phase 2", decodable: "t", tricky: "o", tip: "o makes /oo/ sound" },
-      { word: "into", phase: "Phase 2", decodable: "i-n-t", tricky: "o", tip: "o makes /oo/ sound" },
-      { word: "go", phase: "Phase 2", decodable: "g", tricky: "o", tip: "o makes /oa/ sound" },
-      { word: "no", phase: "Phase 2", decodable: "n", tricky: "o", tip: "o makes /oa/ sound" },
-      { word: "he", phase: "Phase 3", decodable: "h", tricky: "e", tip: "e makes /ee/ sound" },
-      { word: "she", phase: "Phase 3", decodable: "sh", tricky: "e", tip: "e makes /ee/ sound" },
-      { word: "we", phase: "Phase 3", decodable: "w", tricky: "e", tip: "e makes /ee/ sound" },
-      { word: "me", phase: "Phase 3", decodable: "m", tricky: "e", tip: "e makes /ee/ sound" },
-      { word: "was", phase: "Phase 3", decodable: "w", tricky: "a-s", tip: "a makes /o/, s makes /z/" },
-      { word: "you", phase: "Phase 3", decodable: "y", tricky: "ou", tip: "ou makes /oo/ sound" },
-      { word: "they", phase: "Phase 3", decodable: "th", tricky: "ey", tip: "ey makes /ai/ sound" },
-      { word: "my", phase: "Phase 3", decodable: "m", tricky: "y", tip: "y makes /igh/ sound" },
-      { word: "said", phase: "Phase 4", decodable: "s-d", tricky: "ai", tip: "ai makes short /e/ sound" },
-      { word: "have", phase: "Phase 4", decodable: "h-a-v", tricky: "e", tip: "e is silent" },
-      { word: "come", phase: "Phase 4", decodable: "c-m", tricky: "o-e", tip: "o makes short /u/ sound" },
-      { word: "some", phase: "Phase 4", decodable: "s-m", tricky: "o-e", tip: "o makes short /u/ sound" },
-      { word: "one", phase: "Phase 4", decodable: "n", tricky: "o-e", tip: "o makes /w-u/ sound" },
-      { word: "people", phase: "Phase 5", decodable: "p-l", tricky: "eo-ple", tip: "eo makes /ee/, ple makes /p-ul/" },
-      { word: "water", phase: "Phase 5", decodable: "t-er", tricky: "wa", tip: "a makes /or/ sound" },
-      { word: "friend", phase: "Phase 5", decodable: "f-r-n-d", tricky: "ie", tip: "ie makes short /e/ sound" },
-      { word: "because", phase: "Phase 5", decodable: "b-c-z", tricky: "e-au-se", tip: "au makes /o/, se makes /z/" }
+      { word: "is", segments: ["i", "!s"], tip: "s says /z/ here—not /s/ as in sat." },
+      { word: "I", segments: ["!I"], tip: "I says /igh/ here—not /i/ as in pin." },
+      { word: "the", segments: ["th", "!e"], tip: "e says a soft /uh/ here—not /e/ as in egg." },
+      { word: "put", segments: ["p", "!u", "t"], tip: "u says /oo/ as in book—not /u/ as in cup." },
+      { word: "pull", segments: ["p", "!u", "ll"], tip: "u says /oo/ as in book—not /u/ as in cup." },
+      { word: "full", segments: ["f", "!u", "ll"], tip: "u says /oo/ as in book—not /u/ as in cup." },
+      { word: "as", segments: ["a", "!s"], tip: "s says /z/ here—not /s/ as in sat." },
+      { word: "and", segments: ["a", "!nd"], tip: "n and d are two touching consonant sounds; that joining pattern is tricky for now." },
+      { word: "has", segments: ["h", "a", "!s"], tip: "s says /z/ here—not /s/ as in sat." },
+      { word: "his", segments: ["h", "i", "!s"], tip: "s says /z/ here—not /s/ as in sat." },
+      { word: "her", segments: ["h", "!er"], tip: "er works together as one sound; this digraph is tricky for now." },
+      { word: "go", segments: ["g", "!o"], tip: "o says /oa/ here—not /o/ as in dog." },
+      { word: "no", segments: ["n", "!o"], tip: "o says /oa/ here—not /o/ as in dog." },
+      { word: "to", segments: ["t", "!o"], tip: "o says /oo/ here, or soft /uh/ in quick speech—not /o/ as in dog." },
+      { word: "into", segments: ["i", "n", "t", "!o"], tip: "o says /oo/ here, or soft /uh/ in quick speech—not /o/ as in dog." },
+      { word: "she", segments: ["sh", "!e"], tip: "e says /ee/ here—not /e/ as in egg." },
+      { word: "push", segments: ["p", "!u", "sh"], tip: "u says /oo/ as in book—not /u/ as in cup." },
+      { word: "he", segments: ["h", "!e"], tip: "e says /ee/ here—not /e/ as in egg." },
+      { word: "of", segments: ["o", "!f"], tip: "f says /v/ here—not /f/ as in fish." },
+      { word: "we", segments: ["w", "!e"], tip: "e says /ee/ here—not /e/ as in egg." },
+      { word: "me", segments: ["m", "!e"], tip: "e says /ee/ here—not /e/ as in egg." },
+      { word: "be", segments: ["b", "!e"], tip: "e says /ee/ here—not /e/ as in egg." },
+
+      { word: "was", segments: ["w", "!a", "s"], tip: "a says /o/ here—not /a/ as in cat." },
+      { word: "you", segments: ["y", "!ou"], tip: "ou says /oo/ as in food here—not /ow/ as in out." },
+      { word: "they", segments: ["th", "!ey"], tip: "ey says /ai/ here." },
+      { word: "my", segments: ["m", "!y"], tip: "y says /igh/ here—not /y/ as in yes." },
+      { word: "by", segments: ["b", "!y"], tip: "y says /igh/ here—not /y/ as in yes." },
+      { word: "all", segments: ["!a", "ll"], tip: "a says /or/ here—not /a/ as in cat." },
+      { word: "are", segments: ["!are"], tip: "The whole word is a rare spelling of /ar/." },
+      { word: "sure", segments: ["!s", "!ure"], tip: "s says /sh/; ure says /yoo-uh/. Both parts are unusual here." },
+      { word: "pure", segments: ["p", "!ure"], tip: "ure makes two sounds here: /yoo/ followed by soft /uh/." },
+      { word: "said", segments: ["s", "!ai", "d"], tip: "ai says /e/ here—not /ai/ as in rain." },
+      { word: "so", segments: ["s", "!o"], tip: "o says /oa/ here—not /o/ as in top." },
+      { word: "have", segments: ["h", "a", "!ve"], tip: "ve works together to spell /v/; this pattern is tricky for now." },
+      { word: "like", segments: ["l", "!i", "k", "!e"], tip: "i–e works together to say /igh/; the letters are split by k." },
+      { word: "some", segments: ["s", "!o", "m", "!e"], tip: "o–e works together to say /u/ here—not its usual /oa/." },
+      { word: "come", segments: ["c", "!o", "m", "!e"], tip: "o–e works together to say /u/ here—not its usual /oa/." },
+      { word: "love", segments: ["l", "!o", "!ve"], tip: "o says /u/; ve works together to spell /v/." },
+      { word: "do", segments: ["d", "!o"], tip: "o says /oo/ as in food here—not /o/ as in top." },
+      { word: "were", segments: ["w", "!ere"], tip: "ere says /ur/ here." },
+      { word: "here", segments: ["h", "!ere"], tip: "ere says /ear/ here." },
+
+      { word: "little", segments: ["l", "i", "tt", "!le"], tip: "le works together to spell the final /l/ sound." },
+      { word: "says", segments: ["s", "!ay", "s"], tip: "ay says /e/ here—not /ai/ as in play." },
+      { word: "there", segments: ["th", "!ere"], tip: "ere says /air/ here." },
+      { word: "when", segments: ["!wh", "e", "n"], tip: "wh works together to say /w/; this digraph is tricky for now." },
+      { word: "what", segments: ["!wh", "!a", "t"], tip: "wh says /w/; a says /o/ here—not /a/ as in cat." },
+      { word: "one", segments: ["!one"], tip: "The whole word is unusual: o starts /w-u/ and ne spells /n/." },
+      { word: "out", segments: ["!ou", "t"], tip: "ou works together to say /ow/; this digraph is tricky for now." },
+      { word: "today", segments: ["t", "!o", "d", "!ay"], tip: "o is soft /uh/; ay says /ai/ but is still tricky at this point." },
+
+      { word: "their", segments: ["th", "!eir"], tip: "eir works together to say /air/." },
+      { word: "people", segments: ["p", "!eo", "p", "!le"], tip: "eo says /ee/; le spells the final /l/ sound." },
+      { word: "oh", segments: ["!oh"], tip: "oh works together to say /oa/." },
+      { word: "your", segments: ["y", "!our"], tip: "our works together to say /or/ here." },
+      { word: "Mr", segments: ["!Mr"], tip: "This abbreviation is read as “Mister”." },
+      { word: "Mrs", segments: ["!Mrs"], tip: "This abbreviation is read as “Missus”." },
+      { word: "Ms", segments: ["!Ms"], tip: "This abbreviation is read as “Miz”." },
+      { word: "ask", segments: ["!a", "s", "k"], tip: "a says /ar/ here in many accents—not /a/ as in cat." },
+      { word: "could", segments: ["c", "!oul", "d"], tip: "oul works together to say /oo/ as in book." },
+      { word: "would", segments: ["w", "!oul", "d"], tip: "oul works together to say /oo/ as in book." },
+      { word: "should", segments: ["sh", "!oul", "d"], tip: "oul works together to say /oo/ as in book." },
+      { word: "our", segments: ["!our"], tip: "our says /ow/ followed by a soft /uh/." },
+      { word: "house", segments: ["h", "ou", "!se"], tip: "se says /s/ here—not /z/ as it sometimes does." },
+      { word: "mouse", segments: ["m", "ou", "!se"], tip: "se says /s/ here—not /z/ as it sometimes does." },
+      { word: "water", segments: ["w", "!a", "t", "er"], tip: "a says /or/ here—not /a/ as in cat." },
+      { word: "want", segments: ["w", "!a", "n", "t"], tip: "a says /o/ here—not /a/ as in cat." },
+      { word: "any", segments: ["!a", "n", "y"], tip: "a says /e/ here—not /a/ as in cat." },
+      { word: "many", segments: ["m", "!a", "n", "y"], tip: "a says /e/ here—not /a/ as in cat." },
+      { word: "again", segments: ["a", "g", "!ai", "n"], tip: "ai says /e/ here—not /ai/ as in rain." },
+      { word: "who", segments: ["!wh", "!o"], tip: "wh says /h/; o says /oo/ as in food." },
+      { word: "whole", segments: ["!wh", "!o", "l", "!e"], tip: "wh says /h/; o–e works together to say /oa/." },
+      { word: "where", segments: ["wh", "!ere"], tip: "ere works together to say /air/." },
+      { word: "two", segments: ["t", "!wo"], tip: "wo works together to say /oo/ as in food." },
+      { word: "school", segments: ["s", "!ch", "oo", "l"], tip: "ch says /k/ here—not /ch/ as in chip." },
+      { word: "call", segments: ["c", "!a", "ll"], tip: "a says /or/ here—not /a/ as in cat." },
+      { word: "different", segments: ["d", "i", "ff", "!er", "e", "n", "t"], tip: "er gives /r/ here without an extra /uh/ before it." },
+      { word: "thought", segments: ["th", "!ough", "t"], tip: "ough works together to say /or/." },
+      { word: "through", segments: ["th", "r", "!ough"], tip: "ough works together to say /oo/ as in food." },
+      { word: "friend", segments: ["f", "r", "!ie", "n", "d"], tip: "ie says /e/ here—not /igh/ as in pie." },
+      { word: "work", segments: ["w", "!or", "k"], tip: "or says /ur/ here—not /or/ as in fork." },
+      { word: "once", segments: ["!o", "n", "ce"], tip: "o starts the two sounds /w-u/ here." },
+      { word: "laugh", segments: ["l", "!au", "!gh"], tip: "au says /ar/ in many accents; gh says /f/." },
+      { word: "half", segments: ["h", "!al", "f"], tip: "al says /ar/ here in many accents." },
+      { word: "father", segments: ["f", "!a", "th", "er"], tip: "a says /ar/ here in many accents—not /a/ as in cat." },
+      { word: "because", segments: ["b", "e", "c", "!au", "se"], tip: "au says /o/ here." },
+      { word: "eye", segments: ["!eye"], tip: "The whole trigraph eye says /igh/." },
+      { word: "busy", segments: ["b", "!u", "s", "y"], tip: "u says /i/ here—not /u/ as in cup." },
+      { word: "beautiful", segments: ["b", "!eau", "t", "i", "f", "u", "l"], tip: "eau works together to say /yoo/." },
+      { word: "pretty", segments: ["p", "r", "!e", "tt", "y"], tip: "e says /i/ here—not /e/ as in egg." },
+      { word: "hour", segments: ["!h", "!our"], tip: "h is silent; our says /ow/ followed by a soft /uh/." },
+      { word: "move", segments: ["m", "!o", "ve"], tip: "o says /oo/ as in food here—not /o/ or /oa/." },
+      { word: "improve", segments: ["i", "m", "p", "r", "!o", "ve"], tip: "o says /oo/ as in food here—not /o/ or /oa/." },
+      { word: "parents", segments: ["p", "!a", "r", "e", "n", "t", "s"], tip: "a says /air/ here—not /a/ as in cat." },
+      { word: "shoe", segments: ["sh", "!oe"], tip: "oe works together to say /oo/ as in food—not /oa/." }
     ].reduce((notes, item) => {
       notes[item.word.toLowerCase()] = item;
       return notes;
@@ -6111,13 +6218,13 @@
             }
           };
         }
-        const hasVerifiedTeachingNote = tw.decodable !== undefined && tw.tricky !== undefined && tw.tip;
-        const breakdown = hasVerifiedTeachingNote
-          ? `<div class="tricky-parts-breakdown"><span class="part-decodable">${tw.decodable}</span><span class="part-tricky">${tw.tricky}</span></div>`
-          : '<div class="tricky-parts-breakdown tricky-parts-prompt">Spot the sounds you know.</div>';
-        const tip = hasVerifiedTeachingNote
-          ? `<div class="tricky-tip">${tw.tip}</div>`
-          : '<div class="tricky-tip">Read those parts, then ask: “Which part is tricky?”</div>';
+        const breakdown = `<div class="tricky-parts-breakdown" aria-label="${tw.word}: green known parts and red tricky parts">${tw.segments.map((segment, index) => {
+          const isTricky = segment.startsWith('!');
+          const letters = isTricky ? segment.slice(1) : segment;
+          const separator = index ? '<span class="tricky-part-separator" aria-hidden="true">·</span>' : '';
+          return `${separator}<span class="${isTricky ? 'part-tricky' : 'part-decodable'}">${letters}</span>`;
+        }).join('')}</div>`;
+        const tip = `<div class="tricky-tip">${tw.tip}</div>`;
         const status = isSilentMode ? 'Read it yourself first' : teacherAudio ? 'Teacher voice ready' : 'Teacher recording needed';
         card.innerHTML = `
           <div class="tricky-card-phase">${tw.phase}</div>
