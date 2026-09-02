@@ -13,10 +13,11 @@ assert.ok(Array.isArray(wordPack.clips), 'The publishable teacher word voice pac
 assert.equal(wordPack.clips.length, 93, 'All 93 teacher-recorded tricky words must be published.');
 assert.equal(new Set(wordPack.clips.map(clip => clip.id)).size, 93, 'Tricky-word recording IDs must be unique.');
 assert.ok(wordPack.clips.every(clip => clip.base64Audio.startsWith('data:audio/wav;base64,')), 'Every tricky word must contain playable teacher WAV audio.');
-assert.equal(pack.version, '6.0-deeper-voice-teacher-pack', 'The phonics pack must use the deeper teacher voice profile.');
-assert.equal(wordPack.version, '2.0-deeper-voice-teacher-pack', 'The tricky-word pack must use the deeper teacher voice profile.');
-assert.equal(pack.voiceProfile?.pitchSemitones, -3.44, 'The phonics voice profile must preserve the approved pitch shift.');
-assert.equal(wordPack.voiceProfile?.pitchSemitones, -3.44, 'Both packs must use the same teacher voice profile.');
+assert.equal(pack.version, '6.1-natural-teacher-pack', 'The phonics pack must retain the natural teacher voice.');
+assert.equal(wordPack.version, '2.1-natural-teacher-pack-declicked', 'The tricky-word pack must use conservative end-noise cleanup only.');
+assert.equal(pack.voiceProfile, undefined, 'Pitch or voice processing must not be applied to phonemes.');
+assert.equal(wordPack.voiceProfile, undefined, 'Pitch or voice processing must not be applied to tricky words.');
+assert.deepEqual(wordPack.endNoiseCleanup?.cleanedIds?.slice().sort(), ['tricky:of', 'tricky:once', 'tricky:parents', 'tricky:want', 'tricky:work'], 'Only the reviewed separated release noises may be trimmed.');
 
 const app = fs.readFileSync('index.html', 'utf8');
 const worker = fs.readFileSync('cloudflare/worker.mjs', 'utf8');

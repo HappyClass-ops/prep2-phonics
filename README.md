@@ -55,14 +55,16 @@ inventory, normalizes only changed WAV clips, preserves unchanged recordings
 byte-for-byte, and embeds the validated pack into the pupil app. Tricky-word
 recordings remain in the separate `little_wandle_word_voice_pack.json` file.
 
-The published teacher recordings use the reusable
-`scripts/process-teacher-voice-packs.mjs` clarity-first privacy profile. It
-lowers the teacher voice by 3.44 semitones while restoring every clip to its
-original duration, then applies conservative classroom-volume normalization.
-All 75 phonics clips and all 93 tricky words use the same profile. Processing
-is applied to clean Studio exports only; the script refuses to process an
-already shifted pack, validates every ID, rejects silent or malformed audio,
-and checks timing, sample rate, and peak level before publication.
+The published recordings keep the teacher's natural voice. Voice shifting was
+tested and removed because altering isolated phonemes made the model less
+natural without reliably anonymising the speaker. The reusable
+`scripts/prepare-natural-teacher-voice-packs.mjs` script preserves all 75
+phoneme recordings byte-for-byte. For tricky words it removes only a quiet,
+short event that begins after a genuine silent gap following the completed
+word. The detector is deliberately strict: the current pack cleans `of`,
+`want`, `work`, `once`, and `parents`, while the other 88 word recordings are
+preserved byte-for-byte. The script locks that reviewed set and stops rather
+than publishing if a future export produces unexpected matches.
 
 ## 🚀 Live Links
 - **Pupil App**: [Open Student App](https://happyclass-ops.github.io/prep2-phonics/)
