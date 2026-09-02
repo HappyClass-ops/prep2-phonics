@@ -10,6 +10,13 @@ assert.ok(pack.clips.find(clip => clip.id === 'ed-d'), 'The supplied -ed /d/ cli
 
 const wordPack = JSON.parse(fs.readFileSync('little_wandle_word_voice_pack.json', 'utf8'));
 assert.ok(Array.isArray(wordPack.clips), 'The publishable teacher word voice pack must have a clips array.');
+assert.equal(wordPack.clips.length, 93, 'All 93 teacher-recorded tricky words must be published.');
+assert.equal(new Set(wordPack.clips.map(clip => clip.id)).size, 93, 'Tricky-word recording IDs must be unique.');
+assert.ok(wordPack.clips.every(clip => clip.base64Audio.startsWith('data:audio/wav;base64,')), 'Every tricky word must contain playable teacher WAV audio.');
+assert.equal(pack.version, '6.0-deeper-voice-teacher-pack', 'The phonics pack must use the deeper teacher voice profile.');
+assert.equal(wordPack.version, '2.0-deeper-voice-teacher-pack', 'The tricky-word pack must use the deeper teacher voice profile.');
+assert.equal(pack.voiceProfile?.pitchSemitones, -3.44, 'The phonics voice profile must preserve the approved pitch shift.');
+assert.equal(wordPack.voiceProfile?.pitchSemitones, -3.44, 'Both packs must use the same teacher voice profile.');
 
 const app = fs.readFileSync('index.html', 'utf8');
 const worker = fs.readFileSync('cloudflare/worker.mjs', 'utf8');
@@ -20,6 +27,10 @@ const bundleMatch = app.match(/const AUDIO_BUNDLE = (.*?);\s*const AUDIO_CACHE/s
 assert.ok(bundleMatch, 'The pupil app must contain its published audio bundle.');
 const embedded = JSON.parse(bundleMatch[1]);
 assert.deepEqual(embedded.clips, pack.clips, 'Teacher Studio and pupil app must use identical audio.');
+const wordBundleMatch = app.match(/const WORD_AUDIO_BUNDLE = (.*?);\s*const WORD_AUDIO_CACHE/s);
+assert.ok(wordBundleMatch, 'The standalone pupil app must embed the teacher tricky-word recordings.');
+const embeddedWords = JSON.parse(wordBundleMatch[1]);
+assert.deepEqual(embeddedWords.clips, wordPack.clips, 'The standalone app and published tricky-word pack must use identical recordings.');
 assert.match(app, /function isAcceptedDictionaryEntry[\s\S]*?entry\.meta[\s\S]*?entry\.ins[\s\S]*?entry\.hwi/, 'Dictionary results must be filtered by provider-owned accepted forms.');
 assert.match(app, /const shortDefinitions[\s\S]*?shortDefinitions\.length/, 'Elementary short definitions must be preferred over raw technical sense text.');
 assert.match(app, /function applyDictionaryPronunciation/, 'Selected dictionary pronunciations must control ambiguous phonics.');
